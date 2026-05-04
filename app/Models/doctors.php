@@ -8,6 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class doctors extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'specialization_id',
+        'license_number',
+        'experience_years',
+        'consultation_fee',
+        'bio',
+        'photo',
+        'is_available',
+    ];
+
     public function user() {
         return $this->belongsTo(User::class);
     }

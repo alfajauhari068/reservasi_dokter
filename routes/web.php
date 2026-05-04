@@ -42,7 +42,7 @@ Route::post('/login', [LoginController::class, 'login'])
     ->name('login.perform')
     ->middleware('guest');
 
-Route::post('/logout', [LoginController::class, 'logout'])
+Route::match(['get', 'post'], '/logout', [LoginController::class, 'logout'])
     ->name('logout')
     ->middleware('auth');
 
@@ -50,6 +50,10 @@ Route::post('/logout', [LoginController::class, 'logout'])
 Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
     ->name('admin.dashboard')
     ->middleware('auth');
+
+Route::resource('admin/doctors', \App\Http\Controllers\DoctorsController::class)
+    ->names('admin.doctors')
+    ->middleware(['auth', 'role:admin']);
 
 Route::get('/dokter/dashboard', [DokterDashboardController::class, 'index'])
     ->name('dokter.dashboard')
