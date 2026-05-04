@@ -10,6 +10,8 @@
     <h1>Admin Dashboard</h1>
     <p>Selamat datang, {{ auth()->user()->name }}!</p>
     
+    <a href="{{ route('admin.doctors.index') }}" class="btn btn-primary">Kelola Data Dokter</a>
+    
     <form action="{{ route('logout') }}" method="POST" style="display:inline;">
         @csrf
         <button type="submit">Logout</button>
