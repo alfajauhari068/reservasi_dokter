@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Dokter\DashboardController as DokterDashboardController;
 use App\Http\Controllers\Pasien\DashboardController as PasienDashboardController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,14 @@ Route::match(['get', 'post'], '/logout', [LoginController::class, 'logout'])
     ->name('logout')
     ->middleware('auth');
 
+// Register routes
+Route::get('/register', [RegisterController::class, 'showRegisterForm'])
+    ->name('register')
+    ->middleware('guest');
+
+Route::post('/register', [RegisterController::class, 'register'])
+    ->name('register.perform')
+    ->middleware('guest');
 
 Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
     ->name('admin.dashboard')
