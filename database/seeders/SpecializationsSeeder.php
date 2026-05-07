@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\specializations;
+use App\Models\Specialization;
 
 class SpecializationsSeeder extends Seeder
 {
@@ -17,7 +17,7 @@ class SpecializationsSeeder extends Seeder
         ];
 
         foreach ($specializations as $spec) {
-            specializations::updateOrCreate(
+            Specialization::updateOrCreate(
                 ['name' => $spec['name']],
                 $spec
             );
