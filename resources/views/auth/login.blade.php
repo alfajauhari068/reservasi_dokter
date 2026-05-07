@@ -220,7 +220,7 @@
                 <div class="mt-8 pt-6 border-t border-gray-100 text-center">
                     <p class="text-gray-500 text-sm">
                         Belum punya akun? 
-                        <a href="" class="text-primary-600 font-medium hover:text-primary-700 transition-smooth">
+                        <a href="{{ route('register') }}" class="text-primary-600 font-medium hover:text-primary-700 transition-smooth">
                             Daftar sebagai pasien
                         </a>
                     </p>

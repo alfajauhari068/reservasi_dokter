@@ -9,6 +9,6 @@ class queues extends Model
 {
     use HasFactory;
     public function appointment() {
-        return $this->belongsTo(Appointments::class);
+        return $this->belongsTo(Appointment::class);
     }
 }

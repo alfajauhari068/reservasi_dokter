@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\appointments;
+use App\Models\Appointment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -35,7 +35,7 @@ class AppointmentsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(appointments $appointments)
+    public function show(Appointment $appointment)
     {
         //
     }
@@ -43,7 +43,7 @@ class AppointmentsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(appointments $appointments)
+    public function edit(Appointment $appointment)
     {
         //
     }
@@ -51,7 +51,7 @@ class AppointmentsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, appointments $appointments)
+    public function update(Request $request, Appointment $appointment)
     {
         //
     }
@@ -59,7 +59,7 @@ class AppointmentsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(appointments $appointments)
+    public function destroy(Appointment $appointment)
     {
         //
     }

@@ -3,9 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Dokter\DashboardController as DokterDashboardController;
+use App\Http\Controllers\Dokter\ReservasiController as DokterReservasiController;
+use App\Http\Controllers\Dokter\ScheduleController;
 use App\Http\Controllers\Pasien\DashboardController as PasienDashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Pasien\ReservasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,8 +69,27 @@ Route::resource('admin/doctors', \App\Http\Controllers\DoctorsController::class)
 
 Route::get('/dokter/dashboard', [DokterDashboardController::class, 'index'])
     ->name('dokter.dashboard')
-    ->middleware('auth');
+    ->middleware(['auth', 'role:dokter']);
+
+Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')->group(function () {
+    Route::get('reservasi/riwayat', [DokterReservasiController::class, 'history'])->name('reservasi.history');
+    Route::get('reservasi/{appointment}', [DokterReservasiController::class, 'show'])
+        ->whereNumber('appointment')
+        ->name('reservasi.show');
+    Route::put('reservasi/{appointment}', [DokterReservasiController::class, 'update'])
+        ->whereNumber('appointment')
+        ->name('reservasi.update');
+
+    Route::resource('schedule', ScheduleController::class);
+});
 
 Route::get('/pasien/dashboard', [PasienDashboardController::class, 'index'])
     ->name('pasien.dashboard')
-    ->middleware('auth');
+    ->middleware(['auth', 'role:pasien']);
+
+Route::middleware(['auth', 'role:pasien'])->prefix('pasien')->name('pasien.')->group(function () {
+    Route::get('reservasi', [ReservasiController::class, 'create'])->name('reservasi.create');
+    Route::post('reservasi', [ReservasiController::class, 'store'])->name('reservasi.store');
+    Route::get('reservasi/riwayat', [ReservasiController::class, 'history'])->name('reservasi.history');
+    Route::get('reservasi/{appointment}', [ReservasiController::class, 'show'])->name('reservasi.show');
+});

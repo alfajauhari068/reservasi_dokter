@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Appointment;
 
 class doctors extends Model
 {
@@ -27,6 +28,10 @@ class doctors extends Model
         return $this->belongsTo(Specializations::class);
     }
     public function schedules() {
-        return $this->hasMany(Schedules::class);
+        return $this->hasMany(schedules::class, 'doctor_id');
+    }
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class, 'doctor_id');
     }
 }

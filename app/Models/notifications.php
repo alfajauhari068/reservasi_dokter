@@ -12,6 +12,6 @@ class notifications extends Model
         return $this->belongsTo(User::class);
     }
     public function appointment() {
-        return $this->belongsTo(Appointments::class);
+        return $this->belongsTo(Appointment::class);
     }
 }
