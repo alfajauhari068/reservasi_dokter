@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\schedules;
+use App\Models\Schedule;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -35,7 +35,7 @@ class SchedulesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(schedules $schedules)
+    public function show(Schedule $schedule)
     {
         //
     }
@@ -43,7 +43,7 @@ class SchedulesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(schedules $schedules)
+    public function edit(Schedule $schedule)
     {
         //
     }
@@ -51,7 +51,7 @@ class SchedulesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, schedules $schedules)
+    public function update(Request $request, Schedule $schedule)
     {
         //
     }
@@ -59,7 +59,7 @@ class SchedulesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(schedules $schedules)
+    public function destroy(Schedule $schedule)
     {
         //
     }

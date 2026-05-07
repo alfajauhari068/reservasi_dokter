@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\patients;
+use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -49,7 +49,7 @@ class RegisterController extends Controller
                 ]);
 
                 // Buat profil pasien
-                patients::create([
+                Patient::create([
                     'user_id' => $user->id,
                     'gender' => $validated['gender'],
                     'date_of_birth' => $validated['date_of_birth'],

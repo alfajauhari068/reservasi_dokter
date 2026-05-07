@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\queues;
+use App\Models\Queue;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -35,7 +35,7 @@ class QueuesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(queues $queues)
+    public function show(Queue $queue)
     {
         //
     }
@@ -43,7 +43,7 @@ class QueuesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(queues $queues)
+    public function edit(Queue $queue)
     {
         //
     }
@@ -51,7 +51,7 @@ class QueuesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, queues $queues)
+    public function update(Request $request, Queue $queue)
     {
         //
     }
@@ -59,7 +59,7 @@ class QueuesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(queues $queues)
+    public function destroy(Queue $queue)
     {
         //
     }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\doctors;
-use App\Models\specializations;
+use App\Models\Doctor;
+use App\Models\Specialization;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +16,7 @@ class DoctorsController extends Controller
      */
     public function index()
     {
-        $doctors = doctors::with('user', 'specialization')->get();
+        $doctors = Doctor::with('user', 'specialization')->get();
         return view('admin.doctors.index', compact('doctors'));
     }
 
@@ -25,7 +25,7 @@ class DoctorsController extends Controller
      */
     public function create()
     {
-        $specializations = specializations::all();
+        $specializations = Specialization::all();
         return view('admin.doctors.create', compact('specializations'));
     }
 
@@ -63,14 +63,14 @@ class DoctorsController extends Controller
             $data['photo'] = $request->file('photo')->store('photos', 'public');
         }
 
-        doctors::create($data);
+        Doctor::create($data);
         return redirect()->route('admin.doctors.index')->with('success', 'Dokter dan akun login berhasil ditambahkan.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(doctors $doctor)
+    public function show(Doctor $doctor)
     {
         $doctor->load('user', 'specialization', 'schedules');
         return view('admin.doctors.show', compact('doctor'));
@@ -79,16 +79,16 @@ class DoctorsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(doctors $doctor)
+    public function edit(Doctor $doctor)
     {
-        $specializations = specializations::all();
+        $specializations = Specialization::all();
         return view('admin.doctors.edit', compact('doctor', 'specializations'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, doctors $doctor)
+    public function update(Request $request, Doctor $doctor)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -129,7 +129,7 @@ class DoctorsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(doctors $doctor)
+    public function destroy(Doctor $doctor)
     {
         if ($doctor->photo) {
             Storage::disk('public')->delete($doctor->photo);

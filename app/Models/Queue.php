@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class specializations extends Model
+class Queue extends Model
 {
     use HasFactory;
-    public function doctors() {
-        return $this->hasMany(Doctors::class);
+
+    public function appointment()
+    {
+        return $this->belongsTo(Appointment::class);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\notifications;
+use App\Models\Notification;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -35,7 +35,7 @@ class NotificationsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(notifications $notifications)
+    public function show(Notification $notification)
     {
         //
     }
@@ -43,7 +43,7 @@ class NotificationsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(notifications $notifications)
+    public function edit(Notification $notification)
     {
         //
     }
@@ -51,7 +51,7 @@ class NotificationsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, notifications $notifications)
+    public function update(Request $request, Notification $notification)
     {
         //
     }
@@ -59,7 +59,7 @@ class NotificationsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(notifications $notifications)
+    public function destroy(Notification $notification)
     {
         //
     }
