@@ -4,43 +4,47 @@
 
 @section('content')
 <style>
-    /* Background SVG / shape abstrak di hero */
-    .hero-section {
+    .page-bg-wrapper{
         position: relative;
+        min-height: 100vh;
         overflow: hidden;
-        background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 40%, #e0f7fa 100%);
-    }
-
-    .hero-shape {
-        position: absolute;
-        top: -120px;
-        right: -100px;
-        width: 380px;
-        height: 380px;
-        background: radial-gradient(circle at 30% 30%, #b3e5fc 0, #4dd0e1 40%, transparent 70%);
-        opacity: 0.7;
-        filter: blur(4px);
         z-index: 0;
     }
 
-    .hero-shape-bottom {
-        position: absolute;
-        bottom: -140px;
-        left: -120px;
-        width: 320px;
-        height: 320px;
-        background: radial-gradient(circle at 70% 70%, #e1f5fe 0, #b2ebf2 40%, transparent 70%);
-        opacity: 0.8;
-        filter: blur(3px);
-        z-index: 0;
+    .page-bg-svg{
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        opacity: 0.55;
     }
 
-    .hero-content,
-    .hero-illustration {
-        position: relative;
-        z-index: 1;
+    .page-bg-svg svg{
+        width: 100%;
+        height: 100%;
+        display: block;
     }
 
+    /* Hero dibuat transparan agar mengikuti background global */
+    .hero-section{
+        background: transparent !important;
+    }
+
+    /* Nonaktifkan shape lama di hero agar tidak bertabrakan */
+    .hero-shape,
+    .hero-shape-bottom{
+        display: none !important;
+    }
+
+    footer a {
+        text-decoration: none;
+    }
+
+    footer a:hover {
+        text-decoration: underline;
+    }
+
+    /* style lama yang masih diperlukan */
     .badge-soft-success {
         background-color: rgba(25, 135, 84, 0.12);
         color: #198754;
@@ -78,16 +82,17 @@
 
     .doctor-card {
         border-radius: 24px;
-        background: linear-gradient(135deg, #ffffff 0%, #e3f2fd 100%);
+        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(227,242,253,0.75) 100%);
         box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
         padding: 2rem;
+        backdrop-filter: blur(6px);
     }
 
     .doctor-avatar {
         width: 72px;
         height: 72px;
         border-radius: 999px;
-        background: #ffffff;
+        background: rgba(255,255,255,0.95);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -102,10 +107,11 @@
     }
 
     .hero-search {
-        background-color: #ffffff;
+        background-color: rgba(255,255,255,0.88);
         border-radius: 999px;
         box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
         padding: 0.75rem 1rem;
+        backdrop-filter: blur(8px);
     }
 
     @media (max-width: 767.98px) {
@@ -124,15 +130,68 @@
     .hero-search .form-select:focus {
         border: none;
     }
-
-    footer a {
-        text-decoration: none;
-    }
-
-    footer a:hover {
-        text-decoration: underline;
-    }
 </style>
+
+<div class="page-bg-wrapper">
+    <div class="page-bg-svg" aria-hidden="true">
+        <svg viewBox="0 0 1440 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="medGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#EAF6FF"/>
+                    <stop offset="45%" stop-color="#D9FCF8"/>
+                    <stop offset="100%" stop-color="#FFFFFF"/>
+                </linearGradient>
+
+                <linearGradient id="waveGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#7DD3FC" stop-opacity="0.55"/>
+                    <stop offset="50%" stop-color="#5EEAD4" stop-opacity="0.45"/>
+                    <stop offset="100%" stop-color="#93C5FD" stop-opacity="0.35"/>
+                </linearGradient>
+
+                <filter id="blurMed" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="18" />
+                </filter>
+            </defs>
+
+            <rect x="0" y="0" width="1440" height="900" fill="url(#medGrad)"/>
+
+            <!-- blob top-left -->
+            <g filter="url(#blurMed)" opacity="0.95">
+                <path d="M 140 120
+                         C 240 40, 360 60, 410 140
+                         C 460 220, 430 330, 320 350
+                         C 210 370, 95 310, 85 220
+                         C 75 160, 95 140, 140 120 Z"
+                      fill="#7DD3FC" fill-opacity="0.55"/>
+            </g>
+
+            <!-- blob top-right (subtle) -->
+            <g filter="url(#blurMed)" opacity="0.85">
+                <path d="M 1110 110
+                         C 1180 60, 1290 80, 1340 160
+                         C 1390 240, 1340 320, 1245 335
+                         C 1150 350, 1060 290, 1070 210
+                         C 1080 160, 1070 140, 1110 110 Z"
+                      fill="#5EEAD4" fill-opacity="0.35"/>
+            </g>
+
+            <!-- wave bottom-right -->
+            <path d="M 0 720
+                     C 180 680, 300 760, 460 730
+                     C 620 700, 760 640, 920 680
+                     C 1080 720, 1180 810, 1440 760
+                     L 1440 900 L 0 900 Z"
+                  fill="url(#waveGrad)" opacity="0.55"/>
+
+            <!-- second gentle wave band -->
+            <path d="M 0 760
+                     C 220 720, 340 820, 520 790
+                     C 700 760, 820 720, 1000 745
+                     C 1180 770, 1280 850, 1440 820
+                     L 1440 900 L 0 900 Z"
+                  fill="#B3E5FC" fill-opacity="0.25"/>
+        </svg>
+    </div>
 
 <header class="sticky-top bg-white shadow-sm">
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
@@ -443,13 +502,26 @@
                     Mulai dengan melakukan pendaftaran, kemudian pilih dokter dan jadwal yang paling sesuai.
                     Sistem kami akan membantu Anda mengatur semuanya secara otomatis.
                 </p>
-                <div class="d-flex flex-wrap justify-content-center gap-2">
+        <div class="d-flex flex-wrap justify-content-center gap-2">
                     <a href="{{ route('register') }}" class="btn btn-primary btn-lg">
                         Daftar Akun Pasien
                     </a>
-                    <a href="#hero" class="btn btn-outline-primary btn-lg">
-                        Coba cari dokter sekarang
-                    </a>
+
+                    @auth
+                        @if(auth()->user() && auth()->user()->role === 'pasien')
+                            <a href="{{ route('pasien.reservasi.create') }}" class="btn btn-outline-primary btn-lg">
+                                Reservasi Sekarang
+                            </a>
+                        @else
+                            <a href="{{ url('/') }}" class="btn btn-outline-primary btn-lg">
+                                Lihat Beranda
+                            </a>
+                        @endif
+                    @else
+                        <a href="{{ route('login') }}" class="btn btn-outline-primary btn-lg">
+                            Login untuk Reservasi
+                        </a>
+                    @endauth
                 </div>
             </div>
         </div>
@@ -504,4 +576,5 @@
         </div>
     </div>
 </footer>
+</div>
 @endsection
