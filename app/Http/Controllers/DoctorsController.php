@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Doctor;
 use App\Models\Specialization;
 use App\Models\User;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
@@ -144,5 +145,99 @@ class DoctorsController extends Controller
         }
         $doctor->delete();
         return redirect()->route('admin.doctors.index')->with('success', 'Dokter berhasil dihapus.');
+    }
+
+    /**
+     * Store schedule for a doctor
+     */
+    public function storeSchedule(Request $request, Doctor $doctor)
+    {
+        $request->validate([
+            'day_of_week' => 'required|string|in:monday,tuesday,wednesday,thursday,friday,saturday,sunday',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+            'quota' => 'required|integer|min:1',
+        ]);
+
+        // Check for overlapping schedules
+        $overlapping = Schedule::where('doctor_id', $doctor->id)
+            ->where('day_of_week', $request->day_of_week)
+            ->where(function ($query) use ($request) {
+                $query->whereBetween('start_time', [$request->start_time, $request->end_time])
+                      ->orWhereBetween('end_time', [$request->start_time, $request->end_time])
+                      ->orWhere(function ($q) use ($request) {
+                          $q->where('start_time', '<=', $request->start_time)
+                            ->where('end_time', '>=', $request->end_time);
+                      });
+            })
+            ->exists();
+
+        if ($overlapping) {
+            return redirect()->route('admin.doctors.show', $doctor)
+                ->with('error', 'Jadwal bertabrakan dengan jadwal yang sudah ada.');
+        }
+
+        Schedule::create([
+            'doctor_id' => $doctor->id,
+            'day_of_week' => $request->day_of_week,
+            'start_time' => $request->start_time . ':00',
+            'end_time' => $request->end_time . ':00',
+            'quota' => $request->quota,
+        ]);
+
+        return redirect()->route('admin.doctors.show', $doctor)
+            ->with('success', 'Jadwal berhasil ditambahkan.');
+    }
+
+    /**
+     * Update schedule for a doctor
+     */
+    public function updateSchedule(Request $request, Doctor $doctor, Schedule $schedule)
+    {
+        $request->validate([
+            'day_of_week' => 'required|string|in:monday,tuesday,wednesday,thursday,friday,saturday,sunday',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+            'quota' => 'required|integer|min:1',
+        ]);
+
+        // Check for overlapping schedules (excluding current)
+        $overlapping = Schedule::where('doctor_id', $doctor->id)
+            ->where('id', '!=', $schedule->id)
+            ->where('day_of_week', $request->day_of_week)
+            ->where(function ($query) use ($request) {
+                $query->whereBetween('start_time', [$request->start_time, $request->end_time])
+                      ->orWhereBetween('end_time', [$request->start_time, $request->end_time])
+                      ->orWhere(function ($q) use ($request) {
+                          $q->where('start_time', '<=', $request->start_time)
+                            ->where('end_time', '>=', $request->end_time);
+                      });
+            })
+            ->exists();
+
+        if ($overlapping) {
+            return redirect()->route('admin.doctors.show', $doctor)
+                ->with('error', 'Jadwal bertabrakan dengan jadwal yang sudah ada.');
+        }
+
+        $schedule->update([
+            'day_of_week' => $request->day_of_week,
+            'start_time' => $request->start_time . ':00',
+            'end_time' => $request->end_time . ':00',
+            'quota' => $request->quota,
+        ]);
+
+        return redirect()->route('admin.doctors.show', $doctor)
+            ->with('success', 'Jadwal berhasil diperbarui.');
+    }
+
+    /**
+     * Delete schedule for a doctor
+     */
+    public function destroySchedule(Doctor $doctor, Schedule $schedule)
+    {
+        $schedule->delete();
+        return redirect()->route('admin.doctors.show', $doctor)
+            ->with('success', 'Jadwal berhasil dihapus.');
     }
 }

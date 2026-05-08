@@ -72,19 +72,19 @@ class ReservasiController extends Controller
             ->with(['appointments.patient.user', 'appointments.schedule', 'appointments.medicalRecord'])
             ->first();
 
+        $completedAppointments = collect();
+        $errorMessage = null;
+
         if (! $doctor) {
-            return view('dokter.reservasi.history', [
-                'appointments' => collect(),
-                'errorMessage' => 'Profil dokter tidak ditemukan.',
-            ]);
+            $errorMessage = 'Profil dokter tidak ditemukan.';
+        } else {
+            $completedAppointments = $doctor->appointments()
+                ->where('status', 'completed')
+                ->with(['patient.user', 'schedule', 'medicalRecord'])
+                ->orderByDesc('appointment_date')
+                ->get();
         }
 
-        $completedAppointments = $doctor->appointments()
-            ->where('status', 'completed')
-            ->with(['patient.user', 'schedule', 'medicalRecord'])
-            ->orderByDesc('appointment_date')
-            ->get();
-
-        return view('dokter.reservasi.history', compact('completedAppointments'));
+        return view('dokter.reservasi.history', compact('completedAppointments', 'errorMessage'));
     }
 }
