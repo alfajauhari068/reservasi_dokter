@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Dokter\DashboardController as DokterDashboardController;
 use App\Http\Controllers\Dokter\ReservasiController as DokterReservasiController;
-use App\Http\Controllers\Dokter\ScheduleController;
 use App\Http\Controllers\Pasien\DashboardController as PasienDashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -67,6 +66,19 @@ Route::prefix('admin')
 
         // Admin Resource Routes
         Route::resource('doctors', \App\Http\Controllers\DoctorsController::class);
+        
+        // Admin Doctor Schedule Management
+        Route::post('doctors/{doctor}/schedules', [\App\Http\Controllers\DoctorsController::class, 'storeSchedule'])->name('doctors.schedules.store');
+        Route::put('doctors/{doctor}/schedules/{schedule}', [\App\Http\Controllers\DoctorsController::class, 'updateSchedule'])->name('doctors.schedules.update');
+        Route::delete('doctors/{doctor}/schedules/{schedule}', [\App\Http\Controllers\DoctorsController::class, 'destroySchedule'])->name('doctors.schedules.destroy');
+
+        // Admin Appointment Approval Management
+        Route::prefix('approvals')->name('approvals.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\ApprovalController::class, 'index'])->name('index');
+            Route::get('/{appointment}', [\App\Http\Controllers\Admin\ApprovalController::class, 'show'])->name('show');
+            Route::post('/{appointment}/approve', [\App\Http\Controllers\Admin\ApprovalController::class, 'approve'])->name('approve');
+            Route::post('/{appointment}/reject', [\App\Http\Controllers\Admin\ApprovalController::class, 'reject'])->name('reject');
+        });
 
         // Admin Queue Management
         Route::prefix('queues')->name('queues.')->group(function () {
@@ -107,9 +119,6 @@ Route::middleware(['auth', 'role:dokter'])->group(function () {
         Route::put('reservasi/{appointment}', [DokterReservasiController::class, 'update'])
             ->whereNumber('appointment')
             ->name('reservasi.update');
-
-        // Doctor Schedule Management
-        Route::resource('schedule', ScheduleController::class);
     });
 });
 

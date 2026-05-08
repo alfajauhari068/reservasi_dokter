@@ -23,14 +23,18 @@ class DashboardController extends Controller
         $completedCount = 0;
 
         if ($doctor) {
+            // Hanya tampilkan appointments yang sudah di-approve admin dan belum completed
             $pendingAppointments = $doctor->appointments()
+                ->where('approval_status', 'approved')
                 ->whereIn('status', ['pending', 'in_progress'])
                 ->with(['patient.user', 'schedule'])
                 ->orderBy('appointment_date')
                 ->orderBy('queue_number')
                 ->get();
 
+            // Count completed appointments
             $completedCount = $doctor->appointments()
+                ->where('approval_status', 'approved')
                 ->where('status', 'completed')
                 ->count();
         }

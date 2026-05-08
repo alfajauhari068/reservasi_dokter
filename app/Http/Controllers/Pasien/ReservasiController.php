@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Pasien;
 
+use App\Events\AppointmentRequested;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\Doctor;

@@ -10,7 +10,6 @@
             <p class="mb-0 text-muted">Selamat datang, {{ auth()->user()->name }}. Kelola reservasi pasien dan pantau pelayanan Anda.</p>
         </div>
         <div class="col-md-4 text-md-end">
-            <a href="{{ route('dokter.schedule.index') }}" class="btn btn-gradient me-2 mb-2 mb-md-0">Kelola Jadwal</a>
             <a href="{{ route('dokter.reservasi.history') }}" class="btn btn-outline-secondary">Lihat Riwayat</a>
         </div>
     </div>

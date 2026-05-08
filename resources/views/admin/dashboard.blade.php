@@ -78,6 +78,23 @@
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body text-center">
                 <div class="mb-3">
+                    <i class="fas fa-check-circle fa-3x text-warning"></i>
+                </div>
+                <h5 class="mb-2">Persetujuan Reservasi</h5>
+                <p class="text-muted small mb-3">
+                    <strong class="text-warning">{{ $pendingApprovalsCount }}</strong> permohonan menunggu persetujuan
+                </p>
+                <a href="{{ route('admin.approvals.index') }}" class="btn btn-warning">
+                    <i class="fas fa-arrow-right me-2"></i>Kelola Persetujuan
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-xl-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="mb-3">
                     <i class="fas fa-users fa-3x text-info"></i>
                 </div>
                 <h5 class="mb-2">Manajemen Antrian</h5>

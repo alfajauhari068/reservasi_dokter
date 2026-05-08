@@ -30,6 +30,10 @@ class Appointment extends Model
         'booking_code',
         'queue_number',
         'queue_date',
+        'approval_status',
+        'approved_by',
+        'approved_at',
+        'rejection_reason',
     ];
 
     /**
@@ -86,5 +90,37 @@ class Appointment extends Model
     public function notifications()
     {
         return $this->hasMany(Notification::class);
+    }
+
+    /**
+     * Get the user (admin) who approved this appointment.
+     */
+    public function approver()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    /**
+     * Check if appointment is waiting for admin approval
+     */
+    public function isWaitingApproval()
+    {
+        return $this->approval_status === 'pending';
+    }
+
+    /**
+     * Check if appointment is approved by admin
+     */
+    public function isApproved()
+    {
+        return $this->approval_status === 'approved';
+    }
+
+    /**
+     * Check if appointment is rejected by admin
+     */
+    public function isRejected()
+    {
+        return $this->approval_status === 'rejected';
     }
 }
