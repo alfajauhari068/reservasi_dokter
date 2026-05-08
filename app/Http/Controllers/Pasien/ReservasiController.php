@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Pasien;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
-use App\Models\doctors;
-use App\Models\patients;
+use App\Models\Doctor;
+use App\Models\Patient;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +20,7 @@ class ReservasiController extends Controller
 
     public function create()
     {
-        $doctors = doctors::with('user', 'specialization', 'schedules')
+        $doctors = Doctor::with('user', 'specialization', 'schedules')
             ->where('is_available', true)
             ->get();
 
@@ -36,13 +36,13 @@ class ReservasiController extends Controller
             'complaint' => 'nullable|string|max:2000',
         ]);
 
-        $patient = patients::where('user_id', auth()->id())->first();
+        $patient = Patient::where('user_id', auth()->id())->first();
         if (! $patient) {
             return redirect()->route('pasien.dashboard')
                 ->with('error', 'Profil pasien tidak ditemukan. Silakan lengkapi data pasien terlebih dahulu.');
         }
 
-        $doctor = doctors::with('schedules')->find($request->doctor_id);
+        $doctor = Doctor::with('schedules')->find($request->doctor_id);
         if (! $doctor) {
             return back()->withErrors(['doctor_id' => 'Dokter tidak ditemukan.'])->withInput();
         }
@@ -90,7 +90,7 @@ class ReservasiController extends Controller
 
     public function history()
     {
-        $patient = patients::where('user_id', auth()->id())->first();
+        $patient = Patient::where('user_id', auth()->id())->first();
 
         if (! $patient) {
             return view('pasien.reservasi.history', [
@@ -113,7 +113,7 @@ class ReservasiController extends Controller
 
     public function show(Appointment $appointment)
     {
-        $patient = patients::where('user_id', auth()->id())->first();
+        $patient = Patient::where('user_id', auth()->id())->first();
         if (! $patient) {
             return redirect()->route('pasien.dashboard')
                 ->with('error', 'Profil pasien tidak ditemukan. Silakan lengkapi data pasien terlebih dahulu.');

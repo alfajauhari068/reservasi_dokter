@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Dokter;
 
 use App\Http\Controllers\Controller;
-use App\Models\doctors;
+use App\Models\Doctor;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -15,7 +15,7 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $doctor = doctors::where('user_id', auth()->id())
+        $doctor = Doctor::where('user_id', auth()->id())
             ->with(['appointments.patient.user', 'appointments.schedule'])
             ->first();
 

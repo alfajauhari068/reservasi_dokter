@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Pasien;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
-use App\Models\patients;
+use App\Models\Patient;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -16,7 +16,7 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $patient = patients::where('user_id', auth()->id())->first();
+        $patient = Patient::where('user_id', auth()->id())->first();
 
         if (! $patient) {
             return view('pasien.dashboard', [

@@ -181,19 +181,6 @@
     </style>
 </head>
 <body>
-<<<<<<< HEAD
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="#">Reservasi Dokter</a>
-            <div class="d-flex align-items-center">
-                @auth
-                    <span class="me-3 text-secondary">{{ auth()->user()->name }}</span>
-                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                        @csrf
-                        <button type="submit" class="btn btn-outline-secondary btn-sm">Logout</button>
-                    </form>
-                @endauth
-=======
     <nav class="navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
@@ -209,7 +196,15 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('admin.doctors.index') }}">Dokter</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('admin.reports.visitation') }}">Laporan</a></li>
                 </ul>
->>>>>>> 10ea8a3bd141281aea4d99344f11993fdce3b5b6
+                @auth
+                    <div class="d-flex align-items-center ms-4">
+                        <span class="me-3 text-white">{{ auth()->user()->name }}</span>
+                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+                        </form>
+                    </div>
+                @endauth
             </div>
         </div>
     </nav>

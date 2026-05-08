@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Dokter;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
-use App\Models\doctors;
-use App\Models\medical_records;
+use App\Models\Doctor;
+use App\Models\MedicalRecord;
 use Illuminate\Http\Request;
 
 class ReservasiController extends Controller
@@ -17,7 +17,7 @@ class ReservasiController extends Controller
 
     public function show(Appointment $appointment)
     {
-        $doctor = doctors::where('user_id', auth()->id())->first();
+        $doctor = Doctor::where('user_id', auth()->id())->first();
         if (! $doctor) {
             return redirect()->route('dokter.dashboard')
                 ->with('error', 'Profil dokter tidak ditemukan.');
@@ -40,7 +40,7 @@ class ReservasiController extends Controller
             'doctor_notes' => 'nullable|string|max:2000',
         ]);
 
-        $doctor = doctors::where('user_id', auth()->id())->first();
+        $doctor = Doctor::where('user_id', auth()->id())->first();
         if (! $doctor) {
             return redirect()->route('dokter.dashboard')
                 ->with('error', 'Profil dokter tidak ditemukan.');
@@ -51,7 +51,7 @@ class ReservasiController extends Controller
         }
 
         // Update or create medical record
-        medical_records::updateOrCreate(
+        MedicalRecord::updateOrCreate(
             ['appointment_id' => $appointment->id],
             [
                 'diagnosis' => $request->diagnosis,
@@ -68,7 +68,7 @@ class ReservasiController extends Controller
 
     public function history()
     {
-        $doctor = doctors::where('user_id', auth()->id())
+        $doctor = Doctor::where('user_id', auth()->id())
             ->with(['appointments.patient.user', 'appointments.schedule', 'appointments.medicalRecord'])
             ->first();
 

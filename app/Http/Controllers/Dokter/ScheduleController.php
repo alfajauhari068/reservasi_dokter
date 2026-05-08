@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Dokter;
 
 use App\Http\Controllers\Controller;
-use App\Models\doctors;
-use App\Models\schedules;
+use App\Models\Doctor;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 
 class ScheduleController extends Controller
@@ -16,7 +16,7 @@ class ScheduleController extends Controller
 
     public function index()
     {
-        $doctor = doctors::where('user_id', auth()->id())
+        $doctor = Doctor::where('user_id', auth()->id())
             ->with('schedules')
             ->first();
 
@@ -43,7 +43,7 @@ class ScheduleController extends Controller
             'end_time' => 'required|date_format:H:i|after:start_time',
         ]);
 
-        $doctor = doctors::where('user_id', auth()->id())->first();
+        $doctor = Doctor::where('user_id', auth()->id())->first();
         if (! $doctor) {
             return redirect()->route('dokter.dashboard')
                 ->with('error', 'Profil dokter tidak ditemukan.');
@@ -75,9 +75,9 @@ class ScheduleController extends Controller
         return redirect()->route('dokter.schedule.index')->with('success', 'Schedule berhasil ditambahkan.');
     }
 
-    public function edit(schedules $schedule)
+    public function edit(Schedule $schedule)
     {
-        $doctor = doctors::where('user_id', auth()->id())->first();
+        $doctor = Doctor::where('user_id', auth()->id())->first();
         if (! $doctor || $schedule->doctor_id !== $doctor->id) {
             abort(403);
         }
@@ -85,7 +85,7 @@ class ScheduleController extends Controller
         return view('dokter.schedule.edit', compact('schedule'));
     }
 
-    public function update(Request $request, schedules $schedule)
+    public function update(Request $request, Schedule $schedule)
     {
         $request->validate([
             'day_of_week' => 'required|string|in:monday,tuesday,wednesday,thursday,friday,saturday,sunday',
@@ -93,7 +93,7 @@ class ScheduleController extends Controller
             'end_time' => 'required|date_format:H:i|after:start_time',
         ]);
 
-        $doctor = doctors::where('user_id', auth()->id())->first();
+        $doctor = Doctor::where('user_id', auth()->id())->first();
         if (! $doctor || $schedule->doctor_id !== $doctor->id) {
             abort(403);
         }
@@ -125,9 +125,9 @@ class ScheduleController extends Controller
         return redirect()->route('dokter.schedule.index')->with('success', 'Schedule berhasil diperbarui.');
     }
 
-    public function destroy(schedules $schedule)
+    public function destroy(Schedule $schedule)
     {
-        $doctor = doctors::where('user_id', auth()->id())->first();
+        $doctor = Doctor::where('user_id', auth()->id())->first();
         if (! $doctor || $schedule->doctor_id !== $doctor->id) {
             abort(403);
         }
