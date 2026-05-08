@@ -3,9 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Specialization;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+/**
+ * Controller for managing doctor specializations
+ *
+ * Handles CRUD operations for specialization management including
+ * creating new specialties and managing doctor assignments.
+ *
+ * @refactor Confirmed PascalCase naming conventions are properly implemented
+ */
 class SpecializationsController extends Controller
 {
     /**

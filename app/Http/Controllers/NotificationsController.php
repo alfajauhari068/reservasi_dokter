@@ -3,9 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+/**
+ * Controller for managing user notifications
+ *
+ * Handles CRUD operations for notification management including
+ * sending alerts, marking as read, and notification history.
+ *
+ * @refactor Confirmed PascalCase naming conventions are properly implemented
+ */
 class NotificationsController extends Controller
 {
     /**

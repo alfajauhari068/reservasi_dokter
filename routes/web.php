@@ -3,9 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Dokter\DashboardController as DokterDashboardController;
+use App\Http\Controllers\Dokter\ReservasiController as DokterReservasiController;
+use App\Http\Controllers\Dokter\ScheduleController;
 use App\Http\Controllers\Pasien\DashboardController as PasienDashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Pasien\ReservasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +21,7 @@ use App\Http\Controllers\Auth\RegisterController;
 |
 */
 
+// Public Routes (no authentication required)
 Route::get('/', function () {
     return view('welcome');
 });
@@ -35,91 +39,93 @@ Route::get('/debug-logout', function () {
     return 'Logged out';
 });
 
-Route::get('/login', [LoginController::class, 'showLoginForm'])
-    ->name('login')
-    ->middleware('guest');
+// Authentication Routes
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [LoginController::class, 'login'])->name('login.perform');
 
-Route::post('/login', [LoginController::class, 'login'])
-    ->name('login.perform')
-    ->middleware('guest');
+    Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [RegisterController::class, 'register'])->name('register.perform');
+});
 
 Route::match(['get', 'post'], '/logout', [LoginController::class, 'logout'])
     ->name('logout')
     ->middleware('auth');
 
-// Register routes
-Route::get('/register', [RegisterController::class, 'showRegisterForm'])
-    ->name('register')
-    ->middleware('guest');
+/*
+|--------------------------------------------------------------------------
+| Admin Routes (Role: Admin)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('admin')
+    ->middleware(['auth', 'role:admin'])
+    ->name('admin.')
+    ->group(function () {
 
-Route::post('/register', [RegisterController::class, 'register'])
-    ->name('register.perform')
-    ->middleware('guest');
+        // Admin Dashboard
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
-    ->name('admin.dashboard')
-    ->middleware(['auth', 'role:admin']);
+        // Admin Resource Routes
+        Route::resource('doctors', \App\Http\Controllers\DoctorsController::class);
 
-// Admin Queue Routes
-Route::prefix('admin/queues')->name('admin.queues.')->middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/', [\App\Http\Controllers\Admin\QueueController::class, 'index'])
-        ->name('index');
-    Route::post('/{queue}/status', [\App\Http\Controllers\Admin\QueueController::class, 'updateStatus'])
-        ->name('update-status');
-    Route::post('/reset', [\App\Http\Controllers\Admin\QueueController::class, 'resetTodayQueues'])
-        ->name('reset');
-    Route::post('/generate', [\App\Http\Controllers\Admin\QueueController::class, 'generateQueues'])
-        ->name('generate');
-    Route::get('/updates', [\App\Http\Controllers\Admin\QueueController::class, 'getQueueUpdates'])
-        ->name('updates');
+        // Admin Queue Management
+        Route::prefix('queues')->name('queues.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\QueueController::class, 'index'])->name('index');
+            Route::post('/{queue}/status', [\App\Http\Controllers\Admin\QueueController::class, 'updateStatus'])->name('update-status');
+            Route::post('/reset', [\App\Http\Controllers\Admin\QueueController::class, 'resetTodayQueues'])->name('reset');
+            Route::post('/generate', [\App\Http\Controllers\Admin\QueueController::class, 'generateQueues'])->name('generate');
+            Route::get('/updates', [\App\Http\Controllers\Admin\QueueController::class, 'getQueueUpdates'])->name('updates');
+        });
+
+        // Admin Reports
+        Route::prefix('reports')->name('reports.')->group(function () {
+            Route::get('/visitation', [App\Http\Controllers\Admin\VisitReportController::class, 'index'])->name('visitation');
+            Route::get('/visitation/export-pdf', [App\Http\Controllers\Admin\VisitReportController::class, 'exportPdf'])->name('visitation.export.pdf');
+            Route::get('/visitation/export-excel', [App\Http\Controllers\Admin\VisitReportController::class, 'exportExcel'])->name('visitation.export.excel');
+            Route::post('/visitation/export', [App\Http\Controllers\Admin\VisitReportController::class, 'export'])->name('visitation.export');
+
+            // Example Filter Routes (commented out)
+            // Route::get('/filter-example', [App\Http\Controllers\Admin\FilterExampleController::class, 'indexWithFilterExample'])->name('filter.example');
+            Route::get('/filter-form', [App\Http\Controllers\Admin\FilterExampleController::class, 'filterFormOnly'])->name('filter.form');
+        });
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Doctor Routes (Role: Dokter)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:dokter'])->group(function () {
+    Route::get('/dokter/dashboard', [DokterDashboardController::class, 'index'])->name('dokter.dashboard');
+
+    Route::prefix('dokter')->name('dokter.')->group(function () {
+        // Doctor Reservation Management
+        Route::get('reservasi/riwayat', [DokterReservasiController::class, 'history'])->name('reservasi.history');
+        Route::get('reservasi/{appointment}', [DokterReservasiController::class, 'show'])
+            ->whereNumber('appointment')
+            ->name('reservasi.show');
+        Route::put('reservasi/{appointment}', [DokterReservasiController::class, 'update'])
+            ->whereNumber('appointment')
+            ->name('reservasi.update');
+
+        // Doctor Schedule Management
+        Route::resource('schedule', ScheduleController::class);
+    });
 });
 
-Route::resource('admin/doctors', \App\Http\Controllers\DoctorsController::class)
-    ->names('admin.doctors')
-    ->middleware(['auth', 'role:admin']);
+/*
+|--------------------------------------------------------------------------
+| Patient Routes (Role: Pasien)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:pasien'])->group(function () {
+    Route::get('/pasien/dashboard', [PasienDashboardController::class, 'index'])->name('pasien.dashboard');
 
-// CONTOH ROUTE UNTUK TABEL ANTRIAN HARIAN
-// Tambahkan route ini jika ingin menggunakan tabel antrian sederhana
-// Route::get('admin/queues/table', [AdminQueueController::class, 'dailyQueueTable'])
-//     ->name('admin.queues.table')
-//     ->middleware(['auth', 'role:admin']);
-
-// CONTOH ROUTE UNTUK TABEL ANTRIAN DENGAN SEARCH & PAGINATION
-// Route::get('admin/queues/search', [AdminQueueController::class, 'dailyQueueTableWithSearch'])
-//     ->name('admin.queues.search')
-//     ->middleware(['auth', 'role:admin']);
-
-// CONTOH ROUTE UNTUK TABEL ANTRIAN OPTIMIZED DENGAN SEARCH & PAGINATION
-// Route::get('admin/queues/optimized', [AdminQueueController::class, 'dailyQueueTableOptimizedWithSearch'])
-//     ->name('admin.queues.optimized')
-//     ->middleware(['auth', 'role:admin']);
-
-// CONTOH ROUTE UNTUK FORM FILTER LAPORAN KUNJUNGAN
-// Route::get('admin/reports/filter-example', [App\Http\Controllers\Admin\FilterExampleController::class, 'indexWithFilterExample'])
-//     ->name('admin.reports.filter.example')
-//     ->middleware(['auth', 'role:admin']);
-
-// CONTOH ROUTE UNTUK FORM FILTER SAJA (TANPA TABEL)
-Route::get('admin/reports/filter-form', [App\Http\Controllers\Admin\FilterExampleController::class, 'filterFormOnly'])
-    ->name('admin.reports.filter.form')
-    ->middleware(['auth', 'role:admin']);
-
-// Admin Reports Routes
-Route::prefix('admin/reports')->name('admin.reports.')->middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/visitation', [App\Http\Controllers\Admin\VisitReportController::class, 'index'])
-        ->name('visitation');
-    Route::get('/visitation/export-pdf', [App\Http\Controllers\Admin\VisitReportController::class, 'exportPdf'])
-        ->name('visitation.export.pdf');
-    Route::get('/visitation/export-excel', [App\Http\Controllers\Admin\VisitReportController::class, 'exportExcel'])
-        ->name('visitation.export.excel');
-    Route::post('/visitation/export', [App\Http\Controllers\Admin\VisitReportController::class, 'export'])
-        ->name('visitation.export');
+    Route::prefix('pasien')->name('pasien.')->group(function () {
+        // Patient Reservation Management
+        Route::get('reservasi', [ReservasiController::class, 'create'])->name('reservasi.create');
+        Route::post('reservasi', [ReservasiController::class, 'store'])->name('reservasi.store');
+        Route::get('reservasi/riwayat', [ReservasiController::class, 'history'])->name('reservasi.history');
+        Route::get('reservasi/{appointment}', [ReservasiController::class, 'show'])->name('reservasi.show');
+    });
 });
-
-Route::get('/dokter/dashboard', [DokterDashboardController::class, 'index'])
-    ->name('dokter.dashboard')
-    ->middleware('auth');
-
-Route::get('/pasien/dashboard', [PasienDashboardController::class, 'index'])
-    ->name('pasien.dashboard')
-    ->middleware('auth');

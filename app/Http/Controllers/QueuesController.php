@@ -3,9 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Queue;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+/**
+ * Controller for managing appointment queues
+ *
+ * Handles CRUD operations for queue management including calling patients,
+ * tracking queue status, and managing waiting lists.
+ *
+ * @refactor Confirmed PascalCase naming conventions are properly implemented
+ */
 class QueuesController extends Controller
 {
     /**

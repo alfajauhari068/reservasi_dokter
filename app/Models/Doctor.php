@@ -5,10 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Doctor Model
+ *
+ * Manages doctor information with proper PascalCase naming convention.
+ * All relationships use proper model class references in PascalCase.
+ *
+ * @refactor Resolved merge conflict and standardized naming conventions
+ */
 class Doctor extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     */
     protected $fillable = [
         'user_id',
         'specialization_id',
@@ -20,13 +31,35 @@ class Doctor extends Model
         'is_available',
     ];
 
-    public function user() {
+    /**
+     * Get the user associated with the doctor.
+     */
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
-    public function specialization() {
+
+    /**
+     * Get the specialization associated with the doctor.
+     */
+    public function specialization()
+    {
         return $this->belongsTo(Specialization::class);
     }
-    public function schedules() {
+
+    /**
+     * Get the schedules for the doctor.
+     */
+    public function schedules()
+    {
         return $this->hasMany(Schedule::class);
+    }
+
+    /**
+     * Get the appointments for the doctor.
+     */
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class, 'doctor_id');
     }
 }
