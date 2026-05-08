@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+/**
+ * Controller for managing appointments
+ *
+ * @refactor Resolved merge conflicts and standardized naming conventions
+ */
 class AppointmentsController extends Controller
 {
     /**

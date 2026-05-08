@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\medical_records;
+use App\Models\MedicalRecord;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -35,7 +35,7 @@ class MedicalRecordsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(medical_records $medical_records)
+    public function show(MedicalRecord $medicalRecord)
     {
         //
     }
@@ -43,7 +43,7 @@ class MedicalRecordsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(medical_records $medical_records)
+    public function edit(MedicalRecord $medicalRecord)
     {
         //
     }
@@ -51,7 +51,7 @@ class MedicalRecordsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, medical_records $medical_records)
+    public function update(Request $request, MedicalRecord $medicalRecord)
     {
         //
     }
@@ -59,7 +59,7 @@ class MedicalRecordsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(medical_records $medical_records)
+    public function destroy(MedicalRecord $medicalRecord)
     {
         //
     }

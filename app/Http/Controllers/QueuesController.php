@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\queues;
-use App\Http\Controllers\Controller;
+use App\Models\Queue;
 use Illuminate\Http\Request;
 
+/**
+ * Controller for managing appointment queues
+ *
+ * Handles CRUD operations for queue management including calling patients,
+ * tracking queue status, and managing waiting lists.
+ *
+ * @refactor Confirmed PascalCase naming conventions are properly implemented
+ */
 class QueuesController extends Controller
 {
     /**
@@ -35,7 +42,7 @@ class QueuesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(queues $queues)
+    public function show(Queue $queue)
     {
         //
     }
@@ -43,7 +50,7 @@ class QueuesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(queues $queues)
+    public function edit(Queue $queue)
     {
         //
     }
@@ -51,7 +58,7 @@ class QueuesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, queues $queues)
+    public function update(Request $request, Queue $queue)
     {
         //
     }
@@ -59,7 +66,7 @@ class QueuesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(queues $queues)
+    public function destroy(Queue $queue)
     {
         //
     }

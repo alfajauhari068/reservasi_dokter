@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\patients;
+use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +13,14 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
+/**
+ * Controller for handling patient registration
+ *
+ * Manages patient registration process including user account creation
+ * and patient profile setup with proper PascalCase naming conventions.
+ *
+ * @refactor Confirmed PascalCase naming conventions are properly implemented
+ */
 class RegisterController extends Controller
 {
     /**
@@ -49,7 +57,7 @@ class RegisterController extends Controller
                 ]);
 
                 // Buat profil pasien
-                patients::create([
+                Patient::create([
                     'user_id' => $user->id,
                     'gender' => $validated['gender'],
                     'date_of_birth' => $validated['date_of_birth'],

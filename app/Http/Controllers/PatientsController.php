@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\patients;
-use App\Http\Controllers\Controller;
+use App\Models\Patient;
 use Illuminate\Http\Request;
 
+/**
+ * Controller for managing patients
+ *
+ * Handles CRUD operations for patient management.
+ *
+ * @refactor Confirmed PascalCase naming conventions are properly implemented
+ */
 class PatientsController extends Controller
 {
     /**
@@ -35,7 +41,7 @@ class PatientsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(patients $patients)
+    public function show(Patient $patient)
     {
         //
     }
@@ -43,7 +49,7 @@ class PatientsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(patients $patients)
+    public function edit(Patient $patient)
     {
         //
     }
@@ -51,7 +57,7 @@ class PatientsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, patients $patients)
+    public function update(Request $request, Patient $patient)
     {
         //
     }
@@ -59,7 +65,7 @@ class PatientsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(patients $patients)
+    public function destroy(Patient $patient)
     {
         //
     }

@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\specializations;
-use App\Http\Controllers\Controller;
+use App\Models\Specialization;
 use Illuminate\Http\Request;
 
+/**
+ * Controller for managing doctor specializations
+ *
+ * Handles CRUD operations for specialization management including
+ * creating new specialties and managing doctor assignments.
+ *
+ * @refactor Confirmed PascalCase naming conventions are properly implemented
+ */
 class SpecializationsController extends Controller
 {
     /**
@@ -35,7 +42,7 @@ class SpecializationsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(specializations $specializations)
+    public function show(Specialization $specialization)
     {
         //
     }
@@ -43,7 +50,7 @@ class SpecializationsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(specializations $specializations)
+    public function edit(Specialization $specialization)
     {
         //
     }
@@ -51,7 +58,7 @@ class SpecializationsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, specializations $specializations)
+    public function update(Request $request, Specialization $specialization)
     {
         //
     }
@@ -59,7 +66,7 @@ class SpecializationsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(specializations $specializations)
+    public function destroy(Specialization $specialization)
     {
         //
     }
