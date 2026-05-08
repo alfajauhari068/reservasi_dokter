@@ -3,9 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+/**
+ * Controller for managing patients
+ *
+ * Handles CRUD operations for patient management.
+ *
+ * @refactor Confirmed PascalCase naming conventions are properly implemented
+ */
 class PatientsController extends Controller
 {
     /**

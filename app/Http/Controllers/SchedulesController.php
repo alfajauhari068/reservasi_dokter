@@ -3,9 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Schedule;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+/**
+ * Controller for managing doctor schedules
+ *
+ * Handles CRUD operations for schedule management including time slots,
+ * availability settings, and appointment quota management.
+ *
+ * @refactor Confirmed PascalCase naming conventions are properly implemented
+ */
 class SchedulesController extends Controller
 {
     /**

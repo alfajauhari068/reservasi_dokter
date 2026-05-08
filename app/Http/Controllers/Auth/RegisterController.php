@@ -13,6 +13,14 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
+/**
+ * Controller for handling patient registration
+ *
+ * Manages patient registration process including user account creation
+ * and patient profile setup with proper PascalCase naming conventions.
+ *
+ * @refactor Confirmed PascalCase naming conventions are properly implemented
+ */
 class RegisterController extends Controller
 {
     /**

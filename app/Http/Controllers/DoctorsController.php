@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * Controller for managing doctors
+ *
+ * Handles CRUD operations for doctor management including user account creation,
+ * specialization assignment, and profile management.
+ *
+ * @refactor Confirmed PascalCase naming conventions are properly implemented
+ */
 class DoctorsController extends Controller
 {
     /**

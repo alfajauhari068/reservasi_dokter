@@ -1,9 +1,9 @@
-{{--
+<?php
+
+/*
     CONTOH PENGGUNAAN TABEL ANTRIAN DI CONTROLLER
     Tambahkan method ini di QueueController atau DashboardController
---}}
-
-<?php
+*/
 
 namespace App\Http\Controllers\Admin;
 
@@ -168,6 +168,11 @@ class QueueController extends Controller
         return view('admin.queues.table_example', compact('queues', 'search', 'perPage'));
     }
 
+    /**
+     * CONTOH SEDERHANA: Menggunakan query builder tanpa pagination dan search
+     */
+    public function dailyQueueTableSimple()
+    {
         // Query dengan JOIN untuk mengambil semua data dalam satu query
         $queues = DB::table('queues as q')
             ->join('appointments as a', 'q.appointment_id', '=', 'a.id')
