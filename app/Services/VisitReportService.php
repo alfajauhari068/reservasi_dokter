@@ -12,7 +12,7 @@ class VisitReportService
      * Membangun query appointment untuk laporan kunjungan.
      * Filter dokter opsional dan periode tanggal wajib.
      */
-    public function buildReportQuery(Request $request): Builder
+    public function buildReportQuery(Request $request): Builder|\Illuminate\Database\Query\Builder
     {
         $doctorId = $request->get('doctor_id');
         $startDate = $request->get('start_date', now()->startOfMonth()->format('Y-m-d'));
@@ -25,7 +25,7 @@ class VisitReportService
             'doctor.specialization',
             'queue'
         ])
-        ->join('queues', 'appointments.id', '=', 'queues.appointment_id')
+        ->leftJoin('queues', 'appointments.id', '=', 'queues.appointment_id')
         ->join('patients', 'appointments.patient_id', '=', 'patients.id')
         ->join('users as patient_users', 'patients.user_id', '=', 'patient_users.id')
         ->join('doctors', 'appointments.doctor_id', '=', 'doctors.id')
@@ -39,7 +39,20 @@ class VisitReportService
         }
 
         if ($status) {
-            $query->where('queues.queue_status', $status);
+            $query->where(function ($query) use ($status) {
+                if ($status === 'served') {
+                    $query->where('queues.queue_status', 'served')
+                          ->orWhere('appointments.status', 'completed');
+                } elseif ($status === 'skipped') {
+                    $query->where('queues.queue_status', 'skipped')
+                          ->orWhere('appointments.status', 'cancelled');
+                } elseif ($status === 'waiting') {
+                    $query->where('queues.queue_status', 'waiting')
+                          ->orWhereIn('appointments.status', ['pending', 'approved']);
+                } else {
+                    $query->where('queues.queue_status', $status);
+                }
+            });
         }
 
         return $query;

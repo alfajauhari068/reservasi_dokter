@@ -144,7 +144,13 @@
             <i class="fas fa-user-md text-primary me-2"></i>
             Ringkasan Reservasi Per Dokter
         </h5>
-        <small class="text-muted">Data hari ini</small>
+        <small class="text-muted">
+            @if($doctorStats->count() > 0)
+                Menampilkan {{ $doctorStats->count() }} dokter dengan total reservasi
+            @else
+                Belum ada data
+            @endif
+        </small>
     </div>
     <div class="card-body">
         @if($doctorStats->count() > 0)
@@ -172,7 +178,8 @@
         @else
             <div class="text-center py-4">
                 <i class="fas fa-user-md fa-3x text-muted mb-3"></i>
-                <p class="text-muted">Belum ada data reservasi dokter hari ini</p>
+                <p class="text-muted">Belum ada data reservasi dokter</p>
+                <small class="text-muted d-block">Pasien dapat membuat reservasi melalui aplikasi</small>
             </div>
         @endif
     </div>

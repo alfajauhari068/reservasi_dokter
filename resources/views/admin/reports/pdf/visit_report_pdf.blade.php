@@ -92,10 +92,21 @@
         <tbody>
             @forelse($reports as $index => $report)
                 @php
-                    $status = $report->queue_status ?? ($report->queue->queue_status ?? 'unknown');
+                    $status = $report->queue_status ?? ($report->queue->queue_status ?? null);
+
+                    if (!$status) {
+                        if ($report->appointment_status === 'completed' || $report->appointment_status === 'done') {
+                            $status = 'served';
+                        } elseif ($report->appointment_status === 'cancelled') {
+                            $status = 'skipped';
+                        } else {
+                            $status = 'waiting';
+                        }
+                    }
+
                     $badgeClass = match($status) {
-                        'done' => 'status-done',
-                        'cancelled' => 'status-cancelled',
+                        'served' => 'status-done',
+                        'skipped' => 'status-cancelled',
                         'waiting' => 'status-waiting',
                         'called' => 'status-called',
                         default => 'status-waiting'

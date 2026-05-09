@@ -63,6 +63,15 @@ class ReservasiController extends Controller
         // Update appointment status to completed
         $appointment->update(['status' => 'completed']);
 
+        // Update queue status ketika pemeriksaan sudah selesai
+        if ($appointment->queue) {
+            $appointment->queue->update([
+                'queue_status' => 'served',
+                'called_at' => $appointment->queue->called_at ?? now(),
+                'served_at' => now(),
+            ]);
+        }
+
         return redirect()->route('dokter.dashboard')->with('success', 'Pemeriksaan selesai dan data tersimpan.');
     }
 

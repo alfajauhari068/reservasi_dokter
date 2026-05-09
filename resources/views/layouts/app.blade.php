@@ -192,7 +192,17 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarMenu">
                 <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Beranda</a></li>
+                    <li class="nav-item">
+                        @auth
+                            @if (auth()->user()->role === 'admin')
+                                <a class="nav-link" href="{{ route('admin.dashboard') }}">Beranda</a>
+                            @elseif (auth()->user()->role === 'dokter')
+                                <a class="nav-link" href="{{ route('dokter.dashboard') }}">Beranda</a>
+                            @else
+                                <a class="nav-link" href="{{ route('pasien.dashboard') }}">Beranda</a>
+                            @endif
+                        @endauth
+                    </li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('admin.doctors.index') }}">Dokter</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('admin.reports.visitation') }}">Laporan</a></li>
                 </ul>

@@ -38,6 +38,31 @@ Route::get('/debug-logout', function () {
     return 'Logged out';
 });
 
+Route::get('/debug-dashboard-data', function () {
+    $doctors = \App\Models\Doctor::with('user', 'specialization')->get();
+    $appointments = \App\Models\Appointment::count();
+    
+    $doctorStats = \App\Models\Doctor::selectRaw('
+            doctors.id,
+            users.name as doctor_name,
+            specializations.name as specialization_name,
+            COUNT(appointments.id) as total_appointments
+        ')
+        ->join('users', 'doctors.user_id', '=', 'users.id')
+        ->leftJoin('specializations', 'doctors.specialization_id', '=', 'specializations.id')
+        ->leftJoin('appointments', 'doctors.id', '=', 'appointments.doctor_id')
+        ->groupBy('doctors.id', 'users.name', 'specializations.name')
+        ->orderBy('total_appointments', 'desc')
+        ->get();
+    
+    return [
+        'total_doctors' => $doctors->count(),
+        'total_appointments' => $appointments,
+        'doctors_with_stats' => $doctorStats,
+        'all_doctors' => $doctors,
+    ];
+});
+
 // Authentication Routes
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
