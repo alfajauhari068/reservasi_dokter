@@ -332,8 +332,8 @@
 
                 <div class="d-flex align-items-center">
                     <div class="text-end me-3 d-none d-sm-block">
-                        <div class="fw-semibold small">{{ now()->format('l, d F Y') }}</div>
-                        <div class="text-muted small">{{ now()->format('H:i') }} WIB</div>
+                        <div class="fw-semibold small" id="currentDate">{{ now()->format('l, d F Y') }}</div>
+                        <div class="text-muted small"><span id="currentTime">{{ now()->format('H:i') }}</span> WIB</div>
                     </div>
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
@@ -369,6 +369,51 @@
 
     {{-- Admin JavaScript --}}
     <script>
+        // Update Real-time Clock
+        function updateClock() {
+            const now = new Date();
+            
+            // Format tanggal: Hari, Tanggal Bulan Tahun
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                          'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            const dayName = days[now.getDay()];
+            const date = now.getDate();
+            const month = months[now.getMonth()];
+            const year = now.getFullYear();
+            
+            // Format dalam Bahasa Indonesia
+            const dayNamesID = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const monthNamesID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                               'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            
+            const formattedDate = dayNamesID[now.getDay()] + ', ' + 
+                                 (date < 10 ? '0' + date : date) + ' ' +
+                                 monthNamesID[now.getMonth()] + ' ' +
+                                 year;
+            
+            // Format jam: HH:mm
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const formattedTime = hours + ':' + minutes;
+            
+            // Update elemen
+            const dateElement = document.getElementById('currentDate');
+            const timeElement = document.getElementById('currentTime');
+            
+            if (dateElement) {
+                dateElement.textContent = formattedDate;
+            }
+            if (timeElement) {
+                timeElement.textContent = formattedTime;
+            }
+        }
+        
+        // Update clock every second
+        setInterval(updateClock, 1000);
+        updateClock(); // Call immediately on load
+
         // Sidebar Toggle Functionality
         document.addEventListener('DOMContentLoaded', function() {
             const sidebar = document.getElementById('adminSidebar');

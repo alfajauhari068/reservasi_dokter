@@ -45,7 +45,7 @@ class DashboardController extends Controller
         ];
 
         // === STATISTIK PER DOKTER HARI INI ===
-        // Single query dengan JOIN untuk menghindari N+1 query
+        // Coba ambil dari hari ini, jika kosong ambil dari semua appointment yang approved/done
         $doctorStatsQuery = Appointment::selectRaw('
                 doctors.id,
                 users.name as doctor_name,
@@ -59,6 +59,40 @@ class DashboardController extends Controller
             ->groupBy('doctors.id', 'users.name', 'specializations.name')
             ->orderBy('total_appointments', 'desc')
             ->get();
+
+        // Jika tidak ada data hari ini, ambil dari 30 hari terakhir dengan status approved/done
+        if ($doctorStatsQuery->isEmpty()) {
+            $doctorStatsQuery = Appointment::selectRaw('
+                    doctors.id,
+                    users.name as doctor_name,
+                    specializations.name as specialization_name,
+                    COUNT(appointments.id) as total_appointments
+                ')
+                ->join('doctors', 'appointments.doctor_id', '=', 'doctors.id')
+                ->join('users', 'doctors.user_id', '=', 'users.id')
+                ->leftJoin('specializations', 'doctors.specialization_id', '=', 'specializations.id')
+                ->whereIn('appointments.status', ['approved', 'done'])
+                ->whereDate('appointments.created_at', '>=', today()->subDays(30))
+                ->groupBy('doctors.id', 'users.name', 'specializations.name')
+                ->orderBy('total_appointments', 'desc')
+                ->get();
+        }
+
+        // Jika masih kosong, tampilkan semua dokter dengan jumlah appointment (semua waktu)
+        if ($doctorStatsQuery->isEmpty()) {
+            $doctorStatsQuery = Doctor::selectRaw('
+                    doctors.id,
+                    users.name as doctor_name,
+                    specializations.name as specialization_name,
+                    COUNT(appointments.id) as total_appointments
+                ')
+                ->join('users', 'doctors.user_id', '=', 'users.id')
+                ->leftJoin('specializations', 'doctors.specialization_id', '=', 'specializations.id')
+                ->leftJoin('appointments', 'doctors.id', '=', 'appointments.doctor_id')
+                ->groupBy('doctors.id', 'users.name', 'specializations.name')
+                ->orderBy('total_appointments', 'desc')
+                ->get();
+        }
 
         // Strukturkan data statistik dokter
         $doctorStats = $doctorStatsQuery->map(function($stat) {

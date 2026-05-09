@@ -47,8 +47,10 @@ class VisitReportController extends Controller
             'schedules.start_time as appointment_time',
             'appointments.booking_code',
             'appointments.complaint as symptoms',
+            'appointments.status as appointment_status',
             'patient_users.name as patient_name',
             'doctor_users.name as doctor_name',
+            'doctors.id as doctor_id',
             'specializations.name as specialization_name',
             'queues.queue_number',
             'queues.queue_status',
@@ -60,7 +62,7 @@ class VisitReportController extends Controller
         ->get();
 
         // Hitung statistik
-        $stats = $this->calculateStatistics($reports, $startDate, $endDate);
+        $stats = $this->calculateStatistics($reports, $startDate, $endDate, $doctorId);
 
         // Ambil semua dokter untuk dropdown filter
         $doctors = Doctor::with('user', 'specialization')->get();
@@ -165,12 +167,18 @@ class VisitReportController extends Controller
     /**
      * Menghitung statistik dari data laporan
      */
-    private function calculateStatistics($reports, $startDate, $endDate)
+    private function calculateStatistics($reports, $startDate, $endDate, $doctorId = null)
     {
         $totalVisits = $reports->count();
-        $completedVisits = $reports->where('queue_status', 'served')->count();
-        $pendingVisits = $reports->whereIn('queue_status', ['waiting', 'called'])->count();
-        $cancelledVisits = $reports->where('queue_status', 'skipped')->count();
+        $completedVisits = $reports->filter(function ($report) {
+            return $report->queue_status === 'served' || in_array($report->appointment_status, ['done', 'completed']);
+        })->count();
+        $pendingVisits = $reports->filter(function ($report) {
+            return $report->queue_status === 'waiting' || $report->queue_status === 'called' || $report->appointment_status === 'pending';
+        })->count();
+        $cancelledVisits = $reports->filter(function ($report) {
+            return $report->queue_status === 'skipped' || $report->appointment_status === 'cancelled';
+        })->count();
 
         // Hitung rata-rata waktu tunggu (dalam menit)
         $avgWaitTime = 0;
@@ -187,15 +195,26 @@ class VisitReportController extends Controller
             $avgWaitTime = $servedReports->count() > 0 ? round($totalWaitMinutes / $servedReports->count(), 1) : 0;
         }
 
-        // Statistik per dokter
-        $doctorStats = $reports->groupBy('doctor_name')->map(function ($doctorReports) {
+        // Statistik per dokter: tampilkan semua dokter (atau hanya dokter yang dipilih)
+        $doctorQuery = Doctor::with(['user', 'specialization']);
+        if ($doctorId) {
+            $doctorQuery->where('id', $doctorId);
+        }
+
+        $allDoctors = $doctorQuery->orderBy('id')->get();
+
+        $doctorStats = $allDoctors->map(function ($doctor) use ($reports) {
+            $doctorReports = $reports->where('doctor_id', $doctor->id);
+
             return [
                 'total' => $doctorReports->count(),
-                'completed' => $doctorReports->where('queue_status', 'served')->count(),
-                'name' => $doctorReports->first()->doctor_name,
-                'specialization' => $doctorReports->first()->specialization_name
+                'completed' => $doctorReports->filter(function ($report) {
+                    return $report->queue_status === 'served' || in_array($report->appointment_status, ['done', 'completed']);
+                })->count(),
+                'name' => $doctor->user->name,
+                'specialization' => $doctor->specialization->name ?? 'Umum'
             ];
-        });
+        })->sortByDesc('total')->values();
 
         return [
             'total_visits' => $totalVisits,

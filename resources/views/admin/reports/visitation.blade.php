@@ -239,12 +239,30 @@
                                 <td class="text-center">
                                     @php
                                         $statusConfig = [
-                                            'waiting' => ['class' => 'bg-warning text-dark', 'icon' => 'fas fa-clock', 'text' => 'Menunggu'],
-                                            'called' => ['class' => 'bg-info', 'icon' => 'fas fa-bullhorn', 'text' => 'Dipanggil'],
-                                            'served' => ['class' => 'bg-success', 'icon' => 'fas fa-check-circle', 'text' => 'Selesai'],
-                                            'skipped' => ['class' => 'bg-danger', 'icon' => 'fas fa-times-circle', 'text' => 'Dilewati'],
+                                            'waiting' => ['class' => 'bg-warning text-dark', 'icon' => 'fas fa-clock', 'text' => 'Pending'],
+                                            'called' => ['class' => 'bg-info', 'icon' => 'fas fa-bullhorn', 'text' => 'Called'],
+                                            'served' => ['class' => 'bg-success', 'icon' => 'fas fa-check-circle', 'text' => 'Completed'],
+                                            'skipped' => ['class' => 'bg-danger', 'icon' => 'fas fa-times-circle', 'text' => 'Skipped'],
                                         ];
-                                        $config = $statusConfig[$report->queue_status] ?? $statusConfig['waiting'];
+
+                                        $displayStatus = $report->queue_status;
+
+                                        if (!$displayStatus) {
+                                            switch ($report->appointment_status) {
+                                                case 'completed':
+                                                case 'done':
+                                                    $displayStatus = 'served';
+                                                    break;
+                                                case 'cancelled':
+                                                    $displayStatus = 'skipped';
+                                                    break;
+                                                default:
+                                                    $displayStatus = 'waiting';
+                                                    break;
+                                            }
+                                        }
+
+                                        $config = $statusConfig[$displayStatus] ?? $statusConfig['waiting'];
                                     @endphp
                                     <span class="badge {{ $config['class'] }}">
                                         <i class="{{ $config['icon'] }} me-1"></i>

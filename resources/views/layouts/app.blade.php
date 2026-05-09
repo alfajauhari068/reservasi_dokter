@@ -203,6 +203,7 @@
                             @endif
                         @endauth
                     </li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.doctors.index') }}">Dokter</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('admin.reports.visitation') }}">Laporan</a></li>
                 </ul>
                 @auth
