@@ -179,7 +179,7 @@
                         @error('rejection_reason')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
-                        <small class="form-text text-muted">Minimal 10 karakter, maksimal 500 karakter</small>
+                        <small class="form-text text-muted">Minimal 5 karakter, maksimal 500 karakter</small>
                     </div>
                 </div>
                 <div class="modal-footer">

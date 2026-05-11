@@ -54,12 +54,12 @@ class QueueController extends Controller
             ->map(function($queue) {
                 return [
                     'id' => $queue->id,
-                    'queue_number' => $queue->queue_number,
+                    'queue_number' => (int) $queue->queue_number,
                     'booking_code' => $queue->booking_code,
-                    'patient_name' => $queue->appointment->patient->user->name,
-                    'patient_id' => $queue->appointment->patient->id,
-                    'doctor_name' => $queue->appointment->doctor->user->name,
-                    'doctor_specialization' => $queue->appointment->doctor->specialization->name ?? 'N/A',
+                    'patient_name' => optional($queue->appointment?->patient?->user)->name ?? '-',
+                    'patient_id' => $queue->appointment?->patient?->id,
+                    'doctor_name' => optional($queue->appointment?->doctor?->user)->name ?? '-',
+                    'doctor_specialization' => $queue->appointment?->doctor?->specialization?->name ?? 'N/A',
                     'appointment_time' => $queue->appointment->appointment_date,
                     'appointment_status' => $queue->appointment_status,
                     'queue_status' => $queue->queue_status,
@@ -169,7 +169,7 @@ class QueueController extends Controller
         // Cari appointment hari ini yang belum memiliki queue
         $appointmentsWithoutQueue = Appointment::whereDate('appointment_date', today())
             ->whereDoesntHave('queue')
-            ->where('status', 'approved') // Hanya yang sudah disetujui
+            ->where('approval_status', 'approved') // Hanya yang sudah disetujui
             ->orderBy('appointment_date')
             ->get();
 

@@ -65,6 +65,8 @@ class ApprovalController extends Controller
             'approval_status' => 'approved',
             'approved_by' => auth()->id(),
             'approved_at' => now(),
+            // Satukan workflow: setelah disetujui admin, status reservasi masuk ke in_progress
+            'status' => 'in_progress',
         ]);
 
         return redirect()->route('admin.approvals.index')
@@ -77,7 +79,7 @@ class ApprovalController extends Controller
     public function reject(Request $request, Appointment $appointment)
     {
         $request->validate([
-            'rejection_reason' => 'required|string|min:10|max:500',
+            'rejection_reason' => 'required|string|min:5|max:500',
         ]);
 
         if ($appointment->approval_status !== 'pending') {
@@ -90,6 +92,8 @@ class ApprovalController extends Controller
             'approved_by' => auth()->id(),
             'approved_at' => now(),
             'rejection_reason' => $request->rejection_reason,
+            // satukan workflow: setelah ditolak admin, status reservasi masuk ke cancelled
+            'status' => 'cancelled',
         ]);
 
         return redirect()->route('admin.approvals.index')

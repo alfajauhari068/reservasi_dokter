@@ -105,14 +105,14 @@
                                 </tr>
 
                                 <!-- Modal Reject -->
-                                <div class="modal fade" id="rejectModal{{ $appointment->id }}" tabindex="-1">
+                                <div class="modal fade" id="rejectModal{{ $appointment->id }}" tabindex="-1" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title">Tolak Reservasi</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                             </div>
-                                            <form action="{{ route('admin.approvals.reject', $appointment) }}" method="POST">
+                                            <form action="{{ route('admin.approvals.reject', $appointment) }}" method="POST" onsubmit="return true;">
                                                 @csrf
                                                 <div class="modal-body">
                                                     <p><strong>Reservasi:</strong> {{ $appointment->booking_code }}</p>
@@ -120,8 +120,8 @@
                                                     <p><strong>Dokter:</strong> {{ $appointment->doctor->user->name }}</p>
                                                     <hr>
                                                     <div class="mb-3">
-                                                        <label for="rejection_reason" class="form-label">Alasan Penolakan</label>
-                                                        <textarea name="rejection_reason" id="rejection_reason" class="form-control @error('rejection_reason') is-invalid @enderror" rows="4" required placeholder="Jelaskan alasan penolakan reservasi ini..."></textarea>
+                                                        <label for="rejection_reason_{{ $appointment->id }}" class="form-label">Alasan Penolakan</label>
+                                                        <textarea name="rejection_reason" id="rejection_reason_{{ $appointment->id }}" class="form-control @error('rejection_reason') is-invalid @enderror" rows="4" required placeholder="Jelaskan alasan penolakan reservasi ini..."></textarea>
                                                         @error('rejection_reason')
                                                             <div class="invalid-feedback">{{ $message }}</div>
                                                         @enderror

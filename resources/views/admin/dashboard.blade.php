@@ -248,7 +248,8 @@
                             </td>
                             <td>
                                 @php
-                                    $statusClass = match($queue['status']) {
+                                    $statusSource = $queue['status'] ?? ($queue['approval_status'] ?? 'pending');
+                                    $statusClass = match($statusSource) {
                                         'pending' => 'status-pending',
                                         'approved' => 'status-approved',
                                         'done' => 'status-done',
@@ -257,7 +258,7 @@
                                     };
                                 @endphp
                                 <span class="status-badge {{ $statusClass }}">
-                                    {{ ucfirst($queue['status']) }}
+                                    {{ ucfirst($statusSource) }}
                                 </span>
                             </td>
                             <td>

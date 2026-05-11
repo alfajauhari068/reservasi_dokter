@@ -24,15 +24,21 @@ class DashboardController extends Controller
         }
 
         // === STATISTIK TOTAL RESERVASI HARI INI PER STATUS ===
-        // Single query dengan conditional aggregation untuk performa optimal
+        // Catatan: enum status pada Appointment: pending, in_progress, completed, cancelled
+        // Card dashboard pakai mapping:
+        // - pending        => pending
+        // - approved       => in_progress
+        // - done           => completed
+        // - cancelled      => cancelled
         $statsQuery = Appointment::selectRaw("
                 COUNT(*) as total,
                 SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending,
-                SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) as approved,
+                SUM(CASE WHEN status = 'in_progress' THEN 1 ELSE 0 END) as approved,
                 SUM(CASE WHEN status = 'done' THEN 1 ELSE 0 END) as done,
                 SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) as cancelled
             ")
-            ->whereDate('created_at', today())
+            // gunakan appointment_date agar 'hari ini' konsisten dengan tabel antrian
+            ->whereDate('appointment_date', today())
             ->first();
 
         // Struktur data statistik status
@@ -146,6 +152,9 @@ class DashboardController extends Controller
                     'queue_status' => $queue->queue_status,
                     'called_at' => $queue->called_at,
                     'served_at' => $queue->served_at,
+                    // Pastikan key status tersedia untuk view dashboard (menghindari undefined index)
+                    'status' => $queue->appointment->status ?? 'pending',
+                    'approval_status' => $queue->appointment->approval_status,
                 ];
             });
     }
