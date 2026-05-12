@@ -97,12 +97,11 @@ Route::prefix('admin')
         Route::put('doctors/{doctor}/schedules/{schedule}', [\App\Http\Controllers\DoctorsController::class, 'updateSchedule'])->name('doctors.schedules.update');
         Route::delete('doctors/{doctor}/schedules/{schedule}', [\App\Http\Controllers\DoctorsController::class, 'destroySchedule'])->name('doctors.schedules.destroy');
 
-        // Admin Appointment Approval Management
+        // Admin Reservation History Management
         Route::prefix('approvals')->name('approvals.')->group(function () {
             Route::get('/', [\App\Http\Controllers\Admin\ApprovalController::class, 'index'])->name('index');
             Route::get('/{appointment}', [\App\Http\Controllers\Admin\ApprovalController::class, 'show'])->name('show');
-            Route::post('/{appointment}/approve', [\App\Http\Controllers\Admin\ApprovalController::class, 'approve'])->name('approve');
-            Route::post('/{appointment}/reject', [\App\Http\Controllers\Admin\ApprovalController::class, 'reject'])->name('reject');
+            Route::get('/{appointment}/print', [\App\Http\Controllers\Admin\ApprovalController::class, 'print'])->name('print');
         });
 
         // Admin Queue Management

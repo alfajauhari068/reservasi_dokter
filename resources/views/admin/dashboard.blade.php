@@ -80,12 +80,12 @@
                 <div class="mb-3">
                     <i class="fas fa-check-circle fa-3x text-warning"></i>
                 </div>
-                <h5 class="mb-2">Persetujuan Reservasi</h5>
+                <h5 class="mb-2">Riwayat Reservasi</h5>
                 <p class="text-muted small mb-3">
-                    <strong class="text-warning">{{ $pendingApprovalsCount }}</strong> permohonan menunggu persetujuan
+                    <strong class="text-info">{{ $totalReservationsCount }}</strong> total reservasi tersedia
                 </p>
-                <a href="{{ route('admin.approvals.index') }}" class="btn btn-warning">
-                    <i class="fas fa-arrow-right me-2"></i>Kelola Persetujuan
+                <a href="{{ route('admin.approvals.index') }}" class="btn btn-info">
+                    <i class="fas fa-arrow-right me-2"></i>Lihat Riwayat
                 </a>
             </div>
         </div>
@@ -214,7 +214,6 @@
                         <th class="border-0 fw-semibold">Dokter</th>
                         <th class="border-0 fw-semibold">Waktu</th>
                         <th class="border-0 fw-semibold">Status Reservasi</th>
-                        <th class="border-0 fw-semibold">Status Antrian</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -261,24 +260,11 @@
                                     {{ ucfirst($statusSource) }}
                                 </span>
                             </td>
-                            <td>
-                                @php
-                                    $queueStatusClass = match($queue['queue_status']) {
-                                        'waiting' => 'queue-status-waiting',
-                                        'called' => 'queue-status-called',
-                                        'served' => 'queue-status-served',
-                                        'skipped' => 'queue-status-skipped',
-                                        default => 'queue-status-waiting'
-                                    };
-                                @endphp
-                                <span class="status-badge {{ $queueStatusClass }}">
-                                    {{ $queue['queue_status'] == 'N/A' ? '-' : ucfirst($queue['queue_status']) }}
-                                </span>
-                            </td>
+
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center py-5">
+                            <td colspan="6" class="text-center py-5">
                                 <div class="text-muted">
                                     <i class="fas fa-calendar-times fa-3x mb-3 opacity-50"></i>
                                     <p>Tidak ada antrian untuk hari ini</p>
