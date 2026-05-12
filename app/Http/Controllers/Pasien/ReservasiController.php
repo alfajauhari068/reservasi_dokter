@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Pasien;
 
-use App\Events\AppointmentRequested;
 use App\Http\Controllers\Controller;
+use App\Mail\AppointmentConfirmed;
 use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\Patient;
+use App\Models\Queue;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class ReservasiController extends Controller
@@ -79,14 +81,35 @@ class ReservasiController extends Controller
                 'booking_code' => $bookingCode,
                 'queue_number' => $queueNumber,
                 'queue_date' => $appointmentDate,
+                'approval_status' => 'approved',
+                'approved_by' => null,
+                'approved_at' => now(),
             ]);
+
+            Queue::create([
+                'appointment_id' => $appointment->id,
+                'queue_number' => $queueNumber,
+                'queue_status' => 'waiting',
+            ]);
+
             DB::commit();
+
+            try {
+                Mail::to($patient->user->email)
+                    ->send(new AppointmentConfirmed($appointment));
+            } catch (\Throwable $e) {
+                logger()->error('Gagal mengirim email konfirmasi reservasi', [
+                    'appointment_id' => $appointment->id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
         } catch (\Throwable $e) {
             DB::rollBack();
             throw $e;
         }
 
-        return redirect()->route('pasien.reservasi.show', $appointment)->with('success', 'Reservasi berhasil dibuat.');
+        return redirect()->route('pasien.reservasi.show', $appointment)
+            ->with('success', 'Reservasi berhasil dibuat dan otomatis disetujui oleh sistem.');
     }
 
     public function history()

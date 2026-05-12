@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
+use App\Models\Doctor;
+use App\Models\Specialization;
 use Illuminate\Http\Request;
 
 class ApprovalController extends Controller
@@ -14,89 +16,106 @@ class ApprovalController extends Controller
     }
 
     /**
-     * Display list of pending appointments waiting for approval
+     * Display reservation history for admin with filter support.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pendingAppointments = Appointment::with([
+        $doctors = Doctor::with('user')->orderBy('id')->get();
+        $specializations = Specialization::orderBy('name')->get();
+        $statuses = ['pending', 'approved', 'in_progress', 'completed', 'cancelled'];
+
+        $query = Appointment::with([
             'patient.user',
             'doctor.user',
             'doctor.specialization',
             'schedule'
-        ])
-            ->where('approval_status', 'pending')
+        ]);
+
+        if ($request->filled('patient')) {
+            $query->whereHas('patient.user', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->patient . '%');
+            });
+        }
+
+        if ($request->filled('doctor')) {
+            $query->whereHas('doctor.user', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->doctor . '%');
+            });
+        }
+
+        if ($request->filled('specialization')) {
+            $query->whereHas('doctor.specialization', function ($q) use ($request) {
+                $q->where('id', $request->specialization);
+            });
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('period') && $request->period !== 'custom') {
+            if ($request->period === 'today') {
+                $query->whereDate('appointment_date', today());
+            } elseif ($request->period === 'this_week') {
+                $query->whereBetween('appointment_date', [now()->startOfWeek(), now()->endOfWeek()]);
+            } elseif ($request->period === 'this_month') {
+                $query->whereBetween('appointment_date', [now()->startOfMonth(), now()->endOfMonth()]);
+            }
+        }
+
+        if ($request->filled('from_date') || $request->filled('to_date')) {
+            $fromDate = $request->filled('from_date') ? $request->from_date : now()->subYears(10)->format('Y-m-d');
+            $toDate = $request->filled('to_date') ? $request->to_date : now()->format('Y-m-d');
+            $query->whereBetween('appointment_date', [$fromDate, $toDate]);
+        }
+
+        $appointments = $query->orderByDesc('appointment_date')
             ->orderByDesc('created_at')
             ->paginate(15);
 
-        return view('admin.approvals.index', compact('pendingAppointments'));
+        $appointments->appends($request->query());
+
+        return view('admin.approvals.index', compact(
+            'appointments',
+            'doctors',
+            'specializations',
+            'statuses'
+        ));
     }
 
     /**
-     * Show detail of a pending appointment
+     * Show detail of a reservation history record.
      */
     public function show(Appointment $appointment)
     {
-        if ($appointment->approval_status !== 'pending') {
-            return redirect()->route('admin.approvals.index')
-                ->with('info', 'Reservasi ini sudah diproses.');
-        }
-
         $appointment->load([
             'patient.user',
             'doctor.user',
             'doctor.specialization',
-            'schedule'
+            'schedule',
+            'medicalRecord'
         ]);
 
         return view('admin.approvals.show', compact('appointment'));
     }
 
     /**
-     * Approve pending appointment
+     * Export reservation history detail to PDF.
      */
-    public function approve(Appointment $appointment)
+    public function print(Appointment $appointment)
     {
-        if ($appointment->approval_status !== 'pending') {
-            return redirect()->route('admin.approvals.index')
-                ->with('info', 'Reservasi ini sudah diproses.');
-        }
-
-        $appointment->update([
-            'approval_status' => 'approved',
-            'approved_by' => auth()->id(),
-            'approved_at' => now(),
-            // Satukan workflow: setelah disetujui admin, status reservasi masuk ke in_progress
-            'status' => 'in_progress',
+        $appointment->load([
+            'patient.user',
+            'doctor.user',
+            'doctor.specialization',
+            'schedule',
+            'medicalRecord'
         ]);
 
-        return redirect()->route('admin.approvals.index')
-            ->with('success', 'Reservasi berhasil disetujui. Data akan ditampilkan di dashboard dokter.');
-    }
+        $pdf = app('dompdf.wrapper');
+        $pdf->loadView('admin.approvals.pdf', compact('appointment'))
+            ->setPaper('a4', 'portrait');
 
-    /**
-     * Reject pending appointment
-     */
-    public function reject(Request $request, Appointment $appointment)
-    {
-        $request->validate([
-            'rejection_reason' => 'required|string|min:5|max:500',
-        ]);
-
-        if ($appointment->approval_status !== 'pending') {
-            return redirect()->route('admin.approvals.index')
-                ->with('info', 'Reservasi ini sudah diproses.');
-        }
-
-        $appointment->update([
-            'approval_status' => 'rejected',
-            'approved_by' => auth()->id(),
-            'approved_at' => now(),
-            'rejection_reason' => $request->rejection_reason,
-            // satukan workflow: setelah ditolak admin, status reservasi masuk ke cancelled
-            'status' => 'cancelled',
-        ]);
-
-        return redirect()->route('admin.approvals.index')
-            ->with('success', 'Reservasi berhasil ditolak. Pasien akan diberitahu alasan penolakan.');
+        return $pdf->download('riwayat-pemeriksaan-' . $appointment->booking_code . '.pdf');
     }
 }

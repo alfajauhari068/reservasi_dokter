@@ -114,11 +114,11 @@ class DashboardController extends Controller
         // Query efisien untuk data antrian hari ini
         $dailyQueues = $this->getTodayQueues();
 
-        // === PERMOHONAN RESERVASI MENUNGGU PERSETUJUAN ADMIN ===
-        $pendingApprovalsCount = Appointment::where('approval_status', 'pending')->count();
+        // === TOTAL RESERVASI ===
+        $totalReservationsCount = Appointment::count();
 
         // Return view dengan semua data statistik
-        return view('admin.dashboard', compact('todayStats', 'doctorStats', 'dailyQueues', 'pendingApprovalsCount'));
+        return view('admin.dashboard', compact('todayStats', 'doctorStats', 'dailyQueues', 'totalReservationsCount'));
     }
 
     /**
@@ -134,6 +134,7 @@ class DashboardController extends Controller
             ])
             ->join('appointments', 'queues.appointment_id', '=', 'appointments.id')
             ->whereDate('appointments.appointment_date', today())
+            ->where('appointments.status', '!=', 'completed')
             ->orderBy('queues.queue_number')
             ->select([
                 'queues.*',

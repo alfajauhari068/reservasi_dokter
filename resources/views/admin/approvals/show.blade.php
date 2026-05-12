@@ -4,18 +4,24 @@
 <div class="container">
     <div class="row mb-4">
         <div class="col-md-8">
-            <h1>Detail Permohonan Reservasi</h1>
+            <h1>Detail Riwayat Reservasi</h1>
+            <p class="text-muted">Lihat detail reservasi serta hasil pemeriksaan, lalu cetak PDF jika diperlukan.</p>
         </div>
         <div class="col-md-4 text-end">
             <a href="{{ route('admin.approvals.index') }}" class="btn btn-secondary">
-                <i class="bi bi-arrow-left"></i> Kembali
+                <i class="bi bi-arrow-left"></i> Kembali ke Riwayat
             </a>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-8">
-            <!-- Informasi Reservasi -->
+    <div class="d-flex justify-content-end mb-3">
+        <a href="{{ route('admin.approvals.print', $appointment) }}" class="btn btn-primary" target="_blank">
+            <i class="bi bi-printer"></i> Cetak PDF
+        </a>
+    </div>
+
+    <div class="row gy-4">
+        <div class="col-lg-8">
             <div class="card mb-3">
                 <div class="card-header bg-light">
                     <h5 class="mb-0">Informasi Reservasi</h5>
@@ -23,33 +29,45 @@
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <p><strong>Kode Booking:</strong></p>
-                            <p><span class="badge bg-primary fs-6">{{ $appointment->booking_code }}</span></p>
+                            <p class="mb-1"><strong>Kode Booking:</strong></p>
+                            <p class="fw-bold">{{ $appointment->booking_code }}</p>
                         </div>
                         <div class="col-md-6">
-                            <p><strong>Status Persetujuan:</strong></p>
-                            <p>
-                                <span class="badge bg-warning">
-                                    <i class="bi bi-hourglass-split"></i> Menunggu Persetujuan
-                                </span>
-                            </p>
+                            <p class="mb-1"><strong>Status:</strong></p>
+                            @php
+                                $status = $appointment->status;
+                                $badge = 'secondary';
+                                if ($status === 'approved') $badge = 'info';
+                                elseif ($status === 'in_progress') $badge = 'warning';
+                                elseif ($status === 'completed') $badge = 'success';
+                                elseif ($status === 'cancelled') $badge = 'danger';
+                            @endphp
+                            <span class="badge bg-{{ $badge }} text-capitalize">{{ str_replace('_', ' ', $status) }}</span>
                         </div>
                     </div>
-                    <hr>
-                    <div class="row">
+                    <div class="row mb-3">
                         <div class="col-md-6">
-                            <p><strong>Tanggal Pengajuan:</strong></p>
+                            <p class="mb-1"><strong>Tanggal Pengajuan:</strong></p>
                             <p>{{ $appointment->created_at->format('d M Y H:i') }}</p>
                         </div>
                         <div class="col-md-6">
-                            <p><strong>Tanggal Periksa:</strong></p>
+                            <p class="mb-1"><strong>Tanggal Periksa:</strong></p>
                             <p>{{ $appointment->appointment_date->format('d M Y') }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>Nomor Antrian:</strong></p>
+                            <p>{{ $appointment->queue_number ?? '-' }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>Approval Status:</strong></p>
+                            <p class="text-capitalize">{{ str_replace('_', ' ', $appointment->approval_status) ?? '-' }}</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Informasi Pasien -->
             <div class="card mb-3">
                 <div class="card-header bg-light">
                     <h5 class="mb-0">Data Pasien</h5>
@@ -57,28 +75,27 @@
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <p><strong>Nama:</strong></p>
+                            <p class="mb-1"><strong>Nama:</strong></p>
                             <p>{{ $appointment->patient->user->name }}</p>
                         </div>
                         <div class="col-md-6">
-                            <p><strong>Email:</strong></p>
+                            <p class="mb-1"><strong>Email:</strong></p>
                             <p>{{ $appointment->patient->user->email }}</p>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <p><strong>No. Telepon:</strong></p>
+                            <p class="mb-1"><strong>No. Telepon:</strong></p>
                             <p>{{ $appointment->patient->phone_number ?? '-' }}</p>
                         </div>
                         <div class="col-md-6">
-                            <p><strong>Alamat:</strong></p>
+                            <p class="mb-1"><strong>Alamat:</strong></p>
                             <p>{{ $appointment->patient->address ?? '-' }}</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Informasi Dokter -->
             <div class="card mb-3">
                 <div class="card-header bg-light">
                     <h5 class="mb-0">Data Dokter</h5>
@@ -86,31 +103,27 @@
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <p><strong>Nama Dokter:</strong></p>
+                            <p class="mb-1"><strong>Nama Dokter:</strong></p>
                             <p>{{ $appointment->doctor->user->name }}</p>
                         </div>
                         <div class="col-md-6">
-                            <p><strong>Spesialisasi:</strong></p>
-                            <p>{{ $appointment->doctor->specialization->name }}</p>
+                            <p class="mb-1"><strong>Spesialisasi:</strong></p>
+                            <p>{{ optional($appointment->doctor->specialization)->name ?? '-' }}</p>
                         </div>
                     </div>
-                    <div class="row mb-3">
+                    <div class="row">
                         <div class="col-md-6">
-                            <p><strong>Jam Praktek:</strong></p>
-                            <p>
-                                {{ $appointment->schedule->start_time ? \Carbon\Carbon::createFromFormat('H:i:s', $appointment->schedule->start_time)->format('H:i') : '' }} -
-                                {{ $appointment->schedule->end_time ? \Carbon\Carbon::createFromFormat('H:i:s', $appointment->schedule->end_time)->format('H:i') : '' }}
-                            </p>
+                            <p class="mb-1"><strong>Jam Praktek:</strong></p>
+                            <p>{{ optional($appointment->schedule)->start_time ? substr($appointment->schedule->start_time, 0, 5) : '-' }} - {{ optional($appointment->schedule)->end_time ? substr($appointment->schedule->end_time, 0, 5) : '-' }}</p>
                         </div>
                         <div class="col-md-6">
-                            <p><strong>Hari:</strong></p>
-                            <p>{{ ucfirst($appointment->schedule->day_of_week) }}</p>
+                            <p class="mb-1"><strong>Hari:</strong></p>
+                            <p>{{ optional($appointment->schedule)->day_of_week ? ucfirst($appointment->schedule->day_of_week) : '-' }}</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Keluhan Pasien -->
             <div class="card mb-3">
                 <div class="card-header bg-light">
                     <h5 class="mb-0">Keluhan / Keterangan Pasien</h5>
@@ -123,83 +136,42 @@
                     @endif
                 </div>
             </div>
-        </div>
 
-        <!-- Sidebar Aksi -->
-        <div class="col-md-4">
-            <div class="card border-success mb-3">
-                <div class="card-header bg-success text-white">
-                    <h5 class="mb-0">Setujui Reservasi</h5>
+            <div class="card mb-3">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Riwayat Pemeriksaan</h5>
                 </div>
                 <div class="card-body">
-                    <p class="card-text">Klik tombol di bawah untuk menyetujui reservasi ini. Setelah disetujui, data akan muncul di dashboard dokter.</p>
-                    <form action="{{ route('admin.approvals.approve', $appointment) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn btn-success w-100" onclick="return confirm('Setujui reservasi ini?')">
-                            <i class="bi bi-check-lg"></i> Setujui Reservasi
-                        </button>
-                    </form>
+                    @if($appointment->medicalRecord)
+                        <p><strong>Diagnosis:</strong><br>{{ $appointment->medicalRecord->diagnosis ?? '-' }}</p>
+                        <p><strong>Resep:</strong><br>{{ $appointment->medicalRecord->prescription ?? '-' }}</p>
+                        <p><strong>Catatan Dokter:</strong><br>{{ $appointment->medicalRecord->doctor_notes ?? '-' }}</p>
+                        <p class="text-muted">Diperbarui pada {{ $appointment->medicalRecord->updated_at->format('d M Y H:i') }}</p>
+                    @else
+                        <p class="text-muted mb-0">Riwayat pemeriksaan belum tersedia.</p>
+                        @if($appointment->status === 'completed')
+                            <p class="text-muted">Data pemeriksaan belum diisi oleh dokter.</p>
+                        @endif
+                    @endif
                 </div>
             </div>
+        </div>
 
-            <div class="card border-danger">
-                <div class="card-header bg-danger text-white">
-                    <h5 class="mb-0">Tolak Reservasi</h5>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Ringkasan</h5>
                 </div>
                 <div class="card-body">
-                    <p class="card-text">Klik tombol di bawah untuk menolak reservasi ini dan berikan alasan penolakan.</p>
-                    <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#rejectModal">
-                        <i class="bi bi-x-lg"></i> Tolak Reservasi
-                    </button>
+                    <p class="mb-2"><strong>Booking Code:</strong> {{ $appointment->booking_code }}</p>
+                    <p class="mb-2"><strong>Status Reservasi:</strong> {{ ucwords(str_replace('_', ' ', $appointment->status)) }}</p>
+                    <p class="mb-2"><strong>Status Approval:</strong> {{ ucwords(str_replace('_', ' ', $appointment->approval_status)) }}</p>
+                    <p class="mb-2"><strong>Tanggal Periksa:</strong> {{ $appointment->appointment_date->format('d M Y') }}</p>
+                    <p class="mb-2"><strong>Pasien:</strong> {{ $appointment->patient->user->name }}</p>
+                    <p class="mb-0"><strong>Dokter:</strong> {{ $appointment->doctor->user->name }}</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Modal Reject -->
-<div class="modal fade" id="rejectModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Tolak Reservasi</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <form action="{{ route('admin.approvals.reject', $appointment) }}" method="POST">
-                @csrf
-                <div class="modal-body">
-                    <div class="alert alert-info">
-                        <strong>Reservasi:</strong> {{ $appointment->booking_code }}<br>
-                        <strong>Pasien:</strong> {{ $appointment->patient->user->name }}<br>
-                        <strong>Dokter:</strong> {{ $appointment->doctor->user->name }}
-                    </div>
-                    <div class="mb-3">
-                        <label for="rejection_reason" class="form-label">Alasan Penolakan <span class="text-danger">*</span></label>
-                        <textarea name="rejection_reason" id="rejection_reason" class="form-control @error('rejection_reason') is-invalid @enderror" rows="6" required placeholder="Jelaskan secara detail alasan penolakan reservasi ini untuk diberitahukan ke pasien..."></textarea>
-                        @error('rejection_reason')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                        <small class="form-text text-muted">Minimal 5 karakter, maksimal 500 karakter</small>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-danger">Tolak Reservasi</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<style>
-    .card {
-        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-    }
-    .card-header {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-    }
-    p {
-        margin-bottom: 0.25rem;
-    }
-</style>
 @endsection
