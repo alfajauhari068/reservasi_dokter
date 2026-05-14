@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Dokter\DashboardController as DokterDashboardController;
 use App\Http\Controllers\Dokter\ReservasiController as DokterReservasiController;
 use App\Http\Controllers\Pasien\DashboardController as PasienDashboardController;
+use App\Http\Controllers\Pasien\ProfileController as PasienProfileController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Pasien\ReservasiController;
@@ -90,7 +91,16 @@ Route::prefix('admin')
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
         // Admin Resource Routes
+        Route::resource('patients', \App\Http\Controllers\Admin\PatientController::class)->only([
+            'index',
+            'create',
+            'store',
+            'edit',
+            'update',
+            'destroy',
+        ]);
         Route::resource('doctors', \App\Http\Controllers\DoctorsController::class);
+
         
         // Admin Doctor Schedule Management
         Route::post('doctors/{doctor}/schedules', [\App\Http\Controllers\DoctorsController::class, 'storeSchedule'])->name('doctors.schedules.store');
@@ -113,12 +123,20 @@ Route::prefix('admin')
             Route::get('/updates', [\App\Http\Controllers\Admin\QueueController::class, 'getQueueUpdates'])->name('updates');
         });
 
+        // Admin Appointment Management
+        Route::prefix('appointments')->name('appointments.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\AppointmentController::class, 'index'])->name('index');
+            Route::get('/create', [\App\Http\Controllers\Admin\AppointmentController::class, 'create'])->name('create');
+            Route::post('/', [\App\Http\Controllers\Admin\AppointmentController::class, 'store'])->name('store');
+        });
+
         // Admin Reports
         Route::prefix('reports')->name('reports.')->group(function () {
             Route::get('/visitation', [App\Http\Controllers\Admin\VisitReportController::class, 'index'])->name('visitation');
             Route::get('/visitation/export-pdf', [App\Http\Controllers\Admin\VisitReportController::class, 'exportPdf'])->name('visitation.export.pdf');
             Route::get('/visitation/export-excel', [App\Http\Controllers\Admin\VisitReportController::class, 'exportExcel'])->name('visitation.export.excel');
             Route::post('/visitation/export', [App\Http\Controllers\Admin\VisitReportController::class, 'export'])->name('visitation.export');
+
 
             // Example Filter Routes (commented out)
             // Route::get('/filter-example', [App\Http\Controllers\Admin\FilterExampleController::class, 'indexWithFilterExample'])->name('filter.example');
@@ -154,11 +172,15 @@ Route::middleware(['auth', 'role:dokter'])->group(function () {
 Route::middleware(['auth', 'role:pasien'])->group(function () {
     Route::get('/pasien/dashboard', [PasienDashboardController::class, 'index'])->name('pasien.dashboard');
 
-    Route::prefix('pasien')->name('pasien.')->group(function () {
-        // Patient Reservation Management
-        Route::get('reservasi', [ReservasiController::class, 'create'])->name('reservasi.create');
-        Route::post('reservasi', [ReservasiController::class, 'store'])->name('reservasi.store');
-        Route::get('reservasi/riwayat', [ReservasiController::class, 'history'])->name('reservasi.history');
-        Route::get('reservasi/{appointment}', [ReservasiController::class, 'show'])->name('reservasi.show');
+        Route::prefix('pasien')->name('pasien.')->group(function () {
+            // Patient Profile Management
+            Route::get('profile', [PasienProfileController::class, 'edit'])->name('profile.edit');
+            Route::post('profile', [PasienProfileController::class, 'update'])->name('profile.update');
+
+            // Patient Reservation Management
+            Route::get('reservasi', [ReservasiController::class, 'create'])->name('reservasi.create');
+            Route::post('reservasi', [ReservasiController::class, 'store'])->name('reservasi.store');
+            Route::get('reservasi/riwayat', [ReservasiController::class, 'history'])->name('reservasi.history');
+            Route::get('reservasi/{appointment}', [ReservasiController::class, 'show'])->name('reservasi.show');
+        });
     });
-});

@@ -423,12 +423,21 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('admin.appointments.*') ? 'active' : '' }}"
+                       href="{{ route('admin.appointments.create') }}">
+                        <i class="fas fa-calendar-plus"></i>
+                        <span>Buat Appointment Pasien</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('admin.queues.*') ? 'active' : '' }}"
                        href="{{ route('admin.queues.index') }}">
                         <i class="fas fa-users"></i>
                         <span>Manajemen Antrian</span>
                     </a>
                 </li>
+
+
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('admin.reports.*') ? 'active' : '' }}"
                        href="{{ route('admin.reports.visitation') }}">

@@ -68,16 +68,14 @@
         </h5>
     </div>
     <div class="card-body">
-        <div class="row g-3">
+            <div class="row g-3">
             <div class="col-md-4">
-                <form method="POST" action="{{ route('admin.queues.generate') }}" class="d-inline">
-                    @csrf
-                    <button type="submit" class="btn btn-success w-100">
-                        <i class="fas fa-plus me-2"></i>Generate Antrian Baru
-                    </button>
-                </form>
+                <a href="{{ route('admin.appointments.create') }}" class="btn btn-primary w-100">
+                    <i class="fas fa-calendar-plus me-2"></i>Buat Appointment
+                </a>
             </div>
             <div class="col-md-4">
+
                 <form method="POST" action="{{ route('admin.queues.reset') }}" class="d-inline"
                       onsubmit="return confirm('Apakah Anda yakin ingin reset semua antrian hari ini?')">
                     @csrf
@@ -122,7 +120,6 @@
                             <th class="border-0 fw-semibold">Spesialisasi</th>
                             <th class="border-0 fw-semibold">Jam Kunjungan</th>
                             <th class="border-0 fw-semibold text-center">Status Antrian</th>
-                            <th class="border-0 fw-semibold text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Reservasi Berhasil</h1>
-    <p>Halo {{ $appointment->patient->user->name }},</p>
+    <p>Halo {{ optional($appointment->patient->user)->name ?? $appointment->patient->full_name ?? $appointment->patient->identity_number }},</p>
 
     <p>Reservasi Anda telah berhasil dibuat dan disetujui secara otomatis oleh sistem.</p>
 

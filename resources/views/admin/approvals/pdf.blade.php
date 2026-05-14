@@ -62,11 +62,11 @@
         <table class="summary-table">
             <tr>
                 <th>Nama</th>
-                <td>{{ $appointment->patient->user->name }}</td>
+                <td>{{ optional($appointment->patient->user)->name ?? $appointment->patient->full_name ?? $appointment->patient->identity_number }}</td>
             </tr>
             <tr>
                 <th>Email</th>
-                <td>{{ $appointment->patient->user->email }}</td>
+                <td>{{ optional($appointment->patient->user)->email ?? '-' }}</td>
             </tr>
             <tr>
                 <th>No. Telepon</th>

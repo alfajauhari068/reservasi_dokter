@@ -56,7 +56,10 @@ class QueueController extends Controller
                     'id' => $queue->id,
                     'queue_number' => (int) $queue->queue_number,
                     'booking_code' => $queue->booking_code,
-                    'patient_name' => optional($queue->appointment?->patient?->user)->name ?? '-',
+                    'patient_name' => optional($queue->appointment?->patient?->user)->name
+                        ?? $queue->appointment?->patient?->full_name
+                        ?? $queue->appointment?->patient?->identity_number
+                        ?? '-',
                     'patient_id' => $queue->appointment?->patient?->id,
                     'doctor_name' => optional($queue->appointment?->doctor?->user)->name ?? '-',
                     'doctor_specialization' => $queue->appointment?->doctor?->specialization?->name ?? 'N/A',
@@ -177,6 +180,11 @@ class QueueController extends Controller
         $nextQueueNumber = $this->getNextQueueNumber();
 
         foreach ($appointmentsWithoutQueue as $appointment) {
+            $appointment->update([
+                'queue_number' => $nextQueueNumber,
+                'queue_date' => $appointment->appointment_date,
+            ]);
+
             Queue::create([
                 'appointment_id' => $appointment->id,
                 'queue_number' => $nextQueueNumber++,

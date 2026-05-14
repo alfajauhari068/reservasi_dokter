@@ -277,7 +277,7 @@
                                 type="submit"
                                 class="w-100 login-btn btn-primary btn"
                             >
-                                <span class="d-inline-flex align-items-center justify-content-center gap-3">
+                                <span class="d-inline-flex align-items-center justify-content-center gap-2">
                                     <i class="fa-solid fa-arrow-right-to-bracket"></i>
                                     Masuk
                                 </span>

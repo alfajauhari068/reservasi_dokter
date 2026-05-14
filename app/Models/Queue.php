@@ -23,7 +23,7 @@ class Queue extends Model
     protected $fillable = [
         'appointment_id',
         'queue_number',
-        'status',
+        'queue_status',
         'called_at',
         'served_at',
     ];

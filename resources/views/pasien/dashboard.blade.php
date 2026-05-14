@@ -10,6 +10,9 @@
             <p class="mb-0 text-muted">Selamat datang, {{ auth()->user()->name }}. Kelola reservasi dan lihat riwayat pemeriksaan Anda di sini.</p>
         </div>
         <div class="col-md-4 text-md-end">
+            @if(! isset($patient) || ! $patient)
+                <a href="{{ route('pasien.profile.edit') }}" class="btn btn-warning text-dark me-2 mb-2 mb-md-0">Lengkapi Profil</a>
+            @endif
             <a href="{{ route('pasien.reservasi.create') }}" class="btn btn-gradient me-2 mb-2 mb-md-0">Buat Reservasi</a>
             <a href="{{ route('pasien.reservasi.history') }}" class="btn btn-outline-secondary">Lihat Riwayat</a>
         </div>
