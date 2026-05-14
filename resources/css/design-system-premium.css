@@ -1,0 +1,557 @@
+/* Premium Health-Tech Design System (Global)
+   Usage: import this CSS in layouts/app.blade.php and layouts/admin.blade.php
+*/
+
+/* NOTE: Admin-only layout styles were migrated from resources/views/layouts/admin.blade.php
+   to keep backend layout intact. */
+
+
+:root {
+  /* Canvas (light theme) */
+  --bg-0: #ffffff;
+  --bg-1: #f7fbff;
+  --bg-2: #eef6ff;
+
+  /* Page background helpers */
+  --page-bg: #f7fbff;
+  --text-color: #0f172a;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(90deg, #0bb8b2 0%, #23d1c7 45%, #34d7f4 100%);
+  --gradient-primary-soft: linear-gradient(180deg, rgba(11, 184, 178, 0.20) 0%, rgba(35, 209, 199, 0.10) 100%);
+  --gradient-gold: linear-gradient(90deg, #fbbf24 0%, #f59e0b 50%, #fbbf24 100%);
+
+  /* Primary / Accents */
+  --primary: #23d1c7; /* aqua */
+  --primary-2: #0bb8b2; /* teal */
+  --primary-ink: #083a3a;
+
+  --accent: #fbbf24; /* gold */
+  --accent-ink: #2a1a00;
+
+  /* Surfaces */
+  --glass-bg: rgba(255, 255, 255, 0.70);
+  --glass-bg-2: rgba(255, 255, 255, 0.45);
+  --glass-border: rgba(12, 74, 110, 0.14);
+  --glass-border-2: rgba(14, 165, 233, 0.20);
+
+  /* Text */
+  --text-0: rgba(15, 23, 42, 0.96);
+  --text-1: rgba(15, 23, 42, 0.80);
+  --text-2: rgba(15, 23, 42, 0.62);
+  --text-dark-0: rgba(2, 6, 23, 0.92);
+  --text-dark-1: rgba(2, 6, 23, 0.70);
+
+  /* Border / Shadow */
+  --border-soft: rgba(2, 6, 23, 0.08);
+  --shadow-soft: 0 18px 50px rgba(2, 6, 23, 0.10);
+  --shadow-glass: 0 12px 35px rgba(2, 6, 23, 0.10);
+  --shadow-neon: 0 0 0 1px rgba(11, 184, 178, 0.18), 0 16px 40px rgba(35, 209, 199, 0.16);
+
+  /* Status badges (keep semantic colors, adapt to light UI) */
+  --pending-bg: rgba(245, 158, 11, 0.16);
+  --pending-fg: #b45309;
+  --pending-border: rgba(245, 158, 11, 0.30);
+
+  --approved-bg: rgba(14, 165, 233, 0.14);
+  --approved-fg: #0369a1;
+  --approved-border: rgba(14, 165, 233, 0.28);
+
+  --done-bg: rgba(16, 185, 129, 0.16);
+  --done-fg: #047857;
+  --done-border: rgba(16, 185, 129, 0.30);
+
+  --cancelled-bg: rgba(239, 68, 68, 0.14);
+  --cancelled-fg: #b91c1c;
+  --cancelled-border: rgba(239, 68, 68, 0.28);
+
+  /* Queue status mapping */
+  --waiting-bg: var(--pending-bg);
+  --waiting-fg: var(--pending-fg);
+  --waiting-border: var(--pending-border);
+
+  --called-bg: var(--approved-bg);
+  --called-fg: var(--approved-fg);
+  --called-border: var(--approved-border);
+
+  --served-bg: var(--done-bg);
+  --served-fg: var(--done-fg);
+  --served-border: var(--done-border);
+
+  --skipped-bg: rgba(148, 163, 184, 0.18);
+  --skipped-fg: rgba(71, 85, 105, 0.98);
+  --skipped-border: rgba(148, 163, 184, 0.30);
+
+  /* Typography */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Apple Color Emoji",
+    "Segoe UI Emoji";
+
+  --heading-weight: 750;
+  --body-weight: 480;
+
+  --tracking-heading: -0.02em;
+  --tracking-body: -0.01em;
+
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+}
+
+/* Typography guideline */
+.ds-heading {
+  font-family: var(--font-sans);
+  font-weight: var(--heading-weight);
+  letter-spacing: var(--tracking-heading);
+  color: var(--text-0);
+}
+
+.ds-body {
+  font-family: var(--font-sans);
+  font-weight: var(--body-weight);
+  letter-spacing: var(--tracking-body);
+  color: var(--text-1);
+}
+
+/* Utility base */
+.ds-text-muted { color: var(--text-2) !important; }
+.ds-center { display: flex; align-items: center; justify-content: center; }
+
+/* ENHANCED CONTRAST HELPERS */
+.ds-text-strong { color: rgba(255, 255, 255, 0.95) !important; font-weight: 600; }
+.ds-text-emphasis { color: rgba(255, 255, 255, 0.98) !important; font-weight: 700; }
+
+/* Table row hover enhancement */
+.ds-table-row-hover:hover {
+  background: rgba(255, 255, 255, 0.08) !important; /* Was 0.035 - increased */
+}
+
+/* Card content with better text contrast */
+.ds-card-content .ds-body {
+  color: rgba(255, 255, 255, 0.85); /* Override for card content */
+}
+
+/* Navbar link enhancement */
+.ds-navlink:hover {
+  color: rgba(255, 255, 255, 0.98) !important; /* Ensure hover state is visible */
+}
+
+/* Glass container & cards - ENHANCED CONTRAST */
+.glass-card {
+  background: rgba(15, 23, 42, 0.65); /* Was 0.55 - less transparent for better contrast */
+  border: 1px solid rgba(255, 255, 255, 0.16); /* Was 0.14 - increased border opacity */
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 12px 35px rgba(2, 6, 23, 0.30), 0 0 0 1px rgba(255, 255, 255, 0.08); /* Enhanced shadow + inner glow */
+}
+
+.glass-card--soft {
+  background: rgba(15, 23, 42, 0.50); /* Was 0.40 - increased opacity */
+  border-color: rgba(255, 255, 255, 0.12); /* Was 0.10 - increased */
+}
+
+/* Buttons */
+.btn-primary {
+  border: 1px solid rgba(20, 184, 166, 0.35);
+  background: var(--gradient-primary);
+  color: white;
+  border-radius: 14px;
+  padding: 0.95rem 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  box-shadow: 0 0 0 1px rgba(20, 184, 166, 0.10), 0 16px 35px rgba(6, 182, 212, 0.18);
+  transition: transform 180ms ease, filter 180ms ease, box-shadow 180ms ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px) scale(1.01);
+  filter: brightness(1.04);
+  box-shadow: var(--shadow-neon);
+}
+
+.btn-primary:active { transform: translateY(0) scale(0.99); }
+
+.btn-secondary {
+  border: 1px solid rgba(96, 165, 250, 0.28);
+  background: rgba(15, 23, 42, 0.28);
+  color: rgba(255, 255, 255, 0.90);
+  border-radius: 14px;
+  padding: 0.9rem 1.25rem;
+  font-weight: 650;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 30px rgba(2, 6, 23, 0.18);
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+
+.btn-secondary:hover {
+  transform: translateY(-1px);
+  background: rgba(15, 23, 42, 0.40);
+  border-color: rgba(96, 165, 250, 0.42);
+}
+
+/* Small button variant (utility) */
+.btn-sm-ds {
+  padding: 0.55rem 0.9rem;
+  border-radius: 12px;
+  font-weight: 650;
+}
+
+/* Ghost button */
+.btn-ghost {
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  background: rgba(15, 23, 42, 0.12);
+  color: rgba(255, 255, 255, 0.88);
+  border-radius: 14px;
+  padding: 0.9rem 1.25rem;
+  font-weight: 700;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 26px rgba(2, 6, 23, 0.16);
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+
+.btn-ghost:hover {
+  transform: translateY(-1px);
+  background: rgba(15, 23, 42, 0.22);
+  border-color: rgba(96, 165, 250, 0.42);
+}
+
+/* States (disabled + active) */
+.btn-primary:disabled,
+.btn-secondary:disabled,
+.btn-ghost:disabled,
+.ds-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  filter: none !important;
+}
+
+.btn-primary:active,
+.btn-secondary:active,
+.btn-ghost:active {
+  transform: translateY(0) scale(0.99);
+}
+
+/* Loading (spinner) */
+.ds-btn-loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.ds-btn-loading .ds-spinner {
+  display: inline-flex;
+}
+
+.ds-spinner {
+  display: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: rgba(255, 255, 255, 0.95);
+  animation: ds-spin 800ms linear infinite;
+  margin-right: 10px;
+  vertical-align: -2px;
+}
+
+@keyframes ds-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Badge status - ENHANCED VISIBILITY */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.42rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border-2);
+  font-size: 0.80rem;
+  font-weight: 750;
+  letter-spacing: 0.01em;
+  backdrop-filter: blur(12px); /* Was blur(10px) - increased blur */
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 12px 28px rgba(2, 6, 23, 0.22); /* Was 0.18 - increased shadow */
+}
+
+/* Dedicated status badge names (alias) */
+.badge-pending { background: var(--pending-bg); color: var(--pending-fg); border-color: var(--pending-border); }
+.badge-approved { background: var(--approved-bg); color: var(--approved-fg); border-color: var(--approved-border); }
+.badge-done { background: var(--done-bg); color: var(--done-fg); border-color: var(--done-border); }
+.badge-cancelled { background: var(--cancelled-bg); color: var(--cancelled-fg); border-color: var(--cancelled-border); }
+
+/* Backward-compatible status class names */
+.status-pending,
+.status-waiting {
+  background: var(--pending-bg);
+  color: var(--pending-fg);
+  border-color: var(--pending-border);
+}
+
+.status-approved,
+.status-called {
+  background: var(--approved-bg);
+  color: var(--approved-fg);
+  border-color: var(--approved-border);
+}
+
+.status-done,
+.status-served {
+  background: var(--done-bg);
+  color: var(--done-fg);
+  border-color: var(--done-border);
+}
+
+.status-cancelled {
+  background: var(--cancelled-bg);
+  color: var(--cancelled-fg);
+  border-color: var(--cancelled-border);
+}
+
+.status-skipped {
+  background: var(--skipped-bg);
+  color: var(--skipped-fg);
+  border-color: var(--skipped-border);
+}
+
+/* Glass modal template - ENHANCED CONTRAST */
+.ds-modal {
+  --ds-modal-bg: rgba(15, 23, 42, 0.75); /* Was 0.65 - less transparent */
+  --ds-modal-border: rgba(255, 255, 255, 0.16); /* Was 0.14 - increased */
+  --ds-modal-shadow: 0 30px 90px rgba(2, 6, 23, 0.55);
+}
+
+.ds-modal .modal-content {
+  border-radius: 22px;
+  background: var(--ds-modal-bg);
+  border: 1px solid var(--ds-modal-border);
+  backdrop-filter: blur(20px); /* Was blur(18px) - increased */
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--ds-modal-shadow);
+  color: rgba(255, 255, 255, 0.95); /* Was 0.92 - increased */
+}
+
+.ds-modal .modal-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12); /* Was 0.10 - increased */
+}
+
+.ds-modal .modal-title {
+  font-weight: 850;
+  letter-spacing: -0.01em;
+}
+
+.ds-modal .modal-body {
+  color: rgba(255, 255, 255, 0.90); /* Was 0.86 - increased */
+}
+
+.ds-modal .modal-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.12); /* Was 0.10 - increased */
+}
+
+/* Form controls (glass) - ENHANCED CONTRAST */
+.ds-input,
+.ds-select {
+  background: rgba(15, 23, 42, 0.45); /* Was 0.35 - increased opacity */
+  border: 1px solid rgba(255, 255, 255, 0.16); /* Was 0.14 - increased */
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  color: rgba(255, 255, 255, 0.95); /* Was 0.90 - increased */
+  font-weight: 500;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.ds-input:focus,
+.ds-select:focus {
+  outline: none;
+  border-color: rgba(20, 184, 166, 0.40); /* Was 0.35 - increased */
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.18); /* Was 0.15 - increased */
+}
+
+.ds-input::placeholder {
+  color: rgba(255, 255, 255, 0.55); /* Was 0.50 - increased */
+}
+
+.ds-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1rem;
+  padding-right: 2.5rem;
+}
+
+/* Alert (glass) - ENHANCED CONTRAST */
+.ds-alert {
+  background: rgba(16, 185, 129, 0.18); /* Was 0.14 - increased opacity */
+  border: 1px solid rgba(52, 211, 153, 0.32); /* Was 0.26 - increased */
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  color: rgba(255, 255, 255, 0.95); /* Was 0.92 - increased */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.ds-alert-error {
+  background: rgba(239, 68, 68, 0.18); /* Was 0.14 - increased opacity */
+  border-color: rgba(248, 113, 113, 0.32); /* Was 0.26 - increased */
+}
+
+.ds-alert-warning {
+  background: rgba(245, 158, 11, 0.18); /* Was 0.14 - increased opacity */
+  border-color: rgba(251, 191, 36, 0.32); /* Was 0.26 - increased */
+}
+
+/* Background gradient slow drift (subtle) */
+@media (prefers-reduced-motion: no-preference) {
+  .ds-gradient-drift {
+    background-size: 140% 140%;
+    animation: ds-drift 60s ease-in-out infinite;
+  }
+
+  @keyframes ds-drift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+}
+
+
+.status-pending,
+.status-waiting {
+  background: var(--pending-bg);
+  color: var(--pending-fg);
+  border-color: var(--pending-border);
+}
+
+.status-approved,
+.status-called {
+  background: var(--approved-bg);
+  color: var(--approved-fg);
+  border-color: var(--approved-border);
+}
+
+.status-done,
+.status-served {
+  background: var(--done-bg);
+  color: var(--done-fg);
+  border-color: var(--done-border);
+}
+
+.status-cancelled {
+  background: var(--cancelled-bg);
+  color: var(--cancelled-fg);
+  border-color: var(--cancelled-border);
+}
+
+.status-skipped {
+  background: var(--skipped-bg);
+  color: var(--skipped-fg);
+  border-color: var(--skipped-border);
+}
+
+/* Card content spacing helpers */
+.ds-p-24 { padding: 1.5rem; }
+.ds-p-20 { padding: 1.25rem; }
+.ds-p-16 { padding: 1rem; }
+
+/* ENHANCED CONTRAST FOR SPECIFIC COMPONENTS */
+
+/* Table enhancements for admin dashboard */
+.ds-table-admin tbody tr {
+  background: rgba(15, 23, 42, 0.25); /* Add subtle background to table rows */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ds-table-admin tbody tr:hover {
+  background: rgba(255, 255, 255, 0.06) !important; /* Stronger hover for admin tables */
+}
+
+/* Doctor card enhancements */
+.ds-doctor-card .ds-body {
+  color: rgba(255, 255, 255, 0.82); /* Slightly darker for doctor card text */
+}
+
+.ds-doctor-card .ds-heading {
+  color: rgba(255, 255, 255, 0.96); /* Ensure headings are very readable */
+}
+
+/* Status text in tables */
+.ds-status-text {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.90);
+}
+
+/* Navbar-ish surface (optional) */
+.ds-navbar-surface {
+  background: linear-gradient(90deg, rgba(2, 6, 23, 0.65), rgba(15, 23, 42, 0.35));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* Landing page helpers */
+.section-heading h2 {
+  font-size: clamp(2rem, 2.5vw, 2.8rem);
+  line-height: 1.1;
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.section-heading p {
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 720px;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 24px;
+  box-shadow: 0 18px 46px rgba(15, 23, 42, 0.08);
+  padding: 1.8rem;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 52px rgba(15, 23, 42, 0.12);
+}
+
+.feature-card .feature-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  background: rgba(14, 165, 233, 0.12);
+  color: #0b76ac;
+}
+
+.testimonial-card,
+.team-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 24px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+}
+
+.testimonial-card {
+  padding: 2rem;
+}
+
+.team-card {
+  padding: 2rem 1.5rem;
+}
+
+.team-card .badge {
+  background: rgba(14, 165, 233, 0.14);
+  color: #0d6efd;
+}
+
+.bg-hero-glow {
+  background: radial-gradient(circle at top left, rgba(14, 165, 233, 0.25), transparent 50%),
+              radial-gradient(circle at bottom right, rgba(20, 184, 166, 0.18), transparent 40%);
+}
+
+/* Admin-specific layout styles (sidebar/header/main/mobile overlay) removed to avoid breaking the Blade admin layout. */
+
+
+
