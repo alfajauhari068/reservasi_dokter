@@ -20,71 +20,90 @@
     {{-- Font Awesome Icons --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    {{-- Custom Admin Styles --}}
+    {{-- Admin Styling --}}
     <style>
-        :root {
-            --admin-primary: #2563eb;
-            --admin-secondary: #64748b;
-            --admin-success: #10b981;
-            --admin-warning: #f59e0b;
-            --admin-danger: #ef4444;
-            --admin-dark: #1f2937;
-            --admin-light: #f8fafc;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'Figtree', sans-serif;
-            background-color: var(--admin-light);
+            background-color: #f5f7fa;
+            color: #1f2937;
         }
 
+        /* Sidebar Styling */
         .admin-sidebar {
-            background: linear-gradient(135deg, var(--admin-primary), #1d4ed8);
-            min-height: 100vh;
             position: fixed;
-            width: 280px;
             left: 0;
             top: 0;
+            width: 260px;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 50%, #1e3a8a 100%);
+            overflow-y: auto;
+            padding-top: 1rem;
             z-index: 1000;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease;
         }
 
         .admin-sidebar.collapsed {
             width: 70px;
         }
 
-        .admin-sidebar .nav-link {
-            color: rgba(255, 255, 255, 0.8);
-            padding: 12px 20px;
-            margin: 5px 15px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            font-weight: 500;
+        .admin-sidebar.collapsed .sidebar-toggle {
+            transform: rotate(180deg);
         }
 
-        .admin-sidebar .nav-link:hover,
-        .admin-sidebar .nav-link.active {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
+        .admin-sidebar p, .admin-sidebar span {
+            transition: opacity 0.3s ease;
+        }
+
+        .admin-sidebar.collapsed span:not(.nav-link i) {
+            opacity: 0;
+            display: none;
+        }
+
+        .admin-sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
         .admin-sidebar .nav-link i {
             width: 20px;
-            margin-right: 10px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .admin-sidebar .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .admin-sidebar .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-weight: 600;
         }
 
         .admin-sidebar.collapsed .nav-link span {
             display: none;
         }
 
-        .admin-sidebar.collapsed .nav-link i {
-            margin-right: 0;
-            text-align: center;
-        }
-
+        /* Main Content */
         .admin-main {
-            margin-left: 280px;
-            transition: all 0.3s ease;
+            margin-left: 260px;
+            transition: margin-left 0.3s ease;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .admin-main.expanded {
@@ -92,124 +111,75 @@
         }
 
         .admin-header {
-            background: white;
-            padding: 15px 30px;
+            background-color: white;
             border-bottom: 1px solid #e5e7eb;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
-        .admin-content {
-            padding: 30px;
-        }
-
-        .stats-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-            border: none;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .stats-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .stats-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
+        /* Time Display Styling */
+        .admin-header .text-end {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
+            flex-direction: column;
+            gap: 0.25rem;
         }
 
-        .stats-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin: 10px 0;
+        .admin-header .text-end .fw-semibold {
+            font-size: 0.95rem;
+            color: #374151;
+            font-weight: 600;
         }
 
-        .stats-label {
+        .admin-header .text-end .text-muted {
             font-size: 0.9rem;
-            color: var(--admin-secondary);
+            color: #1e40af !important;
             font-weight: 500;
         }
 
-        .table-modern {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-        }
-
-        .table-modern thead th {
-            background: #f8fafc;
-            border-bottom: 2px solid #e5e7eb;
-            font-weight: 600;
-            color: var(--admin-dark);
-            padding: 15px;
-        }
-
-        .table-modern tbody td {
-            padding: 15px;
-            border-bottom: 1px solid #f1f5f9;
-            vertical-align: middle;
-        }
-
-        .table-modern tbody tr:hover {
-            background-color: #f8fafc;
-        }
-
-        .status-badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .status-pending { background: #fef3c7; color: #d97706; }
-        .status-approved { background: #dbeafe; color: #2563eb; }
-        .status-done { background: #d1fae5; color: #065f46; }
-        .status-cancelled { background: #fee2e2; color: #dc2626; }
-
-        .queue-status-waiting { background: #fef3c7; color: #d97706; }
-        .queue-status-called { background: #dbeafe; color: #2563eb; }
-        .queue-status-served { background: #d1fae5; color: #065f46; }
-        .queue-status-skipped { background: #f3f4f6; color: #6b7280; }
-
-        .btn-admin {
-            border-radius: 8px;
-            padding: 10px 20px;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-
-        .btn-admin:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        .admin-content {
+            flex: 1;
+            padding: 2rem;
         }
 
         .sidebar-toggle {
-            background: none;
+            background: transparent;
             border: none;
             color: white;
-            font-size: 18px;
-            padding: 10px;
-            border-radius: 8px;
-            transition: background 0.3s ease;
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .admin-sidebar .sidebar-toggle {
+            color: white;
         }
 
         .sidebar-toggle:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .mobile-overlay.show {
+            display: block;
+        }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
             .admin-sidebar {
                 transform: translateX(-100%);
+                width: 260px;
             }
 
             .admin-sidebar.show {
@@ -220,20 +190,185 @@
                 margin-left: 0;
             }
 
-            .mobile-overlay {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                z-index: 999;
+            .admin-main.expanded {
+                margin-left: 0;
             }
 
-            .mobile-overlay.show {
-                display: block;
+            .admin-header {
+                padding: 1rem 1.5rem;
             }
+
+            .admin-header h1 {
+                font-size: 1.25rem !important;
+            }
+
+            .admin-content {
+                padding: 1rem;
+            }
+        }
+
+        /* Card Styling */
+        .card {
+            border: none;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            background-color: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            border-radius: 12px 12px 0 0;
+            padding: 1.5rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Table Styling */
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead {
+            background-color: #f9fafb;
+        }
+
+        .table thead th {
+            border-bottom: 2px solid #e5e7eb;
+            font-weight: 600;
+            color: #374151;
+            padding: 1rem;
+        }
+
+        .table tbody td {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: middle;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f9fafb;
+        }
+
+        /* Badge Styling */
+        .badge {
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        .badge.bg-success {
+            background-color: #dcfce7 !important;
+            color: #166534;
+        }
+
+        .badge.bg-warning {
+            background-color: #fef3c7 !important;
+            color: #92400e;
+        }
+
+        .badge.bg-danger {
+            background-color: #fee2e2 !important;
+            color: #991b1b;
+        }
+
+        .badge.bg-info {
+            background-color: #cffafe !important;
+            color: #164e63;
+        }
+
+        /* Button Styling */
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #1e40af;
+            border-color: #1e40af;
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+
+        .btn-outline-secondary {
+            color: #6b7280;
+            border-color: #d1d5db;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #f3f4f6;
+            border-color: #d1d5db;
+        }
+
+        /* Dropdown */
+        .dropdown-menu {
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-item {
+            padding: 0.5rem 1rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+
+        /* Form Styling */
+        .form-control,
+        .form-select {
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            padding: 0.75rem 1rem;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #1e40af;
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Alert Styling */
+        .alert {
+            border-radius: 8px;
+            border: 1px solid;
+            padding: 1rem;
+        }
+
+        .alert-success {
+            background-color: #f0fdf4;
+            border-color: #dcfce7;
+            color: #166534;
+        }
+
+        .alert-warning {
+            background-color: #fffbeb;
+            border-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .alert-danger {
+            background-color: #fef2f2;
+            border-color: #fee2e2;
+            color: #991b1b;
         }
     </style>
 
@@ -332,8 +467,8 @@
 
                 <div class="d-flex align-items-center">
                     <div class="text-end me-3 d-none d-sm-block">
-                        <div class="fw-semibold small" id="currentDate">{{ now()->format('l, d F Y') }}</div>
-                        <div class="text-muted small"><span id="currentTime">{{ now()->format('H:i') }}</span> WIB</div>
+                        <div class="fw-semibold small">{{ now()->format('l, d F Y') }}</div>
+                        <!-- <div class="text-muted small">{{ now()->format('H:i') }} WIB</div> -->
                     </div>
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
@@ -369,50 +504,22 @@
 
     {{-- Admin JavaScript --}}
     <script>
-        // Update Real-time Clock
+        // Real-time Clock Update
         function updateClock() {
             const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const timeString = `${hours}:${minutes} WIB`;
             
-            // Format tanggal: Hari, Tanggal Bulan Tahun
-            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const months = ['January', 'February', 'March', 'April', 'May', 'June', 
-                          'July', 'August', 'September', 'October', 'November', 'December'];
-            
-            const dayName = days[now.getDay()];
-            const date = now.getDate();
-            const month = months[now.getMonth()];
-            const year = now.getFullYear();
-            
-            // Format dalam Bahasa Indonesia
-            const dayNamesID = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-            const monthNamesID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-                               'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-            
-            const formattedDate = dayNamesID[now.getDay()] + ', ' + 
-                                 (date < 10 ? '0' + date : date) + ' ' +
-                                 monthNamesID[now.getMonth()] + ' ' +
-                                 year;
-            
-            // Format jam: HH:mm
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const formattedTime = hours + ':' + minutes;
-            
-            // Update elemen
-            const dateElement = document.getElementById('currentDate');
-            const timeElement = document.getElementById('currentTime');
-            
-            if (dateElement) {
-                dateElement.textContent = formattedDate;
-            }
+            const timeElement = document.querySelector('.admin-header .text-muted.small');
             if (timeElement) {
-                timeElement.textContent = formattedTime;
+                timeElement.textContent = timeString;
             }
         }
-        
-        // Update clock every second
+
+        // Update clock immediately and then every second
+        updateClock();
         setInterval(updateClock, 1000);
-        updateClock(); // Call immediately on load
 
         // Sidebar Toggle Functionality
         document.addEventListener('DOMContentLoaded', function() {

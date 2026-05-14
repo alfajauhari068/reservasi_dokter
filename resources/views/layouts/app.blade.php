@@ -5,191 +5,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Reservasi Dokter')</title>
+
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
+        /* Landing-bright wrapper styles (no backend/route changes) */
         body {
+            background: linear-gradient(180deg, #f4fbff 0%, #f8ffff 55%, #ffffff 100%);
+            color: #0f172a;
             font-family: 'Figtree', sans-serif;
-            background: linear-gradient(180deg, #eef2ff 0%, #ffffff 100%);
+        }
+
+        .ds-app-shell {
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ds-app-shell::before {
+            content: "";
+            position: absolute;
+            inset: -200px -100px auto -100px;
+            height: 520px;
+            background: radial-gradient(circle at top left, rgba(14, 165, 233, 0.22), transparent 55%),
+                        radial-gradient(circle at bottom right, rgba(20, 184, 166, 0.20), transparent 50%);
+            pointer-events: none;
+        }
+
+        .ds-navbar {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            min-height: 76px;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+        }
+
+        .ds-navbar .navbar-brand {
+            color: #0f172a;
+            font-weight: 800;
+            letter-spacing: 0.01em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ds-navbar .brand-subtitle {
+            display: block;
+            font-size: 0.85rem;
+            color: rgba(15, 23, 42, 0.6);
+            font-weight: 600;
+            margin-top: -2px;
+        }
+
+        .ds-navbar .nav-link {
+            color: rgba(15, 23, 42, 0.78);
+            font-weight: 650;
+        }
+
+        .ds-navbar .nav-link:hover {
             color: #0f172a;
         }
 
-        .navbar {
-            background: linear-gradient(90deg, #4338ca, #2563eb);
-            min-height: 76px;
-            border-radius: 0 0 20px 20px;
-            box-shadow: 0 20px 60px rgba(37, 99, 235, 0.18);
-        }
-
-        .navbar-brand {
-            color: #ffffff;
-            font-weight: 700;
-            letter-spacing: 0.02em;
-        }
-
-        .navbar-brand small {
-            display: block;
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 500;
-        }
-
-        .navbar .nav-link {
-            color: rgba(255, 255, 255, 0.92);
-            font-weight: 500;
-        }
-
-        .navbar .nav-link:hover {
-            color: #ffffff;
-        }
-
-        .main-shell {
+        .ds-main {
             padding: 2rem 1rem 4rem;
+            position: relative;
+            z-index: 1;
         }
 
-        .page-heading {
-            padding: 2rem;
+        .ds-container {
+            max-width: 1100px;
+        }
+
+        .ds-content-card {
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(14, 165, 233, 0.12);
             border-radius: 28px;
-            background: linear-gradient(180deg, rgba(79, 70, 229, 0.14), rgba(255, 255, 255, 0.8));
-            box-shadow: 0 26px 60px rgba(15, 23, 42, 0.08);
-            margin-bottom: 1.75rem;
-        }
-
-        .page-heading h1 {
-            font-size: 2.5rem;
-            letter-spacing: -0.03em;
-            margin-bottom: 0.5rem;
-        }
-
-        .page-heading p {
-            color: #475569;
-            font-size: 1rem;
-            max-width: 660px;
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.94);
-            border: 1px solid rgba(148, 163, 184, 0.18);
-            border-radius: 24px;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
-            padding: 1.6rem;
-        }
-
-        .btn-gradient {
-            border-radius: 14px;
-            padding: 0.9rem 1.6rem;
-            background: linear-gradient(90deg, #2563eb, #0ea5e9);
-            color: #ffffff;
-            font-weight: 600;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .btn-gradient:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 16px 28px rgba(14, 165, 233, 0.25);
-            background: linear-gradient(90deg, #1d4ed8, #0284c7);
-        }
-
-        .table-modern {
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 24px 50px rgba(15, 23, 42, 0.08);
-            background: #ffffff;
-        }
-
-        .table-modern thead th {
-            background: #f8fafc;
-            color: #334155;
-            border: none;
-            font-weight: 700;
-            padding: 1.3rem 1rem;
-        }
-
-        .table-modern tbody td {
-            border: none;
-            padding: 1rem 1rem;
-            vertical-align: middle;
-            color: #475569;
-        }
-
-        .table-modern tbody tr:hover {
-            background: #f8fafc;
-        }
-
-        .badge-pill {
-            border-radius: 999px;
-            padding: 0.55rem 0.95rem;
-            font-size: 0.82rem;
-            letter-spacing: 0.01em;
-            font-weight: 600;
-        }
-
-        .badge-pill.available {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .badge-pill.unavailable {
-            background: #fee2e2;
-            color: #b91c1c;
-        }
-
-        .stats-pill {
-            background: #ffffff;
-            border: 1px solid rgba(148, 163, 184, 0.24);
-            border-radius: 18px;
-            padding: 1rem 1.2rem;
-            color: #334155;
-        }
-
-        .stats-pill strong {
-            display: block;
-            font-size: 1.75rem;
-            margin-bottom: 0.35rem;
-        }
-
-        .search-box .form-control {
-            border-radius: 18px;
-            padding: 1rem 1.2rem;
-            box-shadow: inset 0 6px 18px rgba(15, 23, 42, 0.05);
-            border: 1px solid rgba(148, 163, 184, 0.22);
-        }
-
-        .search-box .input-group-text {
-            background: #ffffff;
-            border-radius: 18px 0 0 18px;
-            border-right: none;
-        }
-
-        .search-box .form-control:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 0.15rem rgba(37, 99, 235, 0.16);
+            box-shadow: 0 26px 60px rgba(15, 23, 42, 0.06);
+            padding: 1.75rem;
         }
 
         @media (max-width: 768px) {
-            .page-heading {
-                padding: 1.5rem;
-            }
-
-            .page-heading h1 {
-                font-size: 2rem;
-            }
+            .ds-content-card { padding: 1.25rem; }
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container">
+<div class="ds-app-shell">
+    <nav class="ds-navbar navbar navbar-expand-lg">
+        <div class="container ds-container">
             <a class="navbar-brand" href="{{ url('/') }}">
-                Reservasi Dokter
-                <small>Platform reservasi kesehatan modern</small>
+                {{-- Prefer asset logo if exists; fallback text-only handled by layout --}}
+                <img
+                    src="{{ asset('assets/dokter1.jpg') }}"
+                    alt="Reservasi Dokter"
+                    width="36"
+                    height="36"
+                    style="object-fit: cover; border-radius: 14px; border: 1px solid rgba(14,165,233,0.18);"
+                    onerror="this.style.display='none'"
+                >
+                <span>
+                    Reservasi Dokter
+                    <span class="brand-subtitle">Platform reservasi kesehatan modern</span>
+                </span>
             </a>
-            <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+
+            <button class="navbar-toggler border-0 text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarMenu">
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
@@ -203,26 +130,49 @@
                             @endif
                         @endauth
                     </li>
-                    <!-- <li class="nav-item"><a class="nav-link" href="{{ route('admin.doctors.index') }}">Dokter</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.reports.visitation') }}">Laporan</a></li>
-                </ul> -->
+
+                    {{-- Right-side CTA: show one action for guests, keep existing logout logic for authenticated users --}}
+                    @guest
+                        <li class="nav-item ms-lg-3">
+                            <a class="btn btn-primary" style="border-radius: 999px; padding: .7rem 1.2rem;" href="{{ route('login') }}">
+                                Login
+                            </a>
+                        </li>
+                    @endguest
+
+                    @auth
+                        <li class="nav-item ms-lg-3">
+                            <a class="btn btn-secondary" style="border-radius: 999px; padding: .7rem 1.2rem;" href="{{ url('/') }}">
+                                Reservasi
+                            </a>
+                        </li>
+                    @endauth
+                </ul>
+
                 @auth
                     <div class="d-flex align-items-center ms-4">
-                        <span class="me-3 text-white">{{ auth()->user()->name }}</span>
+                        <span class="me-3 text-dark" style="font-weight: 650;">{{ auth()->user()->name }}</span>
                         <form action="{{ route('logout') }}" method="POST" class="d-inline">
                             @csrf
-                            <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+                            <button type="submit" class="btn btn-ghost btn-sm-ds" style="border-radius: 999px;">
+                                Logout
+                            </button>
                         </form>
                     </div>
                 @endauth
             </div>
         </div>
     </nav>
-    <main class="main-shell">
-        <div class="container">
-            @yield('content')
+
+    <main class="ds-main">
+        <div class="container ds-container">
+            <div class="ds-content-card">
+                @yield('content')
+            </div>
         </div>
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

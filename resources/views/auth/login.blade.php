@@ -5,295 +5,364 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Masuk - Reservasi Dokter</title>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Icons -->
+
+    {{-- Fonts --}}
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
+
+    {{-- Icons --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#EBF5FF',
-                            100: '#D6EBFF',
-                            200: '#ADD8FF',
-                            300: '#85C4FF',
-                            400: '#5CB1FF',
-                            500: '#339DFF',
-                            600: '#1D9BF0', // Primary blue
-                            700: '#187FCA',
-                            800: '#1363A3',
-                            900: '#0E477D',
-                        },
-                        success: {
-                            50: '#ECFDF5',
-                            100: '#D1FAE5',
-                            200: '#A7F3D0',
-                            300: '#6EE7B7',
-                            400: '#34D399',
-                            500: '#10B981',
-                            600: '#22C55E', // Success green
-                            700: '#16A34A',
-                            800: '#15803D',
-                            900: '#166534',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    
+
     <style>
+        :root {
+            --aqua-50: #EBF5FF;
+            --aqua-100: #D6EBFF;
+            --aqua-200: #ADD8FF;
+            --aqua-primary: #23d1c7;
+            --aqua-ink: #083a3a;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Figtree', sans-serif;
+            background: linear-gradient(180deg, #ffffff 0%, #EAF6FF 30%, #D9FCF8 65%, #ffffff 100%);
+            min-height: 100vh;
         }
-        
-        /* Custom gradient background */
-        .login-gradient {
-            background: linear-gradient(135deg, #EBF5FF 0%, #ECFDF5 50%, #EBF5FF 100%);
+
+        .login-shell {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
         }
-        
-        /* Smooth transitions */
-        .transition-smooth {
-            transition: all 0.3s ease;
+
+        .login-card {
+            width: 100%;
+            max-width: 920px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(14, 165, 233, 0.16);
+            border-radius: 28px;
+            box-shadow: 0 22px 60px rgba(15, 23, 42, 0.08);
+            overflow: hidden;
         }
-        
-        /* Input focus styles */
-        .input-focus:focus {
-            box-shadow: 0 0 0 3px rgba(29, 155, 240, 0.2);
+
+        .login-form-wrap {
+            padding: 2rem;
         }
-        
-        /* Button hover effect */
-        .btn-hover:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(29, 155, 240, 0.3);
+
+        .login-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1rem;
         }
-        
-        /* Card shadow */
-        .card-shadow {
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+
+        .login-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 16px;
+            background: rgba(35, 209, 199, 0.18);
+            border: 1px solid rgba(35, 209, 199, 0.28);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--aqua-primary);
+            flex: 0 0 auto;
         }
-        
-        /* Illustration area gradient */
-        .illustration-bg {
-            background: linear-gradient(135deg, #1D9BF0 0%, #22C55E 100%);
+
+        .login-input {
+            background: rgba(15, 23, 42, 0.035);
+            border: 1px solid rgba(14, 165, 233, 0.18);
+            border-radius: 16px;
+            padding: 0.85rem 1rem;
+            width: 100%;
+            outline: none;
+            transition: box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
+        }
+
+        .login-input:focus {
+            border-color: rgba(14, 165, 233, 0.45);
+            box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.16);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .login-label {
+            font-weight: 700;
+            color: rgba(15, 23, 42, 0.72);
+            font-size: 0.92rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .login-help {
+            color: rgba(15, 23, 42, 0.65);
+            font-size: 0.92rem;
+        }
+
+        .login-divider {
+            height: 1px;
+            background: rgba(14, 165, 233, 0.18);
+            margin: 1.5rem 0;
+        }
+
+        .login-illustration {
+            padding: 2rem;
+            background:
+                radial-gradient(circle at top left, rgba(14, 165, 233, 0.22), transparent 55%),
+                radial-gradient(circle at bottom right, rgba(35, 209, 199, 0.18), transparent 45%);
+            border-left: 1px solid rgba(14, 165, 233, 0.12);
+        }
+
+        @media (max-width: 991.98px) {
+            .login-card { border-radius: 22px; }
+            .login-illustration { display: none; }
+            .login-form-wrap { padding: 1.6rem; }
+        }
+
+        /* keep "name"/"id" unchanged as requested */
+        .login-icon-input {
+            position: relative;
+        }
+
+        .login-icon-input .icon-left {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(15, 23, 42, 0.45);
+        }
+
+        .login-icon-input .icon-right {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: rgba(15, 23, 42, 0.45);
+            padding: .25rem;
+        }
+
+        .login-icon-input input {
+            padding-left: 46px;
+        }
+
+        .login-icon-input input[type="password"] {
+            padding-right: 46px;
+        }
+
+        .login-alert {
+            background: rgba(239, 68, 68, 0.10);
+            border: 1px solid rgba(239, 68, 68, 0.20);
+            border-radius: 16px;
+            padding: 0.9rem 1rem;
+            color: rgba(185, 28, 28, 1);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .login-link {
+            color: rgba(13, 110, 253, 0.95);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .login-link:hover { text-decoration: underline; }
+
+        .login-btn {
+            border-radius: 16px;
+            font-weight: 800;
+            padding: 0.95rem 1.1rem;
         }
     </style>
 </head>
-<body class="login-gradient min-h-screen flex items-center justify-center p-4 md:p-8">
-    
-    <!-- Main Card -->
-    <div class="w-full max-w-5xl card-shadow rounded-3xl overflow-hidden bg-white">
-        <div class="flex flex-col lg:flex-row">
-            
-            <!-- Left Side - Login Form -->
-            <div class="w-full lg:w-1/2 p-8 md:p-12">
-                
-                <!-- Logo & Header -->
-                <div class="mb-8">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="w-12 h-12 bg-primary-600 rounded-xl flex items-center justify-center">
-                            <i class="fa-solid fa-staff-snake text-white text-xl"></i>
-                        </div>
-                        <span class="text-xl font-bold text-gray-800">Reservasi Dokter</span>
-                    </div>
-                    
-                    <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                        Masuk ke Reservasi Dokter
-                    </h1>
-                    <p class="text-gray-500 text-sm">
-                        Silakan login untuk melanjutkan
-                    </p>
-                </div>
-                
-                <!-- Error Alert -->
-                @if(session('error'))
-                    <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-3">
-                        <i class="fa-solid fa-circle-exclamation text-red-500"></i>
-                        <span class="text-red-700 text-sm">{{ session('error') }}</span>
-                    </div>
-                @endif
-                
-                <!-- Login Form -->
-                <form method="POST" action="{{ route('login.perform') }}" class="space-y-5">
-                    @csrf
-                    
-                    <!-- Email Field -->
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                            Email
-                        </label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <i class="fa-regular fa-envelope text-gray-400"></i>
+<body>
+    <div class="login-shell">
+        <div class="login-card">
+            <div class="row g-0">
+                {{-- Left: Login form --}}
+                <div class="col-12 col-lg-6">
+                    <div class="login-form-wrap">
+                        <div class="login-brand">
+                            <div class="login-logo">
+                                <i class="fa-solid fa-stethoscope"></i>
                             </div>
-                            <input 
-                                id="email" 
-                                type="email" 
-                                name="email" 
-                                value="{{ old('email') }}"
-                                placeholder="masukkan email terdaftar"
-                                class="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl input-focus transition-smooth focus:bg-white focus:border-primary-500 focus:outline-none @error('email') border-red-500 @else @enderror"
-                                required 
-                                autofocus
-                            >
+                            <div>
+                                <div style="font-weight: 850; font-size: 1.1rem;">Reservasi Dokter</div>
+                                <div class="login-help" style="font-size: .9rem;">Masuk untuk melanjutkan</div>
+                            </div>
                         </div>
-                        @error('email')
-                            <p class="mt-2 text-sm text-red-500 flex items-center gap-1">
+
+                        {{-- Error Alert (keep @error directive block unchanged) --}}
+                        @if(session('error'))
+                            <div class="login-alert">
                                 <i class="fa-solid fa-circle-exclamation"></i>
-                                {{ $message }}
-                            </p>
-                        @enderror
-                    </div>
-                    
-                    <!-- Password Field -->
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
-                            Kata Sandi
-                        </label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <i class="fa-solid fa-lock text-gray-400"></i>
+                                <span style="font-weight: 700;">{{ session('error') }}</span>
                             </div>
-                            <input 
-                                id="password" 
-                                type="password" 
-                                name="password" 
-                                placeholder="masukkan kata sandi"
-                                class="w-full pl-12 pr-14 py-3.5 bg-gray-50 border border-gray-200 rounded-xl input-focus transition-smooth focus:bg-white focus:border-primary-500 focus:outline-none @error('password') border-red-500 @else @enderror"
-                                required
+                        @endif
+
+                        {{-- Login Form (keep method/action, @csrf, @error, name/id unchanged) --}}
+                        <form method="POST" action="{{ route('login.perform') }}" class="space-y-5">
+                            @csrf
+
+                            <div class="mb-4">
+                                <label for="email" class="login-label">Email</label>
+                                <div class="login-icon-input">
+                                    <span class="icon-left"><i class="fa-regular fa-envelope"></i></span>
+                                    <input
+                                        id="email"
+                                        type="email"
+                                        name="email"
+                                        value="{{ old('email') }}"
+                                        placeholder="masukkan email terdaftar"
+                                        class="login-input"
+                                        required
+                                        autofocus
+                                    >
+                                </div>
+                                @error('email')
+                                    <p class="mt-2" style="color: #dc2626; font-weight: 700; display:flex; gap:8px; align-items:center;">
+                                        <i class="fa-solid fa-circle-exclamation"></i>
+                                        <span>{{ $message }}</span>
+                                    </p>
+                                @enderror
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="password" class="login-label">Kata Sandi</label>
+                                <div class="login-icon-input">
+                                    <span class="icon-left"><i class="fa-solid fa-lock"></i></span>
+                                    <input
+                                        id="password"
+                                        type="password"
+                                        name="password"
+                                        placeholder="masukkan kata sandi"
+                                        class="login-input"
+                                        required
+                                    >
+                                    <button
+                                        type="button"
+                                        id="togglePassword"
+                                        class="icon-right"
+                                        aria-label="toggle password"
+                                    >
+                                        <i class="fa-regular fa-eye" id="eyeIcon"></i>
+                                    </button>
+                                </div>
+                                @error('password')
+                                    <p class="mt-2" style="color: #dc2626; font-weight: 700; display:flex; gap:8px; align-items:center;">
+                                        <i class="fa-solid fa-circle-exclamation"></i>
+                                        <span>{{ $message }}</span>
+                                    </p>
+                                @enderror
+                            </div>
+
+                            {{-- Remember me + forgot password (no directive/route changes) --}}
+                            <div class="d-flex align-items-center justify-content-between mb-4" style="gap: 1rem; flex-wrap: wrap;">
+                                <label class="d-flex align-items-center gap-2" style="cursor:pointer; user-select:none;">
+                                    <input
+                                        type="checkbox"
+                                        name="remember"
+                                        id="remember"
+                                        style="width: 18px; height: 18px; accent-color: #23d1c7;"
+                                    >
+                                    <span class="login-help" style="font-weight:700;">Ingat saya</span>
+                                </label>
+
+                                <a href="#" class="login-link">Lupa kata sandi?</a>
+                            </div>
+
+                            <button
+                                type="submit"
+                                class="w-100 login-btn btn-primary btn"
                             >
-                            <button 
-                                type="button" 
-                                id="togglePassword"
-                                class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-smooth"
-                            >
-                                <i class="fa-regular fa-eye" id="eyeIcon"></i>
+                                <span class="d-inline-flex align-items-center justify-content-center gap-3">
+                                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                                    Masuk
+                                </span>
                             </button>
-                        </div>
-                        @error('password')
-                            <p class="mt-2 text-sm text-red-500 flex items-center gap-1">
-                                <i class="fa-solid fa-circle-exclamation"></i>
-                                {{ $message }}
-                            </p>
-                        @enderror
+
+                            <div class="login-divider"></div>
+
+                            <div class="text-center">
+                                <span class="login-help">Belum punya akun? </span>
+                                <a href="{{ route('register') }}" class="login-link">Daftar sebagai pasien</a>
+                            </div>
+                        </form>
                     </div>
-                    
-                    <!-- Remember Me & Forgot Password -->
-                    <div class="flex items-center justify-between">
-                        <label class="flex items-center cursor-pointer">
-                            <input 
-                                type="checkbox" 
-                                name="remember" 
-                                id="remember"
-                                class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                </div>
+
+                {{-- Right: Illustration (desktop only) --}}
+                <div class="col-12 col-lg-6">
+                    <div class="login-illustration h-100">
+                        <div class="d-flex align-items-start gap-3 mb-4">
+                            <img
+                                src="{{ asset('assets/dokter-dokter.jpg') }}"
+                                alt="Ilustrasi"
+                                loading="lazy"
+                                style="width: 52px; height: 52px; object-fit: cover; border-radius: 18px; border: 1px solid rgba(14,165,233,0.18); box-shadow: 0 18px 46px rgba(15,23,42,0.06);"
+                                onerror="this.style.display='none'"
                             >
-                            <span class="ml-2 text-sm text-gray-600">Ingat saya</span>
-                        </label>
-                        <a href="#" class="text-sm text-primary-600 hover:text-primary-700 transition-smooth">
-                            Lupa kata sandi?
-                        </a>
-                    </div>
-                    
-                    <!-- Submit Button -->
-                    <button 
-                        type="submit"
-                        class="w-full py-3.5 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl btn-hover transition-smooth flex items-center justify-center gap-2"
-                    >
-                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                        Masuk
-                    </button>
-                </form>
-                
-                <!-- Register Link -->
-                <div class="mt-8 pt-6 border-t border-gray-100 text-center">
-                    <p class="text-gray-500 text-sm">
-                        Belum punya akun? 
-                        <a href="{{ route('register') }}" class="text-primary-600 font-medium hover:text-primary-700 transition-smooth">
-                            Daftar sebagai pasien
-                        </a>
-                    </p>
-                </div>
-            </div>
-            
-            <!-- Right Side - Illustration (Desktop Only) -->
-            <div class="hidden lg:flex lg:w-1/2 illustration-bg p-12 flex-col justify-between text-white">
-                <div>
-                    <h2 class="text-2xl md:text-3xl font-bold mb-4">
-                        Reservasi Dokter Online
-                    </h2>
-                    <p class="text-white/90 text-lg leading-relaxed">
-                        Buat janji dengan dokter pilihan Anda بسهولة tanpa antre lama. 
-                        Layanan kesehatan yang lebih mudah, cepat, dan praktis.”
-                    </p>
-                </div>
-                
-                <!-- Feature Icons -->
-                <div class="space-y-6">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                            <i class="fa-solid fa-calendar-check text-xl"></i>
+                            <div>
+                                <div style="color: rgba(15, 23, 42, 0.92); font-weight: 900; font-size: 1.3rem;">Reservasi Dokter Online</div>
+                                <div class="login-help" style="color: rgba(15, 23, 42, 0.68);">Cepat, jelas, dan tanpa antre lama.</div>
+                            </div>
                         </div>
-                        <div>
-                            <h3 class="font-semibold">Booking Mudah</h3>
-                            <p class="text-white/80 text-sm">Jadwalkan kunjungan dalam hitungan menit</p>
+
+                        <div style="display:grid; gap: 18px;">
+                            <div class="d-flex align-items-center gap-3" style="padding: 16px; background: rgba(255,255,255,0.55); border: 1px solid rgba(14,165,233,0.14); border-radius: 22px;">
+                                <div style="width:46px; height:46px; border-radius: 18px; background: rgba(35,209,199,0.16); border: 1px solid rgba(35,209,199,0.20); display:flex; align-items:center; justify-content:center; color: #0b76ac;">
+                                    <i class="fa-solid fa-calendar-check"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 900;">Booking Mudah</div>
+                                    <div class="login-help">Jadwalkan kunjungan dalam hitungan menit</div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3" style="padding: 16px; background: rgba(255,255,255,0.55); border: 1px solid rgba(14,165,233,0.14); border-radius: 22px;">
+                                <div style="width:46px; height:46px; border-radius: 18px; background: rgba(35,209,199,0.16); border: 1px solid rgba(35,209,199,0.20); display:flex; align-items:center; justify-content:center; color: #0b76ac;">
+                                    <i class="fa-solid fa-clock"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 900;">Tidak Perlu Antri</div>
+                                    <div class="login-help">Datang sesuai waktu yang ditentukan</div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3" style="padding: 16px; background: rgba(255,255,255,0.55); border: 1px solid rgba(14,165,233,0.14); border-radius: 22px;">
+                                <div style="width:46px; height:46px; border-radius: 18px; background: rgba(35,209,199,0.16); border: 1px solid rgba(35,209,199,0.20); display:flex; align-items:center; justify-content:center; color: #0b76ac;">
+                                    <i class="fa-solid fa-file-medical"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 900;">Rekam Medis Digital</div>
+                                    <div class="login-help">Riwayat kesehatan tersimpan aman</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 1.4rem; padding-top: 1rem; border-top: 1px solid rgba(14,165,233,0.16);">
+                            <div style="font-style: italic; color: rgba(15, 23, 42, 0.70); font-weight: 700;">"Kesehatan adalah kekayaan yang sebenarnya."</div>
                         </div>
                     </div>
-                    
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                            <i class="fa-solid fa-clock text-xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold">Tidak Perlu Antri</h3>
-                            <p class="text-white/80 text-sm">Datang sesuai waktu yang ditentukan</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                            <i class="fa-solid fa-file-medical text-xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold">Rekam Medis Digital</h3>
-                            <p class="text-white/80 text-sm">Riwayat kesehatan tersimpan aman</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Footer Quote -->
-                <div class="mt-8 pt-6 border-t border-white/20">
-                    <p class="text-white/80 italic text-sm">
-                        "Kesehatan adalah kekayaan yang sebenarnya."
-                    </p>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- JavaScript for Password Toggle -->
+
+    {{-- JavaScript for Password Toggle (kept IDs: togglePassword, eyeIcon, password) --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const togglePassword = document.getElementById('togglePassword');
             const passwordInput = document.getElementById('password');
             const eyeIcon = document.getElementById('eyeIcon');
-            
+
             if (togglePassword && passwordInput && eyeIcon) {
                 togglePassword.addEventListener('click', function() {
                     const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
                     passwordInput.setAttribute('type', type);
-                    
+
                     if (type === 'text') {
                         eyeIcon.classList.remove('fa-eye');
                         eyeIcon.classList.add('fa-eye-slash');
@@ -307,3 +376,4 @@
     </script>
 </body>
 </html>
+
