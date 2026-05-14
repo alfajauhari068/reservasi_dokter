@@ -20,7 +20,7 @@
         <h5 class="card-title">Data Reservasi</h5>
         <div class="row">
             <div class="col-md-6">
-                <p class="mb-2"><strong>Nama Pasien:</strong> {{ optional($appointment->patient->user)->name ?? '-' }}</p>
+                <p class="mb-2"><strong>Nama Pasien:</strong> {{ optional($appointment->patient->user)->name ?? $appointment->patient->full_name ?? $appointment->patient->identity_number }}</p>
                 <p class="mb-2"><strong>Tanggal:</strong> {{ $appointment->appointment_date->format('d-m-Y') }}</p>
             </div>
             <div class="col-md-6">

@@ -80,7 +80,7 @@
                             @foreach($pendingAppointments as $appointment)
                                 <tr>
                                     <td>{{ $appointment->appointment_date->format('d-m-Y') }}</td>
-                                    <td>{{ optional($appointment->patient->user)->name ?? '-' }}</td>
+                                    <td>{{ optional($appointment->patient->user)->name ?? $appointment->patient->full_name ?? $appointment->patient->identity_number }}</td>
                                     <td>{{ $appointment->queue_number ?? '-' }}</td>
                                     <td><span class="badge bg-warning text-dark">{{ ucfirst($appointment->status) }}</span></td>
                                     <td class="text-end"><a href="{{ route('dokter.reservasi.show', $appointment) }}" class="btn btn-sm btn-primary">Periksa</a></td>

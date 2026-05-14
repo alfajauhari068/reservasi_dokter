@@ -118,8 +118,8 @@
                                 <tr>
                                     <td><strong>{{ $appointment->booking_code }}</strong></td>
                                     <td>
-                                        <div>{{ $appointment->patient->user->name }}</div>
-                                        <small class="text-muted">{{ $appointment->patient->user->email }}</small>
+                                        <div>{{ optional($appointment->patient->user)->name ?? $appointment->patient->full_name ?? $appointment->patient->identity_number }}</div>
+                                        <small class="text-muted">{{ optional($appointment->patient->user)->email ?? '-' }}</small>
                                     </td>
                                     <td>
                                         <div>{{ $appointment->doctor->user->name }}</div>

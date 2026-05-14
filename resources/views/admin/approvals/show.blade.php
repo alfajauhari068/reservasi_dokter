@@ -76,11 +76,11 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <p class="mb-1"><strong>Nama:</strong></p>
-                            <p>{{ $appointment->patient->user->name }}</p>
+                            <p>{{ optional($appointment->patient->user)->name ?? $appointment->patient->full_name ?? $appointment->patient->identity_number }}</p>
                         </div>
                         <div class="col-md-6">
                             <p class="mb-1"><strong>Email:</strong></p>
-                            <p>{{ $appointment->patient->user->email }}</p>
+                            <p>{{ optional($appointment->patient->user)->email ?? '-' }}</p>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -167,7 +167,7 @@
                     <p class="mb-2"><strong>Status Reservasi:</strong> {{ ucwords(str_replace('_', ' ', $appointment->status)) }}</p>
                     <p class="mb-2"><strong>Status Approval:</strong> {{ ucwords(str_replace('_', ' ', $appointment->approval_status)) }}</p>
                     <p class="mb-2"><strong>Tanggal Periksa:</strong> {{ $appointment->appointment_date->format('d M Y') }}</p>
-                    <p class="mb-2"><strong>Pasien:</strong> {{ $appointment->patient->user->name }}</p>
+                    <p class="mb-2"><strong>Pasien:</strong> {{ optional($appointment->patient->user)->name ?? $appointment->patient->full_name ?? $appointment->patient->identity_number }}</p>
                     <p class="mb-0"><strong>Dokter:</strong> {{ $appointment->doctor->user->name }}</p>
                 </div>
             </div>

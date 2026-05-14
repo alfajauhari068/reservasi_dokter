@@ -35,7 +35,7 @@
                 @foreach($completedAppointments as $appointment)
                     <tr>
                         <td>{{ $appointment->appointment_date->format('d-m-Y') }}</td>
-                        <td>{{ optional($appointment->patient->user)->name ?? '-' }}</td>
+                        <td>{{ optional($appointment->patient->user)->name ?? $appointment->patient->full_name ?? $appointment->patient->identity_number }}</td>
                         <td>{{ \Illuminate\Support\Str::limit(optional($appointment->medicalRecord)->diagnosis, 50) ?? '-' }}</td>
                         <td><a href="{{ route('dokter.reservasi.show', $appointment) }}" class="btn btn-sm btn-outline-primary">Detail</a></td>
                     </tr>

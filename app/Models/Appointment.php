@@ -101,6 +101,24 @@ class Appointment extends Model
     }
 
     /**
+     * Register model event callbacks.
+     */
+    protected static function booted()
+    {
+        static::updated(function (Appointment $appointment) {
+            if ($appointment->wasChanged('status') && $appointment->status === 'completed') {
+                if ($appointment->queue) {
+                    $appointment->queue->update([
+                        'queue_status' => 'served',
+                        'called_at' => $appointment->queue->called_at ?? now(),
+                        'served_at' => now(),
+                    ]);
+                }
+            }
+        });
+    }
+
+    /**
      * Check if appointment is waiting for admin approval
      */
     public function isWaitingApproval()
