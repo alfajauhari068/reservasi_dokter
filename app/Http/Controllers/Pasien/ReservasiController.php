@@ -62,11 +62,7 @@ class ReservasiController extends Controller
             return back()->withErrors(['appointment_date' => 'Tanggal tidak sesuai dengan jadwal yang dipilih.'])->withInput();
         }
 
-        $nextQueue = Appointment::where('doctor_id', $doctor->id)
-            ->whereDate('appointment_date', $appointmentDate)
-            ->max('queue_number');
-
-        $queueNumber = $nextQueue ? $nextQueue + 1 : 1;
+        $queueNumber = Queue::nextNumberForSpecialization($doctor->specialization_id, $appointmentDate);
         $bookingCode = strtoupper('BK' . date('Ymd') . Str::random(4));
 
         DB::beginTransaction();

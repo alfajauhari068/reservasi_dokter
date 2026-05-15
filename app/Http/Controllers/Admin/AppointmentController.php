@@ -115,11 +115,9 @@ class AppointmentController extends Controller
                 'approved_at' => now(),
             ]);
 
-            $nextQueueNumber = Queue::join('appointments', 'queues.appointment_id', '=', 'appointments.id')
-                ->whereDate('appointments.appointment_date', $request->appointment_date)
-                ->max('queues.queue_number');
-
-            $nextQueueNumber = $nextQueueNumber ? $nextQueueNumber + 1 : 1;
+            $doctor = Doctor::find($request->doctor_id);
+            $specializationId = $doctor?->specialization_id;
+            $nextQueueNumber = Queue::nextNumberForSpecialization($specializationId, $request->appointment_date);
 
             $appointment->update([
                 'queue_number' => $nextQueueNumber,

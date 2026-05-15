@@ -72,8 +72,18 @@
                     <p class="mb-0">{{ substr($appointment->schedule->end_time, 0, 5) }}</p>
                 </div>
             </div>
-            <p class="text-muted small mb-1">Dokter</p>
-            <p class="mb-0">{{ optional($appointment->doctor->user)->name ?? 'Dokter tidak tersedia' }}</p>
+            <div class="mb-3">
+                <p class="text-muted small mb-1">Dokter</p>
+                <div class="d-flex align-items-center">
+                    @if($appointment->doctor && $appointment->doctor->photo)
+                        <img src="{{ asset('storage/' . $appointment->doctor->photo) }}" alt="Foto Dokter" class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;">
+                    @endif
+                    <div>
+                        <p class="mb-0">{{ optional($appointment->doctor->user)->name ?? 'Dokter tidak tersedia' }}</p>
+                        <small class="text-muted">{{ optional($appointment->doctor->specialization)->name ?? '' }}</small>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

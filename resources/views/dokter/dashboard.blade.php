@@ -27,6 +27,11 @@
         </div>
         <div class="col-lg-4">
             <div class="glass-card p-4 h-100">
+                @if($doctor && $doctor->photo)
+                    <div class="text-center mb-3">
+                        <img src="{{ asset('storage/' . $doctor->photo) }}" alt="Foto Profil Dokter" class="rounded-circle border border-3 border-primary" style="width: 200px; height: 200px; object-fit: cover;">
+                    </div>
+                @endif
                 <div class="d-flex align-items-center mb-3">
                     <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 54px; height: 54px;">
                         <i class="fas fa-user-md text-primary fs-4"></i>
