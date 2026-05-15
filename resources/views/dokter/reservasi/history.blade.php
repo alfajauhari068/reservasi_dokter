@@ -21,6 +21,34 @@
 @if($completedAppointments->isEmpty())
     <div class="alert alert-info">Belum ada riwayat pemeriksaan yang selesai.</div>
 @else
+    <!-- Form Pencarian -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="GET" action="{{ route('dokter.reservasi.history') }}" class="row g-3">
+                <div class="col-md-4">
+                    <label for="search" class="form-label">Cari Pasien</label>
+                    <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="Nama pasien...">
+                </div>
+                <div class="col-md-3">
+                    <label for="date_from" class="form-label">Dari Tanggal</label>
+                    <input type="date" class="form-control" id="date_from" name="date_from" value="{{ request('date_from') }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="date_to" class="form-label">Sampai Tanggal</label>
+                    <input type="date" class="form-control" id="date_to" name="date_to" value="{{ request('date_to') }}">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="fas fa-search me-1"></i>Cari
+                    </button>
+                    <a href="{{ route('dokter.reservasi.history') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-times me-1"></i>Reset
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="table-responsive">
         <table class="table table-bordered table-hover">
             <thead>

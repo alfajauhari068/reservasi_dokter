@@ -161,6 +161,9 @@ Route::middleware(['auth', 'role:dokter'])->group(function () {
         Route::put('reservasi/{appointment}', [DokterReservasiController::class, 'update'])
             ->whereNumber('appointment')
             ->name('reservasi.update');
+        Route::get('reservasi/{appointment}/print-pdf', [DokterReservasiController::class, 'printPdf'])
+            ->whereNumber('appointment')
+            ->name('reservasi.print-pdf');
     });
 });
 
