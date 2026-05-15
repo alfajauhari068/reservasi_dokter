@@ -21,6 +21,8 @@ class QueueController extends Controller
             abort(403, 'Unauthorized access');
         }
 
+        Queue::normalizeBySpecialization(today()->toDateString());
+
         // Ambil data antrian hari ini
         $todayQueues = $this->getTodayQueues();
 
@@ -42,7 +44,10 @@ class QueueController extends Controller
                 'appointment.doctor.specialization'
             ])
             ->join('appointments', 'queues.appointment_id', '=', 'appointments.id')
+            ->leftJoin('doctors', 'appointments.doctor_id', '=', 'doctors.id')
+            ->leftJoin('specializations', 'doctors.specialization_id', '=', 'specializations.id')
             ->whereDate('appointments.appointment_date', today())
+            ->orderBy('specializations.name')
             ->orderBy('queues.queue_number')
             ->select([
                 'queues.*',
@@ -173,13 +178,17 @@ class QueueController extends Controller
         $appointmentsWithoutQueue = Appointment::whereDate('appointment_date', today())
             ->whereDoesntHave('queue')
             ->where('approval_status', 'approved') // Hanya yang sudah disetujui
+            ->with('doctor')
             ->orderBy('appointment_date')
+            ->orderBy('created_at')
             ->get();
 
         $created = 0;
-        $nextQueueNumber = $this->getNextQueueNumber();
 
         foreach ($appointmentsWithoutQueue as $appointment) {
+            $specializationId = $appointment->doctor?->specialization_id;
+            $nextQueueNumber = Queue::nextNumberForSpecialization($specializationId, $appointment->appointment_date->toDateString());
+
             $appointment->update([
                 'queue_number' => $nextQueueNumber,
                 'queue_date' => $appointment->appointment_date,
@@ -187,11 +196,13 @@ class QueueController extends Controller
 
             Queue::create([
                 'appointment_id' => $appointment->id,
-                'queue_number' => $nextQueueNumber++,
+                'queue_number' => $nextQueueNumber,
                 'queue_status' => 'waiting'
             ]);
             $created++;
         }
+
+        Queue::normalizeBySpecialization(today()->toDateString());
 
         return redirect()->back()->with('success', "Berhasil generate {$created} nomor antrian baru");
     }

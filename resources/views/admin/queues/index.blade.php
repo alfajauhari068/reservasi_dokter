@@ -109,103 +109,115 @@
     </div>
     <div class="card-body p-0">
         @if($todayQueues->count() > 0)
-            <div class="table-responsive">
-                <table class="table table-hover mb-0" id="queueTable">
-                    <thead class="table-light">
-                        <tr>
-                            <th class="border-0 fw-semibold text-center">No. Antrian</th>
-                            <th class="border-0 fw-semibold">Kode Booking</th>
-                            <th class="border-0 fw-semibold">Pasien</th>
-                            <th class="border-0 fw-semibold">Dokter</th>
-                            <th class="border-0 fw-semibold">Spesialisasi</th>
-                            <th class="border-0 fw-semibold">Jam Kunjungan</th>
-                            <th class="border-0 fw-semibold text-center">Status Antrian</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($todayQueues as $queue)
-                            <tr id="queue-row-{{ $queue['id'] }}"
-                                class="queue-row {{ $queue['queue_status'] === 'called' ? 'table-info' : ($queue['queue_status'] === 'served' ? 'table-success' : '') }}">
-                                <td class="text-center">
-                                    <span class="badge bg-warning text-dark fs-5 px-3 py-2">
-                                        {{ $queue['queue_number'] }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <code class="bg-light px-2 py-1 rounded small">
-                                        {{ $queue['booking_code'] }}
-                                    </code>
-                                </td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 35px; height: 35px;">
-                                            <i class="fas fa-user text-info"></i>
-                                        </div>
-                                        <div>
-                                            <span class="fw-semibold">{{ $queue['patient_name'] }}</span>
-                                            <br><small class="text-muted">ID: {{ $queue['patient_id'] }}</small>
-                                        </div>
+            @php
+                $groupedQueues = collect($todayQueues)->groupBy('doctor_specialization');
+            @endphp
+            <div class="accordion" id="specializationQueues">
+                @foreach($groupedQueues as $specialization => $queues)
+                    <div class="accordion-item border-0">
+                        <h2 class="accordion-header" id="heading-{{ \Illuminate\Support\Str::slug($specialization ?: 'umum') }}">
+                            <button class="accordion-button collapsed py-3 rounded-3 shadow-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ \Illuminate\Support\Str::slug($specialization ?: 'umum') }}" aria-expanded="false" aria-controls="collapse-{{ \Illuminate\Support\Str::slug($specialization ?: 'umum') }}">
+                                <div class="d-flex align-items-center justify-content-between w-100">
+                                    <div>
+                                        <h6 class="mb-1">Spesialisasi: {{ $specialization }}</h6>
+                                        <small class="text-muted">{{ $queues->count() }} pasien dalam antrian</small>
                                     </div>
-                                </td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 35px; height: 35px;">
-                                            <i class="fas fa-user-md text-success"></i>
-                                        </div>
-                                        <span>{{ $queue['doctor_name'] }}</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="badge bg-secondary">{{ $queue['doctor_specialization'] }}</span>
-                                </td>
-                                <td>
-                                    <i class="fas fa-calendar text-muted me-2"></i>
-                                    {{ \Carbon\Carbon::parse($queue['appointment_time'])->format('d/m/Y H:i') }}
-                                </td>
-                                <td class="text-center">
-                                    @php
-                                        $statusConfig = [
-                                            'waiting' => ['class' => 'bg-warning text-dark', 'icon' => 'fas fa-clock', 'text' => 'Menunggu'],
-                                            'called' => ['class' => 'bg-info', 'icon' => 'fas fa-bullhorn', 'text' => 'Dipanggil'],
-                                            'served' => ['class' => 'bg-success', 'icon' => 'fas fa-check-circle', 'text' => 'Selesai'],
-                                            'skipped' => ['class' => 'bg-danger', 'icon' => 'fas fa-times-circle', 'text' => 'Dilewati'],
-                                        ];
-                                        $config = $statusConfig[$queue['queue_status']] ?? $statusConfig['waiting'];
-                                    @endphp
-                                    <span class="badge {{ $config['class'] }} status-badge" id="status-{{ $queue['id'] }}">
-                                        <i class="{{ $config['icon'] }} me-1"></i>
-                                        {{ $config['text'] }}
-                                    </span>
-                                </td>
-                                <td class="text-center">
-                                    <div class="btn-group" role="group">
-                                        @if($queue['queue_status'] === 'waiting')
-                                            <button type="button" class="btn btn-sm btn-info"
-                                                    onclick="updateQueueStatus({{ $queue['id'] }}, 'called')">
-                                                <i class="fas fa-bullhorn"></i>
-                                            </button>
-                                        @elseif($queue['queue_status'] === 'called')
-                                            <button type="button" class="btn btn-sm btn-success"
-                                                    onclick="updateQueueStatus({{ $queue['id'] }}, 'served')">
-                                                <i class="fas fa-check"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-warning"
-                                                    onclick="updateQueueStatus({{ $queue['id'] }}, 'waiting')">
-                                                <i class="fas fa-undo"></i>
-                                            </button>
-                                        @endif
-                                        @if(in_array($queue['queue_status'], ['waiting', 'called']))
-                                            <button type="button" class="btn btn-sm btn-danger"
-                                                    onclick="updateQueueStatus({{ $queue['id'] }}, 'skipped')">
-                                                <i class="fas fa-times"></i>
-                                            </button>
-                                        @endif
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                    <span class="badge bg-primary rounded-pill">{{ $queues->count() }}</span>
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="collapse-{{ Str::slug($specialization ?: 'umum') }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ Str::slug($specialization ?: 'umum') }}" data-bs-parent="#specializationQueues">
+                            <div class="accordion-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0" id="queueTable-{{ Str::slug($specialization ?: 'umum') }}">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th class="border-0 fw-semibold text-center">No. Antrian</th>
+                                                <th class="border-0 fw-semibold">Kode Booking</th>
+                                                <th class="border-0 fw-semibold">Pasien</th>
+                                                <th class="border-0 fw-semibold">Dokter</th>
+                                                <th class="border-0 fw-semibold">Jam Kunjungan</th>
+                                                <th class="border-0 fw-semibold text-center">Status</th>
+                                                <th class="border-0 fw-semibold text-center">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($queues as $queue)
+                                                <tr id="queue-row-{{ $queue['id'] }}" class="queue-row {{ $queue['queue_status'] === 'called' ? 'table-info' : ($queue['queue_status'] === 'served' ? 'table-success' : '') }}">
+                                                    <td class="text-center">
+                                                        <span class="badge bg-warning text-dark fs-5 px-3 py-2">{{ $queue['queue_number'] }}</span>
+                                                    </td>
+                                                    <td>
+                                                        <code class="bg-light px-2 py-1 rounded small">{{ $queue['booking_code'] }}</code>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 35px; height: 35px;">
+                                                                <i class="fas fa-user text-info"></i>
+                                                            </div>
+                                                            <div>
+                                                                <span class="fw-semibold">{{ $queue['patient_name'] }}</span><br>
+                                                                <small class="text-muted">ID: {{ $queue['patient_id'] }}</small>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 35px; height: 35px;">
+                                                                <i class="fas fa-user-md text-success"></i>
+                                                            </div>
+                                                            <span>{{ $queue['doctor_name'] }}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <i class="fas fa-calendar text-muted me-2"></i>
+                                                        {{ \Carbon\Carbon::parse($queue['appointment_time'])->format('d/m/Y H:i') }}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @php
+                                                            $statusConfig = [
+                                                                'waiting' => ['class' => 'bg-warning text-dark', 'icon' => 'fas fa-clock', 'text' => 'Menunggu'],
+                                                                'called' => ['class' => 'bg-info', 'icon' => 'fas fa-bullhorn', 'text' => 'Dipanggil'],
+                                                                'served' => ['class' => 'bg-success', 'icon' => 'fas fa-check-circle', 'text' => 'Selesai'],
+                                                                'skipped' => ['class' => 'bg-danger', 'icon' => 'fas fa-times-circle', 'text' => 'Dilewati'],
+                                                            ];
+                                                            $config = $statusConfig[$queue['queue_status']] ?? $statusConfig['waiting'];
+                                                        @endphp
+                                                        <span class="badge {{ $config['class'] }} status-badge" id="status-{{ $queue['id'] }}">
+                                                            <i class="{{ $config['icon'] }} me-1"></i>
+                                                            {{ $config['text'] }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="btn-group" role="group">
+                                                            @if($queue['queue_status'] === 'waiting')
+                                                                <button type="button" class="btn btn-sm btn-info" onclick="updateQueueStatus({{ $queue['id'] }}, 'called')">
+                                                                    <i class="fas fa-bullhorn"></i>
+                                                                </button>
+                                                            @elseif($queue['queue_status'] === 'called')
+                                                                <button type="button" class="btn btn-sm btn-success" onclick="updateQueueStatus({{ $queue['id'] }}, 'served')">
+                                                                    <i class="fas fa-check"></i>
+                                                                </button>
+                                                                <button type="button" class="btn btn-sm btn-warning" onclick="updateQueueStatus({{ $queue['id'] }}, 'waiting')">
+                                                                    <i class="fas fa-undo"></i>
+                                                                </button>
+                                                            @endif
+                                                            @if(in_array($queue['queue_status'], ['waiting', 'called']))
+                                                                <button type="button" class="btn btn-sm btn-danger" onclick="updateQueueStatus({{ $queue['id'] }}, 'skipped')">
+                                                                    <i class="fas fa-times"></i>
+                                                                </button>
+                                                            @endif
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         @else
             <div class="text-center py-5">

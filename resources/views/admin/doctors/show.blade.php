@@ -111,7 +111,7 @@
         <div class="col-md-4">
             @if($doctor->photo)
                 <div class="card">
-                    <img src="{{ asset('storage/' . $doctor->photo) }}" class="card-img-top" alt="Foto Dokter">
+                    <img src="{{ asset('storage/' . $doctor->photo) }}" class="card-img-top" alt="Foto Dokter" style="max-height: 300px; object-fit: cover;">
                     <div class="card-body">
                         <p class="card-text text-center">Foto {{ $doctor->user->name }}</p>
                     </div>
