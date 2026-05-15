@@ -100,7 +100,10 @@
         /* Main Content */
         .admin-main {
             margin-left: 260px;
-            transition: margin-left 0.3s ease;
+            width: calc(100% - 260px);
+            min-width: 0;
+            overflow-x: hidden;
+            transition: margin-left 0.3s ease, width 0.3s ease;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -108,6 +111,23 @@
 
         .admin-main.expanded {
             margin-left: 70px;
+            width: calc(100% - 70px);
+        }
+
+        .admin-content {
+            flex: 1;
+            padding: 2rem;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 100%;
+            border: none;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
         }
 
         .admin-header {
@@ -134,11 +154,6 @@
             font-size: 0.9rem;
             color: #1e40af !important;
             font-weight: 500;
-        }
-
-        .admin-content {
-            flex: 1;
-            padding: 2rem;
         }
 
         .sidebar-toggle {

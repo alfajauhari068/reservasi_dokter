@@ -4,7 +4,21 @@
 @section('page-subtitle', 'Admin membuat reservasi untuk pasien secara langsung')
 
 @section('content')
-<div class="card border-0 shadow-sm">
+<style>
+    /* Fix overflow/oversize agar tidak melebar ke bawah sidebar */
+    #createAppointmentPage {
+        max-width: 100%;
+        width: 100%;
+        overflow-x: hidden;
+        padding-right: 0;
+        padding-left: 260px;
+    }
+    #createAppointmentPage .card {
+        max-width: 100%;
+        width: 100%;
+    }
+</style>
+<div id="createAppointmentPage" class="card border-0 shadow-sm">
     <div class="card-header bg-white border-0 py-4">
         <div class="d-flex align-items-start justify-content-between gap-3">
             <div>
@@ -49,12 +63,33 @@
 
 
             <div class="col-12 col-md-6">
+                <label for="specialization_id" class="form-label fw-semibold">Spesialisasi</label>
+                <select name="specialization_id" id="specialization_id" class="form-select @error('specialization_id') is-invalid @enderror">
+                    <option value="" selected>-- Pilih Spesialisasi --</option>
+                    @foreach($specializations as $specialization)
+                        <option value="{{ $specialization->id }}" {{ old('specialization_id') == $specialization->id ? 'selected' : '' }}>
+                            {{ $specialization->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('specialization_id')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                @enderror
+                <div class="form-text">
+                    Pilih spesialisasi untuk menyaring daftar dokter.
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6">
                 <label for="doctor_id" class="form-label fw-semibold">Dokter</label>
                 <select name="doctor_id" id="doctor_id" class="form-select @error('doctor_id') is-invalid @enderror">
                     <option value="" selected disabled>-- Pilih Dokter --</option>
                     @foreach($doctors as $doctor)
-                        <option value="{{ $doctor['id'] }}" {{ old('doctor_id') == $doctor['id'] ? 'selected' : '' }}>
-                            {{ $doctor['name'] }}
+                        <option
+                            value="{{ $doctor['id'] }}"
+                            data-specialization-id="{{ $doctor['specialization_id'] }}"
+                            {{ old('doctor_id') == $doctor['id'] ? 'selected' : '' }}>
+                            {{ $doctor['name'] }} ({{ $doctor['specialization_name'] }})
                         </option>
                     @endforeach
                 </select>
@@ -70,11 +105,9 @@
                     @foreach($schedules as $schedule)
                         @php
                             $appointmentLabelParts = [];
-                            // day_of_week bisa berupa string seperti monday/tuesday, atau sudah tersimpan.
                             if (isset($schedule->day_of_week)) {
                                 $appointmentLabelParts[] = ucfirst($schedule->day_of_week);
                             }
-                            // jam
                             if (isset($schedule->start_time)) {
                                 $appointmentLabelParts[] = $schedule->start_time;
                             }
@@ -82,17 +115,21 @@
                                 $appointmentLabelParts[] = ' - ' . $schedule->end_time;
                             }
 
-                            // dokter (jika relasi tersedia)
                             $doctorName = $schedule->doctor->user->name ?? null;
                             if ($doctorName) {
                                 $appointmentLabelParts[] = $doctorName;
                             }
 
+                            $doctorSpecialization = $schedule->doctor->specialization->name ?? 'Umum';
+                            $appointmentLabelParts[] = '(' . $doctorSpecialization . ')';
+
                             $label = trim(implode(' ', $appointmentLabelParts));
-                            // fallback jika label kosong
                             $label = $label !== '' ? $label : ('Schedule #' . $schedule->id);
                         @endphp
-                        <option value="{{ $schedule->id }}" {{ old('schedule_id') == $schedule->id ? 'selected' : '' }}>
+                        <option
+                            value="{{ $schedule->id }}"
+                            data-doctor-id="{{ $schedule->doctor_id }}"
+                            {{ old('schedule_id') == $schedule->id ? 'selected' : '' }}>
                             {{ $label }}
                         </option>
                     @endforeach
@@ -153,5 +190,76 @@
         </form>
     </div>
 </div>
-@endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const specializationSelect = document.getElementById('specialization_id');
+        const doctorSelect = document.getElementById('doctor_id');
+        const scheduleSelect = document.getElementById('schedule_id');
+
+        const doctorOptions = Array.from(doctorSelect.querySelectorAll('option'));
+        const scheduleOptions = Array.from(scheduleSelect.querySelectorAll('option'));
+
+        const filterDoctors = () => {
+            const selectedSpecialization = specializationSelect.value;
+            doctorSelect.innerHTML = '';
+            const placeholder = document.createElement('option');
+            placeholder.value = '';
+            placeholder.disabled = true;
+            placeholder.selected = true;
+            placeholder.textContent = '-- Pilih Dokter --';
+            doctorSelect.appendChild(placeholder);
+
+            doctorOptions.forEach(option => {
+                const matchesSpecialization = !selectedSpecialization || option.dataset.specializationId === selectedSpecialization;
+                if (option.value && matchesSpecialization) {
+                    doctorSelect.appendChild(option.cloneNode(true));
+                }
+            });
+
+            if (!doctorSelect.querySelector(`option[value="${doctorSelect.dataset.selected}"]`)) {
+                doctorSelect.value = '';
+            } else {
+                doctorSelect.value = doctorSelect.dataset.selected;
+            }
+
+            filterSchedules();
+        };
+
+        const filterSchedules = () => {
+            const selectedDoctorId = doctorSelect.value;
+            scheduleSelect.innerHTML = '';
+            const placeholder = document.createElement('option');
+            placeholder.value = '';
+            placeholder.disabled = true;
+            placeholder.selected = true;
+            placeholder.textContent = '-- Pilih Jadwal --';
+            scheduleSelect.appendChild(placeholder);
+
+            scheduleOptions.forEach(option => {
+                const matchesDoctor = !selectedDoctorId || option.dataset.doctorId === selectedDoctorId;
+                if (option.value && matchesDoctor) {
+                    scheduleSelect.appendChild(option.cloneNode(true));
+                }
+            });
+
+            if (!scheduleSelect.querySelector(`option[value="${scheduleSelect.dataset.selected}"]`)) {
+                scheduleSelect.value = '';
+            } else {
+                scheduleSelect.value = scheduleSelect.dataset.selected;
+            }
+        };
+
+        // Store old selection values in dataset, if present.
+        doctorSelect.dataset.selected = '{{ old('doctor_id') }}';
+        scheduleSelect.dataset.selected = '{{ old('schedule_id') }}';
+
+        specializationSelect.addEventListener('change', filterDoctors);
+        doctorSelect.addEventListener('change', filterSchedules);
+
+        filterDoctors();
+    });
+</script>
+@endpush
 
