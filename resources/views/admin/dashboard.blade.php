@@ -4,135 +4,174 @@
 @section('page-subtitle', 'Ringkasan statistik reservasi hari ini')
 
 @section('content')
-{{-- KARTU STATISTIK UTAMA --}}
+{{-- HERO SUMMARY --}}
 <div class="row g-3 mb-4">
-    {{-- Total Reservasi Hari Ini --}}
-    <div class="col-lg-3 col-md-6">
-        <div class="card border-0 shadow-sm">
-            <div class="card-body text-center">
-                <div class="mb-3">
-                    <i class="fas fa-calendar-check fa-2x text-primary"></i>
+    <div class="col-12">
+        <div class="glass-card p-4 d-flex flex-column flex-lg-row align-items-start justify-content-between gap-4">
+            <div>
+                <span class="badge bg-info bg-opacity-10 text-info mb-3">Control Center</span>
+                <h1 class="h3 mb-2 fw-bold">Selamat datang, Admin</h1>
+                <p class="text-muted mb-3">Kelola reservasi, antrian, dokter, dan laporan dengan tampilan lebih bersih dan intuitif.</p>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{{ route('admin.approvals.index') }}" class="btn btn-primary btn-sm">Lihat Riwayat</a>
+                    <a href="{{ route('admin.queues.index') }}" class="btn btn-outline-secondary btn-sm">Kelola Antrian</a>
+                    <a href="{{ route('admin.doctors.index') }}" class="btn btn-outline-info btn-sm">Kelola Dokter</a>
                 </div>
-                <h4 class="mb-1 text-primary fw-bold">{{ $todayStats['total'] }}</h4>
-                <p class="mb-0 text-muted small">Total Reservasi Hari Ini</p>
             </div>
-        </div>
-    </div>
-
-    {{-- Reservasi Pending --}}
-    <div class="col-lg-3 col-md-6">
-        <div class="card border-0 shadow-sm">
-            <div class="card-body text-center">
-                <div class="mb-3">
-                    <i class="fas fa-clock fa-2x text-warning"></i>
+            <div class="text-end">
+                <p class="text-muted mb-1 small">Ringkasan hari ini</p>
+                <div class="d-flex flex-column gap-2 align-items-end">
+                    <div class="badge bg-primary text-white px-4 py-2 rounded-pill">Total: <strong>{{ $todayStats['total'] }}</strong></div>
+                    <div class="badge bg-success text-white px-4 py-2 rounded-pill">Selesai: <strong>{{ $todayStats['done'] }}</strong></div>
+                    <div class="badge bg-info text-dark px-4 py-2 rounded-pill">Approved: <strong>{{ $todayStats['approved'] }}</strong></div>
                 </div>
-                <h4 class="mb-1 text-warning fw-bold">{{ $todayStats['pending'] }}</h4>
-                <p class="mb-0 text-muted small">Reservasi Pending</p>
-            </div>
-        </div>
-    </div>
-
-    {{-- Reservasi Approved --}}
-    <div class="col-lg-3 col-md-6">
-        <div class="card border-0 shadow-sm">
-            <div class="card-body text-center">
-                <div class="mb-3">
-                    <i class="fas fa-check-circle fa-2x text-info"></i>
-                </div>
-                <h4 class="mb-1 text-info fw-bold">{{ $todayStats['approved'] }}</h4>
-                <p class="mb-0 text-muted small">Reservasi Approved</p>
-            </div>
-        </div>
-    </div>
-
-    {{-- Reservasi Selesai --}}
-    <div class="col-lg-3 col-md-6">
-        <div class="card border-0 shadow-sm">
-            <div class="card-body text-center">
-                <div class="mb-3">
-                    <i class="fas fa-check-double fa-2x text-success"></i>
-                </div>
-                <h4 class="mb-1 text-success fw-bold">{{ $todayStats['done'] }}</h4>
-                <p class="mb-0 text-muted small">Reservasi Selesai</p>
-            </div>
-        </div>
-    </div>
-
-    {{-- Reservasi Dibatalkan --}}
-    <div class="col-lg-3 col-md-6">
-        <div class="card border-0 shadow-sm">
-            <div class="card-body text-center">
-                <div class="mb-3">
-                    <i class="fas fa-times-circle fa-2x text-danger"></i>
-                </div>
-                <h4 class="mb-1 text-danger fw-bold">{{ $todayStats['cancelled'] }}</h4>
-                <p class="mb-0 text-muted small">Reservasi Dibatalkan</p>
             </div>
         </div>
     </div>
 </div>
 
-{{-- AKSES CEPAT KE FITUR --}}
 <div class="row g-3 mb-4">
-    <div class="col-lg-6 col-xl-4">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-body text-center">
-                <div class="mb-3">
-                    <i class="fas fa-check-circle fa-3x text-warning"></i>
+    <div class="col-lg-4 col-md-6">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div>
+                    <p class="text-uppercase text-secondary small mb-1">Antrian Real-Time</p>
+                    <h4 class="fw-bold mb-0">{{ $dailyQueues->count() }}</h4>
                 </div>
-                <h5 class="mb-2">Riwayat Reservasi</h5>
-                <p class="text-muted small mb-3">
-                    <strong class="text-info">{{ $totalReservationsCount }}</strong> total reservasi tersedia
-                </p>
-                <a href="{{ route('admin.approvals.index') }}" class="btn btn-info">
-                    <i class="fas fa-arrow-right me-2"></i>Lihat Riwayat
-                </a>
+                <i class="fas fa-users fa-2x text-primary"></i>
             </div>
+            <p class="text-muted small mb-0">Lacak status pasien hari ini secara langsung.</p>
+            <a href="{{ route('admin.queues.index') }}" class="btn btn-sm btn-primary mt-4">Kelola Antrian</a>
         </div>
     </div>
-
-    <div class="col-lg-6 col-xl-4">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-body text-center">
-                <div class="mb-3">
-                    <i class="fas fa-users fa-3x text-info"></i>
+    <div class="col-lg-4 col-md-6">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div>
+                    <p class="text-uppercase text-secondary small mb-1">Dokter Aktif</p>
+                    <h4 class="fw-bold mb-0">{{ $doctorStats->count() }}</h4>
                 </div>
-                <h5 class="mb-2">Manajemen Antrian</h5>
-                <p class="text-muted small mb-3">Pantau dan kelola antrian pasien hari ini</p>
-                <a href="{{ route('admin.queues.index') }}" class="btn btn-info">
-                    <i class="fas fa-arrow-right me-2"></i>Kelola Antrian
-                </a>
+                <i class="fas fa-user-md fa-2x text-success"></i>
             </div>
+            <p class="text-muted small mb-0">Kelola data dokter dan spesialisasi secara cepat.</p>
+            <a href="{{ route('admin.doctors.index') }}" class="btn btn-sm btn-outline-success mt-4">Kelola Dokter</a>
         </div>
     </div>
-
-    <div class="col-lg-6 col-xl-4">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-body text-center">
-                <div class="mb-3">
-                    <i class="fas fa-chart-bar fa-3x text-success"></i>
+    <div class="col-lg-4 col-md-6">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div>
+                    <p class="text-uppercase text-secondary small mb-1">Laporan Mingguan</p>
+                    <h4 class="fw-bold mb-0">{{ $todayServedCount ?? 0 }}</h4>
                 </div>
-                <h5 class="mb-2">Laporan Kunjungan</h5>
-                <p class="text-muted small mb-3">Lihat laporan kunjungan berdasarkan periode</p>
-                <a href="{{ route('admin.reports.visitation') }}" class="btn btn-success">
-                    <i class="fas fa-arrow-right me-2"></i>Lihat Laporan
-                </a>
+                <i class="fas fa-chart-line fa-2x text-info"></i>
             </div>
+            <p class="text-muted small mb-0">Tampilkan ringkasan kunjungan pasien dalam periode.</p>
+            <a href="{{ route('admin.reports.visitation') }}" class="btn btn-sm btn-outline-info mt-4">Lihat Laporan</a>
         </div>
     </div>
+</div>
 
-    <div class="col-lg-6 col-xl-4">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-body text-center">
-                <div class="mb-3">
-                    <i class="fas fa-user-md fa-3x text-primary"></i>
+{{-- KARTU STATISTIK UTAMA --}}
+<div class="row g-3 mb-4">
+    <div class="col-lg-3 col-md-6">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div>
+                    <p class="text-uppercase text-secondary small mb-1">Total Hari Ini</p>
+                    <h4 class="fw-bold mb-0">{{ $todayStats['total'] }}</h4>
                 </div>
-                <h5 class="mb-2">Kelola Dokter</h5>
-                <p class="text-muted small mb-3">Tambah, edit, dan hapus data dokter</p>
-                <a href="{{ route('admin.doctors.index') }}" class="btn btn-primary">
-                    <i class="fas fa-arrow-right me-2"></i>Kelola Dokter
-                </a>
+                <i class="fas fa-calendar-check fa-2x text-primary"></i>
             </div>
+            <p class="text-muted small mb-0">Reservasi yang tercatat hari ini.</p>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div>
+                    <p class="text-uppercase text-secondary small mb-1">Approved</p>
+                    <h4 class="fw-bold mb-0">{{ $todayStats['approved'] }}</h4>
+                </div>
+                <i class="fas fa-check-circle fa-2x text-info"></i>
+            </div>
+            <p class="text-muted small mb-0">Reservasi yang disetujui hari ini.</p>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div>
+                    <p class="text-uppercase text-secondary small mb-1">Selesai</p>
+                    <h4 class="fw-bold mb-0">{{ $todayStats['done'] }}</h4>
+                </div>
+                <i class="fas fa-check-double fa-2x text-success"></i>
+            </div>
+            <p class="text-muted small mb-0">Reservasi yang sudah selesai ditangani.</p>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <div>
+                    <p class="text-uppercase text-secondary small mb-1">Dibatalkan</p>
+                    <h4 class="fw-bold mb-0">{{ $todayStats['cancelled'] ?? 0 }}</h4>
+                </div>
+                <i class="fas fa-times-circle fa-2x text-danger"></i>
+            </div>
+            <p class="text-muted small mb-0">Reservasi yang dibatalkan hari ini.</p>
+        </div>
+    </div>
+</div>
+
+{{-- MANAGEMENT EXPERIENCE --}}
+<div class="row g-3 mb-4">
+    <div class="col-lg-3 col-md-6">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex align-items-start gap-3 mb-3">
+                <span class="badge bg-primary bg-opacity-15 text-primary p-3 rounded-3"><i class="fas fa-clock"></i></span>
+                <div>
+                    <h6 class="mb-1 fw-bold">Antrian Real-Time</h6>
+                    <p class="text-muted small mb-0">Pantau posisi antrian dan alur pasien dengan cepat.</p>
+                </div>
+            </div>
+            <a href="{{ route('admin.queues.index') }}" class="btn btn-sm btn-outline-primary">Buka Antrian</a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex align-items-start gap-3 mb-3">
+                <span class="badge bg-success bg-opacity-15 text-success p-3 rounded-3"><i class="fas fa-user-md"></i></span>
+                <div>
+                    <h6 class="mb-1 fw-bold">Manajemen Dokter</h6>
+                    <p class="text-muted small mb-0">Kelola data dokter dan spesialisasi tanpa ribet.</p>
+                </div>
+            </div>
+            <a href="{{ route('admin.doctors.index') }}" class="btn btn-sm btn-outline-success">Kelola Dokter</a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex align-items-start gap-3 mb-3">
+                <span class="badge bg-info bg-opacity-15 text-info p-3 rounded-3"><i class="fas fa-chart-line"></i></span>
+                <div>
+                    <h6 class="mb-1 fw-bold">Laporan Kunjungan</h6>
+                    <p class="text-muted small mb-0">Analisis kunjungan pasien dengan data lengkap.</p>
+                </div>
+            </div>
+            <a href="{{ route('admin.reports.visitation') }}" class="btn btn-sm btn-outline-info">Lihat Laporan</a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="glass-card p-4 h-100">
+            <div class="d-flex align-items-start gap-3 mb-3">
+                <span class="badge bg-warning bg-opacity-15 text-warning p-3 rounded-3"><i class="fas fa-file-medical-alt"></i></span>
+                <div>
+                    <h6 class="mb-1 fw-bold">History & Audit</h6>
+                    <p class="text-muted small mb-0">Akses riwayat reservasi dan catatan audit dengan mudah.</p>
+                </div>
+            </div>
+            <a href="{{ route('admin.approvals.index') }}" class="btn btn-sm btn-outline-warning text-dark">Lihat History</a>
         </div>
     </div>
 </div>
@@ -213,7 +252,7 @@
                         <th class="border-0 fw-semibold">Nama Pasien</th>
                         <th class="border-0 fw-semibold">Dokter</th>
                         <th class="border-0 fw-semibold">Waktu</th>
-                        <th class="border-0 fw-semibold">Status Reservasi</th>
+                        <!-- <th class="border-0 fw-semibold">Status Reservasi</th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -245,6 +284,7 @@
                                 <i class="fas fa-clock text-muted me-2"></i>
                                 {{ \Carbon\Carbon::parse($queue['appointment_time'])->format('H:i') }}
                             </td>
+                            {{--
                             <td>
                                 @php
                                     $statusSource = $queue['status'] ?? ($queue['approval_status'] ?? 'pending');
@@ -260,6 +300,7 @@
                                     {{ ucfirst($statusSource) }}
                                 </span>
                             </td>
+                            --}}
 
                         </tr>
                     @empty
@@ -293,7 +334,7 @@
     <div class="col-md-6">
         <div class="card border-0 shadow-sm">
             <div class="card-body text-center">
-                <div class="display-4 text-success mb-2">{{ $dailyQueues->where('status', 'done')->count() }}</div>
+                <div class="display-4 text-success mb-2">{{ $todayServedCount ?? 0 }}</div>
                 <h6 class="text-muted mb-0">Sudah Dilayani</h6>
             </div>
         </div>

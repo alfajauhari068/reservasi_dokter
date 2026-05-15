@@ -28,8 +28,8 @@ class DashboardController extends Controller
         $statsQuery = Appointment::selectRaw("
                 COUNT(*) as total,
                 SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending,
-                SUM(CASE WHEN status = 'in_progress' THEN 1 ELSE 0 END) as approved,
-                SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as done,
+                SUM(CASE WHEN status IN ('in_progress', 'approved') THEN 1 ELSE 0 END) as approved,
+                SUM(CASE WHEN status IN ('completed', 'done') THEN 1 ELSE 0 END) as done,
                 SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) as cancelled
             ")
             // gunakan appointment_date agar 'hari ini' konsisten dengan tabel antrian
@@ -109,11 +109,20 @@ class DashboardController extends Controller
         // Query efisien untuk data antrian hari ini
         $dailyQueues = $this->getTodayQueues();
 
+        // === TOTAL ANTRIAN YANG SUDAH DILAYANI HARI INI ===
+        $todayServedCount = Queue::join('appointments', 'queues.appointment_id', '=', 'appointments.id')
+            ->whereDate('appointments.appointment_date', today())
+            ->where(function ($query) {
+                $query->where('queues.queue_status', 'served')
+                      ->orWhereIn('appointments.status', ['completed', 'done']);
+            })
+            ->count();
+
         // === TOTAL RESERVASI ===
         $totalReservationsCount = Appointment::count();
 
         // Return view dengan semua data statistik
-        return view('admin.dashboard', compact('todayStats', 'doctorStats', 'dailyQueues', 'totalReservationsCount'));
+        return view('admin.dashboard', compact('todayStats', 'doctorStats', 'dailyQueues', 'totalReservationsCount', 'todayServedCount'));
     }
 
     /**
@@ -129,7 +138,7 @@ class DashboardController extends Controller
             ])
             ->join('appointments', 'queues.appointment_id', '=', 'appointments.id')
             ->whereDate('appointments.appointment_date', today())
-            ->where('appointments.status', '!=', 'completed')
+            ->whereNotIn('appointments.status', ['completed', 'done'])
             ->orderBy('queues.queue_number')
             ->select([
                 'queues.*',

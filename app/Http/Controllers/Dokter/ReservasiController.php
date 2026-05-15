@@ -75,7 +75,7 @@ class ReservasiController extends Controller
         return redirect()->route('dokter.dashboard')->with('success', 'Pemeriksaan selesai dan data tersimpan.');
     }
 
-    public function history()
+    public function history(Request $request)
     {
         $doctor = Doctor::where('user_id', auth()->id())
             ->with(['appointments.patient.user', 'appointments.schedule', 'appointments.medicalRecord'])
@@ -87,13 +87,51 @@ class ReservasiController extends Controller
         if (! $doctor) {
             $errorMessage = 'Profil dokter tidak ditemukan.';
         } else {
-            $completedAppointments = $doctor->appointments()
+            $query = $doctor->appointments()
                 ->where('status', 'completed')
-                ->with(['patient.user', 'schedule', 'medicalRecord'])
-                ->orderByDesc('appointment_date')
-                ->get();
+                ->with(['patient.user', 'schedule', 'medicalRecord']);
+
+            // Filter berdasarkan pencarian nama pasien
+            if ($request->filled('search')) {
+                $search = $request->search;
+                $query->whereHas('patient', function ($q) use ($search) {
+                    $q->where('full_name', 'like', '%' . $search . '%')
+                      ->orWhereHas('user', function ($userQ) use ($search) {
+                          $userQ->where('name', 'like', '%' . $search . '%');
+                      });
+                });
+            }
+
+            // Filter berdasarkan tanggal
+            if ($request->filled('date_from')) {
+                $query->whereDate('appointment_date', '>=', $request->date_from);
+            }
+            if ($request->filled('date_to')) {
+                $query->whereDate('appointment_date', '<=', $request->date_to);
+            }
+
+            $completedAppointments = $query->orderByDesc('appointment_date')->get();
         }
 
         return view('dokter.reservasi.history', compact('completedAppointments', 'errorMessage'));
+    }
+
+    public function printPdf(Appointment $appointment)
+    {
+        $doctor = Doctor::where('user_id', auth()->id())->first();
+        if (!$doctor) {
+            return redirect()->route('dokter.dashboard')
+                ->with('error', 'Profil dokter tidak ditemukan.');
+        }
+
+        if ($appointment->doctor_id !== $doctor->id) {
+            abort(403);
+        }
+
+        $appointment->load(['patient.user', 'schedule', 'medicalRecord']);
+
+        $pdf = app('dompdf.wrapper')->loadView('dokter.reservasi.pdf', compact('appointment'));
+
+        return $pdf->download('data-pasien-' . $appointment->patient->full_name . '.pdf');
     }
 }
