@@ -8,6 +8,7 @@ use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Queue;
 use App\Models\Schedule;
+use App\Models\Specialization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -50,24 +51,27 @@ class AppointmentController extends Controller
                 ];
             });
 
-        $doctors = Doctor::with('user')
+        $specializations = Specialization::orderBy('name')->get();
+
+        $doctors = Doctor::with(['user', 'specialization'])
             ->orderBy('id')
             ->get()
             ->map(function (Doctor $doctor) {
                 return [
                     'id' => $doctor->id,
                     'name' => $doctor->user->name ?? ('Dokter #' . $doctor->id),
+                    'specialization_id' => $doctor->specialization?->id,
+                    'specialization_name' => $doctor->specialization?->name ?? 'Umum',
                 ];
             });
 
-        // Ambil semua schedules (relevan) tanpa filter dokter,
-        // agar form dapat memilih schedule sesuai kebutuhan.
         $schedules = Schedule::with('doctor.user')
             ->orderBy('id')
             ->get();
 
         return view('admin.appointments.create', [
             'patients' => $patients,
+            'specializations' => $specializations,
             'doctors' => $doctors,
             'schedules' => $schedules,
         ]);
@@ -82,6 +86,7 @@ class AppointmentController extends Controller
 
         $request->validate([
             'patient_id' => 'required|exists:patients,id',
+            'specialization_id' => 'nullable|exists:specializations,id',
             'doctor_id' => 'required|exists:doctors,id',
             'schedule_id' => 'required|exists:schedules,id',
             'appointment_date' => 'required|date',
