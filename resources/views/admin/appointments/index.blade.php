@@ -4,11 +4,11 @@
 @section('page-subtitle', 'Riwayat reservasi pasien yang dibuat oleh admin')
 
 @section('content')
-<div class="card border-0 shadow-sm">
-    <div class="card-header bg-white border-0 py-4 d-flex align-items-center justify-content-between gap-3">
+<div class="admin-card">
+    <div class="admin-card__header d-flex align-items-center justify-content-between gap-3 p-4">
         <div>
-            <h4 class="mb-2 fw-bold">Daftar Appointment</h4>
-            <p class="text-muted mb-0">Lihat semua appointment yang dibuat oleh admin beserta status dan jadwal.</p>
+            <h2 class="admin-card__title h5 mb-2">Daftar Appointment</h2>
+            <p class="admin-card__subtitle text-muted mb-0">Lihat semua appointment yang dibuat oleh admin beserta status dan jadwal.</p>
         </div>
         <div>
             <a href="{{ route('admin.appointments.create') }}" class="btn btn-primary">
@@ -16,7 +16,8 @@
             </a>
         </div>
     </div>
-    <div class="card-body p-4">
+
+    <div class="admin-card__body p-4">
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
@@ -25,7 +26,7 @@
         @endif
 
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
+            <table class="table admin-table table-hover align-middle mb-0">
                 <thead>
                     <tr>
                         <th>Tanggal Appointment</th>
@@ -38,6 +39,21 @@
                 </thead>
                 <tbody>
                     @forelse($appointments as $appointment)
+                        @php
+                            $statusClass = match ($appointment->status) {
+                                'completed' => 'badge-status-success',
+                                'approved', 'in_progress' => 'badge-status-info',
+                                'pending' => 'badge-status-warning',
+                                'cancelled' => 'badge-status-critical',
+                                default => 'badge-status-info',
+                            };
+                            $approvalClass = match ($appointment->approval_status) {
+                                'approved' => 'badge-status-success',
+                                'pending' => 'badge-status-warning',
+                                'rejected' => 'badge-status-critical',
+                                default => 'badge-status-info',
+                            };
+                        @endphp
                         <tr>
                             <td>{{ optional($appointment->appointment_date)->format('d M Y') }}</td>
                             <td>{{ optional($appointment->patient->user)->name ?? $appointment->patient->full_name ?? $appointment->patient->identity_number }}</td>
@@ -51,10 +67,10 @@
                                 @endif
                             </td>
                             <td>
-                                <span class="badge bg-secondary text-capitalize">{{ str_replace('_', ' ', $appointment->status) }}</span>
+                                <span class="badge {{ $statusClass }} text-capitalize">{{ str_replace('_', ' ', $appointment->status) }}</span>
                             </td>
                             <td>
-                                <span class="badge bg-info text-dark text-capitalize">{{ str_replace('_', ' ', $appointment->approval_status) }}</span>
+                                <span class="badge {{ $approvalClass }} text-capitalize">{{ str_replace('_', ' ', $appointment->approval_status) }}</span>
                             </td>
                         </tr>
                     @empty
@@ -66,7 +82,7 @@
             </table>
         </div>
 
-        <div class="mt-4">
+        <div class="admin-pagination mt-4">
             {{ $appointments->links() }}
         </div>
     </div>

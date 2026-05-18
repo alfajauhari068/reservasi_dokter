@@ -404,6 +404,93 @@ body {
   border-left-color: var(--primary);
 }
 
+.admin-stat-card--accent-warning {
+  border-left-color: #f7b928;
+}
+
+.bg-warning-soft {
+  background: rgba(247, 185, 40, 0.14) !important;
+}
+
+.bg-info-soft {
+  background: rgba(0, 100, 224, 0.12) !important;
+}
+
+.admin-icon-pill,
+.admin-avatar {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: var(--r-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: var(--ink-deep);
+  background: var(--canvas);
+  border: 1px solid var(--hairline-soft);
+}
+
+.admin-icon-pill--primary,
+.admin-avatar-primary {
+  background: rgba(0, 100, 224, 0.12);
+  color: var(--primary);
+  border-color: rgba(0, 100, 224, 0.18);
+}
+
+.admin-icon-pill--success {
+  background: rgba(49, 162, 76, 0.12);
+  color: var(--success);
+  border-color: rgba(49, 162, 76, 0.18);
+}
+
+.admin-icon-pill--warning {
+  background: rgba(247, 185, 40, 0.14);
+  color: #7f5c00;
+  border-color: rgba(247, 185, 40, 0.22);
+}
+
+.admin-icon-pill--info {
+  background: rgba(0, 100, 224, 0.12);
+  color: var(--primary-deep);
+  border-color: rgba(0, 100, 224, 0.2);
+}
+
+.admin-icon-pill--neutral {
+  background: rgba(148, 163, 184, 0.12);
+  color: var(--slate);
+  border-color: rgba(148, 163, 184, 0.2);
+}
+
+.admin-avatar-primary {
+  background: rgba(0, 100, 224, 0.12);
+  color: var(--primary);
+  border-color: rgba(0, 100, 224, 0.18);
+}
+
+.admin-code-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--r-lg);
+  background: var(--canvas);
+  border: 1px solid var(--hairline-soft);
+  color: var(--ink);
+  font-size: 0.85rem;
+}
+
+.admin-table__cell--narrow {
+  width: 80px;
+}
+
+.admin-shell .admin-card__header {
+  border-bottom: 1px solid var(--hairline-soft);
+}
+
+.admin-shell .admin-card__body {
+  padding: 1.5rem;
+}
 
 /* Admin table styling is scoped to admin-shell and to tables using .admin-table */
 .admin-shell .admin-table-wrapper {
@@ -437,6 +524,23 @@ body {
  .admin-shell .admin-table tbody tr:hover {
   background: #f9fafb;
 }
+
+.admin-shell .admin-queue-row--called {
+  background: rgba(0, 100, 224, 0.08);
+}
+
+.admin-shell .admin-queue-row--served {
+  background: rgba(49, 162, 76, 0.08);
+}
+
+.admin-shell .btn-group .btn {
+  margin-right: 0.25rem;
+}
+
+.admin-shell .btn-group .btn:last-child {
+  margin-right: 0;
+}
+
 
 /* Card-product-feature-like hero/background image helpers (optional) */
 .hero-reservasi__bg {
