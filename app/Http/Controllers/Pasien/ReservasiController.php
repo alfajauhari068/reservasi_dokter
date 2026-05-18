@@ -99,6 +99,9 @@ class ReservasiController extends Controller
                     'error' => $e->getMessage(),
                 ]);
             }
+
+            app(\App\Services\NotificationService::class)->notifyAdminsNewReservation($appointment);
+            app(\App\Services\NotificationService::class)->notifyDoctorNewReservation($appointment);
         } catch (\Throwable $e) {
             DB::rollBack();
             throw $e;

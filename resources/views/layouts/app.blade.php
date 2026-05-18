@@ -65,6 +65,7 @@
                                 Reservasi
                             </a>
                         </li>
+                        @include('components.notification-dropdown')
                     @endauth
                 </ul>
 
