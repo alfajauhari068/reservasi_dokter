@@ -1,0 +1,845 @@
+/* Admin dashboard stylesheet (Modern, professional SaaS look)
+   Based on tokens from DESIGN.md.
+*/
+
+:root {
+  /* Radius (rounded.*) */
+  --r-xs: 2px;
+  --r-sm: 4px;
+  --r-md: 6px;
+  --r-lg: 8px;
+  --r-xl: 16px;
+  --r-xxl: 24px;
+  --r-xxxl: 32px;
+  --r-full: 100px;
+  --r-circle: 9999px;
+
+  /* Color tokens from DESIGN.md */
+  --primary: #0064e0;
+  --primary-deep: #0457cb;
+  --primary-soft: #0091ff;
+  --on-primary: #ffffff;
+  --ink-button: #000000;
+  --on-ink-button: #ffffff;
+  --success: #31a24c;
+  --success-bg: #24e400;
+  --attention: #f2a918;
+  --warning: #f7b928;
+  --warning-bg: #ffe200;
+  --critical: #e41e3f;
+  --critical-strong: #f0284a;
+  --canvas: #ffffff;
+  --surface-soft: #f1f4f7;
+  --ink-deep: #0a1317;
+  --ink: #1c1e21;
+  --charcoal: #444950;
+  --slate: #4b4c4f;
+  --steel: #5d6c7b;
+  --stone: #8595a4;
+  --hairline: #ced0d4;
+  --hairline-soft: #dee3e9;
+  --disabled-text: #bcc0c4;
+
+  --shadow-stat: 0 2px 10px rgba(10, 19, 23, 0.08);
+  --shadow-1: rgba(10, 19, 23, 0.08) 0px 1px 4px;
+  --shadow-2: rgba(10, 19, 23, 0.18) 0px 1px 4px 0px;
+}
+
+
+/* Layout & shell */
+body {
+  font-family: "Optimistic VF", var(--font-sans, ui-sans-serif, system-ui);
+  background: var(--surface-soft);
+  color: var(--ink);
+}
+
+.admin-shell {
+  min-height: 100vh;
+  background: var(--surface-soft);
+}
+
+.admin-sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 260px;
+  background: linear-gradient(135deg, var(--ink-deep) 0%, var(--charcoal) 100%);
+  color: rgba(255, 255, 255, 0.92);
+  padding-top: 16px;
+  overflow-y: auto;
+  z-index: 1000;
+  transition: width 0.3s ease, transform 0.3s ease;
+}
+
+.admin-sidebar.show {
+  transform: translateX(0);
+}
+
+.admin-sidebar.collapsed {
+  width: 70px;
+}
+
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 19, 23, 0.45);
+  z-index: 995;
+  transition: opacity 0.25s ease;
+}
+
+.mobile-overlay.show {
+  display: block;
+  opacity: 1;
+}
+
+.admin-main {
+  margin-left: 260px;
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-main.expanded {
+  margin-left: 70px;
+}
+
+.admin-sidebar-inner {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 24px 20px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.admin-brand-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-xl);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.brand-title {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.brand-subtitle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.admin-sidebar-profile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--r-xxl);
+  margin-bottom: 24px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.profile-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: var(--r-circle);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-size: 18px;
+}
+
+.profile-name {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.profile-role {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.sidebar-toggle {
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.88);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-lg);
+  cursor: pointer;
+}
+
+.sidebar-toggle:hover,
+.sidebar-toggle:focus {
+  background: rgba(255, 255, 255, 0.08);
+  outline: none;
+}
+
+.admin-header {
+  background: var(--canvas);
+  border-bottom: 1px solid var(--hairline-soft);
+}
+
+.admin-header-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 24px 32px;
+}
+
+.admin-header-title-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.admin-content {
+  padding: 28px 32px;
+}
+
+.admin-page-title {
+  font-size: 1.375rem;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.admin-page-subtitle {
+  color: var(--charcoal);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.admin-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.admin-topbar-time {
+  color: var(--charcoal);
+  font-weight: 600;
+}
+
+.admin-user-menu .btn {
+  border-radius: var(--r-full);
+}
+
+/* Content area spacing should be generous and consistent */
+.admin-content {
+  padding: 28px 32px;
+}
+
+/* Sidebar nav links (keep existing bootstrap markup) */
+.admin-sidebar .nav-link {
+  color: rgba(255, 255, 255, 0.82);
+  border-radius: 16px;
+  padding: 12px 16px;
+  margin: 0 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.admin-sidebar .nav-link.active,
+.admin-sidebar .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+.admin-sidebar.collapsed span {
+  opacity: 0;
+  display: none;
+}
+
+/* Komponen utama */
+/* Scoped admin grid for stat cards: avoid Bootstrap row/col conflicts */
+.admin-shell .admin-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+/* Keep stat cards uniformly sized and aligned in the admin context */
+.admin-shell .admin-card,
+.admin-shell .glass-card {
+  background: var(--canvas);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-xl);
+  padding: 24px;
+  box-shadow: var(--shadow-1);
+  color: var(--ink-deep);
+}
+
+/* Section header cards use a softer tone and the same admin card token family */
+.admin-shell .admin-card--section-header {
+  background: rgba(243, 246, 251, 0.8);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-xl);
+  padding: 24px;
+}
+
+/* Stat cards scoped to admin-shell so Bootstrap card variants are not overridden */
+.admin-shell .admin-stat-card {
+  background: var(--canvas);
+  border: 1px solid var(--hairline-soft);
+  border-left: 4px solid transparent;
+  border-radius: var(--r-xxl);
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  position: relative;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.admin-shell .admin-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
+}
+
+.admin-stat-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.admin-stat-card__icon {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: var(--r-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 100, 224, 0.12);
+  color: var(--primary-deep);
+  flex-shrink: 0;
+}
+
+.bg-primary-soft {
+  background: rgba(0, 100, 224, 0.12) !important;
+}
+
+.bg-success-soft {
+  background: rgba(49, 162, 76, 0.12) !important;
+}
+
+.bg-critical-soft {
+  background: rgba(228, 30, 63, 0.12) !important;
+}
+
+.admin-stat-card__kicker,
+.admin-stat-card p.text-uppercase,
+.admin-stat-card .text-uppercase {
+  color: var(--slate);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.65rem;
+}
+
+.admin-stat-card h4,
+.admin-stat-card h5 {
+  color: var(--ink-deep);
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.admin-stat-card p.text-muted,
+.admin-stat-card .text-muted {
+  color: var(--steel);
+  font-size: 13px;
+  margin-top: 0.75rem;
+}
+
+.admin-stat-card--accent-primary {
+  border-left-color: var(--primary);
+}
+
+.admin-stat-card--accent-success {
+  border-left-color: var(--success);
+}
+
+.admin-stat-card--accent-danger {
+  border-left-color: var(--critical);
+}
+
+.admin-stat-card--accent-info {
+  border-left-color: var(--primary);
+}
+
+
+/* Admin table styling is scoped to admin-shell and to tables using .admin-table */
+.admin-shell .admin-table-wrapper {
+  width: 100%;
+  background: var(--canvas);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+}
+
+.admin-shell .admin-table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+}
+
+/* Keep admin table header neutral and low-contrast */
+.admin-shell .admin-table thead th {
+  background: #f3f4f6;
+  border-bottom: 1px solid var(--hairline-soft);
+  color: var(--ink-deep);
+  font-weight: 600;
+}
+
+ .admin-shell .admin-table tbody td {
+  border-bottom: 1px solid rgba(222, 227, 233, 0.8);
+  color: var(--ink);
+  vertical-align: middle;
+}
+
+ .admin-shell .admin-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+/* Card-product-feature-like hero/background image helpers (optional) */
+.hero-reservasi__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--r-xxl);
+}
+
+.hero-reservasi__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-reservasi__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 100, 224, 0.35), rgba(0, 100, 224, 0.22));
+}
+
+/* Also apply hero visibility rules without .admin-shell scope (fallback) */
+.hero-reservasi {
+  color: #fff;
+  overflow: hidden;
+}
+
+.hero-reservasi__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-reservasi__overlay {
+  background: linear-gradient(180deg, rgba(2,6,23,0.45), rgba(2,6,23,0.55));
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-reservasi__content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-reservasi__content .ds-h1,
+.hero-reservasi__content .ds-body,
+.hero-reservasi__content .ds-caption {
+  color: rgba(255,255,255,0.95);
+}
+
+.hero-reservasi .btn {
+  z-index: 3;
+}
+
+/* Make badges in hero high-contrast */
+.hero-reservasi .badge {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.hero-reservasi .badge-status-success {
+  background: rgba(34,197,94,0.18);
+  color: #fff;
+}
+.hero-reservasi .badge-status-info {
+  background: rgba(59,130,246,0.18);
+  color: #fff;
+}
+.hero-reservasi .badge-status-warning {
+  background: rgba(245,158,11,0.14);
+  color: #111;
+}
+
+/* Ensure hero content remains visible over background image */
+.admin-shell .hero-reservasi {
+  color: #fff;
+  overflow: hidden;
+}
+
+.admin-shell .hero-reservasi__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.admin-shell .hero-reservasi__overlay {
+  /* stronger, neutral overlay to improve contrast */
+  background: linear-gradient(180deg, rgba(2,6,23,0.45), rgba(2,6,23,0.55));
+  z-index: 1;
+  pointer-events: none;
+}
+
+.admin-shell .hero-reservasi__content {
+  position: relative;
+  z-index: 2;
+}
+
+.admin-shell .hero-reservasi__content .ds-h1,
+.admin-shell .hero-reservasi__content .ds-body,
+.admin-shell .hero-reservasi__content .ds-caption {
+  color: rgba(255,255,255,0.95);
+}
+
+.admin-shell .hero-reservasi .btn {
+  z-index: 3;
+}
+
+.hero-reservasi {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-reservasi__content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Design System Typography */
+.ds-h1 {
+  font-family: "Optimistic VF", var(--font-sans, ui-sans-serif, system-ui);
+  font-size: 36px; /* heading-lg */
+  font-weight: 500;
+  line-height: 1.28;
+  letter-spacing: -0.02em;
+  color: var(--ink-deep);
+}
+
+.ds-h2 {
+  font-family: "Optimistic VF", var(--font-sans, ui-sans-serif, system-ui);
+  font-size: 28px; /* heading-md */
+  font-weight: 300;
+  line-height: 1.21;
+  letter-spacing: -0.02em;
+  color: var(--ink-deep);
+}
+
+.ds-body {
+  font-family: "Optimistic VF", var(--font-sans, ui-sans-serif, system-ui);
+  font-size: 16px; /* body-md */
+  font-weight: 400;
+  line-height: 1.50;
+  letter-spacing: -0.16px;
+  color: var(--ink);
+}
+
+.ds-caption {
+  font-family: "Optimistic VF", var(--font-sans, ui-sans-serif, system-ui);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.33;
+  color: var(--charcoal);
+}
+
+.ds-card {
+  background: var(--canvas);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-xxl);
+  box-shadow: var(--shadow-1);
+}
+
+.admin-card--flat {
+  background: transparent;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+}
+
+.admin-card--section-header {
+  background: rgba(243, 246, 251, 0.8);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-xl);
+  padding: 24px;
+}
+
+.avatar-sm {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--r-circle);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: var(--r-circle);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-avatar-primary {
+  background: rgba(0, 100, 224, 0.12);
+  border: 1px solid rgba(0, 100, 224, 0.2);
+}
+
+.status-avatar-success {
+  background: rgba(49, 162, 76, 0.12);
+  border: 1px solid rgba(49, 162, 76, 0.2);
+}
+
+.appointment-summary-card {
+  background: var(--canvas);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--r-xxl);
+  padding: 24px;
+  box-shadow: var(--shadow-1);
+}
+
+.appointment-summary-card__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.appointment-summary-card__kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--slate);
+  margin-bottom: 8px;
+}
+
+.appointment-summary-card__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.appointment-summary-card__item {
+  background: var(--surface-soft);
+  border-radius: var(--r-xl);
+  padding: 16px;
+}
+
+.appointment-summary-card__value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink-deep);
+}
+
+.appointment-summary-card__label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--charcoal);
+}
+
+@media (max-width: 768px) {
+  .appointment-summary-card__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* Buttons */
+/* Scoped admin button styling to avoid Bootstrap global .btn changes */
+.admin-shell .btn-primary,
+.admin-shell .btn-secondary,
+.admin-shell .btn-ghost {
+  border-radius: var(--r-full);
+  font-weight: 700;
+  padding: 10px 22px;
+  font-family: "Optimistic VF", var(--font-sans, ui-sans-serif, system-ui);
+  font-size: 0.94rem;
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+ .admin-shell .btn-primary {
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  color: var(--on-primary);
+  box-shadow: none;
+}
+
+ .admin-shell .btn-primary:hover {
+  background: var(--primary-deep);
+  border-color: var(--primary-deep);
+  color: var(--on-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(0, 100, 224, 0.12);
+}
+
+ .admin-shell .btn-secondary {
+  background: var(--canvas);
+  border: 2px solid var(--ink-deep);
+  color: var(--ink-deep);
+  box-shadow: none;
+}
+
+ .admin-shell .btn-secondary:hover {
+  background: rgba(10, 19, 23, 0.04);
+}
+
+ .admin-shell .btn-ghost {
+  background: transparent;
+  border: 1px solid var(--hairline-soft);
+  color: var(--ink-deep);
+}
+
+ .admin-shell .btn-ghost:hover {
+  background: rgba(10, 19, 23, 0.04);
+}
+
+.btn-nowrap {
+  white-space: nowrap;
+}
+
+/* Badges */
+/* Scoped badges for admin shell, avoiding global Bootstrap badge override */
+.admin-shell .badge {
+  border-radius: var(--r-full);
+  font-weight: 700;
+  padding: 6px 14px;
+  border: 1px solid var(--hairline-soft);
+  background: var(--canvas);
+  color: var(--ink-deep);
+  font-size: 13px;
+  letter-spacing: 0.01em;
+}
+
+ .admin-shell .badge-status-success {
+  background: rgba(49, 162, 76, 0.12);
+  color: var(--success);
+  border-color: rgba(49, 162, 76, 0.22);
+}
+
+ .admin-shell .badge-status-warning {
+  background: rgba(247, 185, 40, 0.14);
+  color: #7f5c00;
+  border-color: rgba(247, 185, 40, 0.22);
+}
+
+ .admin-shell .badge-status-critical {
+  background: rgba(228, 30, 63, 0.12);
+  color: var(--critical);
+  border-color: rgba(228, 30, 63, 0.18);
+}
+
+ .admin-shell .badge-status-info {
+  background: rgba(0, 100, 224, 0.12);
+  color: var(--primary-deep);
+  border-color: rgba(0, 100, 224, 0.2);
+}
+
+/* Form & input */
+.admin-form-label {
+  font-weight: 700;
+  color: var(--ink-deep);
+  margin-bottom: 8px;
+}
+
+.admin-form-control {
+  width: 100%;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--hairline);
+  padding: 12px;
+  background: var(--canvas);
+  color: var(--ink);
+}
+
+.admin-form-control:focus {
+  outline: none;
+  border-color: rgba(0, 100, 224, 0.45);
+  box-shadow: 0 0 0 4px rgba(0, 100, 224, 0.12);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .admin-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-sidebar {
+    transform: translateX(-100%);
+    width: 260px;
+  }
+
+  .admin-sidebar.show {
+    transform: translateX(0);
+  }
+
+  .admin-main {
+    margin-left: 0;
+  }
+
+  .admin-content {
+    padding: 16px;
+  }
+
+  .admin-stat-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
