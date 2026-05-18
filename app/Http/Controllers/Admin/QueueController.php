@@ -134,6 +134,13 @@ class QueueController extends Controller
 
         $queue->update($updateData);
 
+        $notificationService = app(\App\Services\NotificationService::class);
+        $notificationService->notifyAdminQueueStatusChanged($queue);
+
+        if ($newStatus === 'called') {
+            $notificationService->notifyPatientQueueCalled($queue);
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Status antrian berhasil diperbarui',

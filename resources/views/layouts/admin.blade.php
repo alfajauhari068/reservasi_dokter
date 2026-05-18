@@ -118,6 +118,10 @@
                             <i class="far fa-clock me-2"></i>
                             <span>{{ now()->format('l, d F Y') }}</span>
                         </div>
+                        {{-- Notification Dropdown --}}
+                        <ul class="navbar-nav">
+                            @include('components.notification-dropdown')
+                        </ul>
                         <div class="dropdown admin-user-menu">
                             <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-user me-2"></i>

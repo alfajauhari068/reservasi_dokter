@@ -8,6 +8,7 @@ use App\Http\Controllers\Pasien\DashboardController as PasienDashboardController
 use App\Http\Controllers\Pasien\ProfileController as PasienProfileController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\Pasien\ReservasiController;
 
 /*
@@ -187,3 +188,27 @@ Route::middleware(['auth', 'role:pasien'])->group(function () {
             Route::get('reservasi/{appointment}', [ReservasiController::class, 'show'])->name('reservasi.show');
         });
     });
+
+Route::middleware('auth')->group(function () {
+    Route::get('/notifications', [NotificationsController::class, 'index'])->name('notifications.index');
+    Route::put('/notifications/mark-all-as-read', [NotificationsController::class, 'markAllAsRead'])->name('notifications.mark-all-as-read');
+    Route::put('/notifications/{notification}/mark-as-read', [NotificationsController::class, 'markAsRead'])->name('notifications.mark-as-read');
+    Route::delete('/notifications/{notification}', [NotificationsController::class, 'destroy'])->name('notifications.destroy');
+    Route::delete('/notifications', [NotificationsController::class, 'deleteAll'])->name('notifications.delete-all');
+    Route::get('/notifications/{notification}', [NotificationsController::class, 'show'])->name('notifications.show');
+    Route::get('/notifications/debug-send', function () {
+        $user = \App\Models\User::first();
+
+        if (! $user) {
+            abort(404, 'User tidak ditemukan.');
+        }
+
+        $user->notify(new \App\Notifications\DebugNotification());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Debug notification sent to user ' . $user->id,
+            'user_id' => $user->id,
+        ]);
+    })->name('notifications.debug-send');
+});
