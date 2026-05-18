@@ -29,3 +29,144 @@ img {
   height: auto;
 }
 
+/* ===============================
+   DESIGN SYSTEM: Blade helpers
+   =============================== */
+
+/* Pill button: base (use tokens only) */
+.btn-primary,
+.btn-primary:visited {
+  background: var(--primary, #0064e0);
+  color: #ffffff;
+  border: 0;
+  border-radius: 100px; /* {rounded.full} */
+  padding: 14px 30px; /* {component.button-buy-cta.padding} */
+  font-family: var(--font-optimistic, "Optimistic VF", var(--font-sans, ui-sans-serif, system-ui));
+  font-weight: 700;
+  line-height: 1.43;
+  letter-spacing: -0.14px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Card: photographic/feature-like rounding */
+.ds-card,
+.card.ds-card {
+  background: var(--bg-0, #ffffff);
+  border-radius: 16px; /* {rounded.xl} */
+  border: 1px solid var(--hairline-soft, rgba(14, 165, 233, 0.20));
+  box-shadow: none;
+}
+
+/* Appointment Summary Card (admin) */
+.appointment-summary-card {
+  padding: 24px;
+}
+
+.appointment-summary-card__header {
+  margin-bottom: 16px;
+}
+
+.appointment-summary-card__kicker {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: rgba(15, 23, 42, 0.62);
+  margin-bottom: 8px;
+}
+
+.appointment-summary-card__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.appointment-summary-card__item {
+  border: 1px solid rgba(14, 165, 233, 0.20);
+  border-radius: 16px;
+  padding: 14px 16px;
+}
+
+.appointment-summary-card__value {
+  font-size: 20px;
+  font-weight: 700;
+  color: rgba(15, 23, 42, 0.96);
+  line-height: 1.1;
+}
+
+.appointment-summary-card__label {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(15, 23, 42, 0.62);
+}
+
+@media (max-width: 768px) {
+  .appointment-summary-card__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* Hero landing for admin reservation dashboard */
+.hero-reservasi {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.hero-reservasi__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-reservasi__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.22;
+  transform: scale(1.02);
+}
+
+.hero-reservasi__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 100, 224, 0.35), rgba(0, 145, 255, 0.25));
+  z-index: 1;
+}
+
+.hero-reservasi__content {
+  position: relative;
+  z-index: 2;
+}
+
+/* Typography roles (align to DESIGN.md hierarchy) */
+.ds-h1 {
+  font-family: "Optimistic VF", var(--font-sans, ui-sans-serif, system-ui);
+  font-size: 28px; /* {typography.heading-md} */
+  font-weight: 300;
+  line-height: 1.21;
+  letter-spacing: 0;
+}
+
+.ds-h2 {
+  font-family: "Optimistic VF", var(--font-sans, ui-sans-serif, system-ui);
+  font-size: 24px; /* {typography.heading-sm} */
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.ds-body {
+  font-family: "Optimistic VF", var(--font-sans, ui-sans-serif, system-ui);
+  font-size: 16px; /* {typography.body-md} */
+  font-weight: 400;
+  line-height: 1.50;
+  letter-spacing: -0.16px;
+  color: rgba(15, 23, 42, 0.8);
+}
+
+
