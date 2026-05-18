@@ -93,7 +93,7 @@
                                             <i class="fas fa-user text-primary"></i>
                                         </div>
                                         <div>
-                                            <span class="fw-semibold">{{ $queue->appointment->patient->user->name }}</span>
+                                            <span class="fw-semibold">{{ optional($queue->appointment->patient->user)->name ?? $queue->appointment->patient->full_name ?? $queue->appointment->patient->identity_number }}</span>
                                             <br>
                                             <small class="text-muted">
                                                 <i class="fas fa-id-card me-1"></i>

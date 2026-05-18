@@ -24,17 +24,12 @@ class DashboardController extends Controller
         }
 
         // === STATISTIK TOTAL RESERVASI HARI INI PER STATUS ===
-        // Catatan: enum status pada Appointment: pending, in_progress, completed, cancelled
-        // Card dashboard pakai mapping:
-        // - pending        => pending
-        // - approved       => in_progress
-        // - done           => completed
-        // - cancelled      => cancelled
+        // Catatan: enum status di migration adalah: pending|in_progress|completed|cancelled
         $statsQuery = Appointment::selectRaw("
                 COUNT(*) as total,
                 SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending,
-                SUM(CASE WHEN status = 'in_progress' THEN 1 ELSE 0 END) as approved,
-                SUM(CASE WHEN status = 'done' THEN 1 ELSE 0 END) as done,
+                SUM(CASE WHEN status IN ('in_progress', 'approved') THEN 1 ELSE 0 END) as approved,
+                SUM(CASE WHEN status IN ('completed', 'done') THEN 1 ELSE 0 END) as done,
                 SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) as cancelled
             ")
             // gunakan appointment_date agar 'hari ini' konsisten dengan tabel antrian
@@ -114,11 +109,20 @@ class DashboardController extends Controller
         // Query efisien untuk data antrian hari ini
         $dailyQueues = $this->getTodayQueues();
 
-        // === PERMOHONAN RESERVASI MENUNGGU PERSETUJUAN ADMIN ===
-        $pendingApprovalsCount = Appointment::where('approval_status', 'pending')->count();
+        // === TOTAL ANTRIAN YANG SUDAH DILAYANI HARI INI ===
+        $todayServedCount = Queue::join('appointments', 'queues.appointment_id', '=', 'appointments.id')
+            ->whereDate('appointments.appointment_date', today())
+            ->where(function ($query) {
+                $query->where('queues.queue_status', 'served')
+                      ->orWhereIn('appointments.status', ['completed', 'done']);
+            })
+            ->count();
+
+        // === TOTAL RESERVASI ===
+        $totalReservationsCount = Appointment::count();
 
         // Return view dengan semua data statistik
-        return view('admin.dashboard', compact('todayStats', 'doctorStats', 'dailyQueues', 'pendingApprovalsCount'));
+        return view('admin.dashboard', compact('todayStats', 'doctorStats', 'dailyQueues', 'totalReservationsCount', 'todayServedCount'));
     }
 
     /**
@@ -134,6 +138,7 @@ class DashboardController extends Controller
             ])
             ->join('appointments', 'queues.appointment_id', '=', 'appointments.id')
             ->whereDate('appointments.appointment_date', today())
+            ->whereNotIn('appointments.status', ['completed', 'done'])
             ->orderBy('queues.queue_number')
             ->select([
                 'queues.*',
@@ -145,16 +150,19 @@ class DashboardController extends Controller
                 return [
                     'queue_number' => $queue->queue_number,
                     'booking_code' => $queue->booking_code,
-                    'patient_name' => $queue->appointment->patient->user->name,
-                    'doctor_name' => $queue->appointment->doctor->user->name,
-                    'doctor_specialization' => $queue->appointment->doctor->specialization->name ?? 'N/A',
-                    'appointment_time' => $queue->appointment->appointment_date,
+                    'patient_name' => optional($queue->appointment?->patient?->user)->name
+                        ?? $queue->appointment?->patient?->full_name
+                        ?? $queue->appointment?->patient?->identity_number
+                        ?? '-',
+                    'doctor_name' => optional($queue->appointment?->doctor?->user)->name ?? '-',
+                    'doctor_specialization' => $queue->appointment?->doctor?->specialization?->name ?? 'N/A',
+                    'appointment_time' => $queue->appointment?->appointment_date,
                     'queue_status' => $queue->queue_status,
                     'called_at' => $queue->called_at,
                     'served_at' => $queue->served_at,
                     // Pastikan key status tersedia untuk view dashboard (menghindari undefined index)
-                    'status' => $queue->appointment->status ?? 'pending',
-                    'approval_status' => $queue->appointment->approval_status,
+                    'status' => $queue->appointment?->status ?? 'pending',
+                    'approval_status' => $queue->appointment?->approval_status,
                 ];
             });
     }
@@ -179,8 +187,11 @@ class DashboardController extends Controller
                 return [
                     'queue_number' => $appointment->queue->queue_number,
                     'booking_code' => $appointment->booking_code,
-                    'patient_name' => $appointment->patient->user->name,
-                    'doctor_name' => $appointment->doctor->user->name,
+                    'patient_name' => optional($appointment->patient->user)->name
+                        ?? $appointment->patient->full_name
+                        ?? $appointment->patient->identity_number
+                        ?? '-',
+                    'doctor_name' => optional($appointment->doctor->user)->name ?? '-',
                     'doctor_specialization' => $appointment->doctor->specialization->name ?? 'N/A',
                     'appointment_time' => $appointment->appointment_date,
                     'queue_status' => $appointment->queue->queue_status,

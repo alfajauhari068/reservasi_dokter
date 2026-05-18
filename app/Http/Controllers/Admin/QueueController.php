@@ -21,6 +21,8 @@ class QueueController extends Controller
             abort(403, 'Unauthorized access');
         }
 
+        Queue::normalizeBySpecialization(today()->toDateString());
+
         // Ambil data antrian hari ini
         $todayQueues = $this->getTodayQueues();
 
@@ -42,7 +44,10 @@ class QueueController extends Controller
                 'appointment.doctor.specialization'
             ])
             ->join('appointments', 'queues.appointment_id', '=', 'appointments.id')
+            ->leftJoin('doctors', 'appointments.doctor_id', '=', 'doctors.id')
+            ->leftJoin('specializations', 'doctors.specialization_id', '=', 'specializations.id')
             ->whereDate('appointments.appointment_date', today())
+            ->orderBy('specializations.name')
             ->orderBy('queues.queue_number')
             ->select([
                 'queues.*',
@@ -56,7 +61,10 @@ class QueueController extends Controller
                     'id' => $queue->id,
                     'queue_number' => (int) $queue->queue_number,
                     'booking_code' => $queue->booking_code,
-                    'patient_name' => optional($queue->appointment?->patient?->user)->name ?? '-',
+                    'patient_name' => optional($queue->appointment?->patient?->user)->name
+                        ?? $queue->appointment?->patient?->full_name
+                        ?? $queue->appointment?->patient?->identity_number
+                        ?? '-',
                     'patient_id' => $queue->appointment?->patient?->id,
                     'doctor_name' => optional($queue->appointment?->doctor?->user)->name ?? '-',
                     'doctor_specialization' => $queue->appointment?->doctor?->specialization?->name ?? 'N/A',
@@ -126,6 +134,13 @@ class QueueController extends Controller
 
         $queue->update($updateData);
 
+        $notificationService = app(\App\Services\NotificationService::class);
+        $notificationService->notifyAdminQueueStatusChanged($queue);
+
+        if ($newStatus === 'called') {
+            $notificationService->notifyPatientQueueCalled($queue);
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Status antrian berhasil diperbarui',
@@ -170,20 +185,31 @@ class QueueController extends Controller
         $appointmentsWithoutQueue = Appointment::whereDate('appointment_date', today())
             ->whereDoesntHave('queue')
             ->where('approval_status', 'approved') // Hanya yang sudah disetujui
+            ->with('doctor')
             ->orderBy('appointment_date')
+            ->orderBy('created_at')
             ->get();
 
         $created = 0;
-        $nextQueueNumber = $this->getNextQueueNumber();
 
         foreach ($appointmentsWithoutQueue as $appointment) {
+            $specializationId = $appointment->doctor?->specialization_id;
+            $nextQueueNumber = Queue::nextNumberForSpecialization($specializationId, $appointment->appointment_date->toDateString());
+
+            $appointment->update([
+                'queue_number' => $nextQueueNumber,
+                'queue_date' => $appointment->appointment_date,
+            ]);
+
             Queue::create([
                 'appointment_id' => $appointment->id,
-                'queue_number' => $nextQueueNumber++,
+                'queue_number' => $nextQueueNumber,
                 'queue_status' => 'waiting'
             ]);
             $created++;
         }
+
+        Queue::normalizeBySpecialization(today()->toDateString());
 
         return redirect()->back()->with('success', "Berhasil generate {$created} nomor antrian baru");
     }

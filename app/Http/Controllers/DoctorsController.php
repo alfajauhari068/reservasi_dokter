@@ -227,6 +227,8 @@ class DoctorsController extends Controller
             'quota' => $request->quota,
         ]);
 
+        app(\App\Services\NotificationService::class)->notifyDoctorScheduleChanged($schedule);
+
         return redirect()->route('admin.doctors.show', $doctor)
             ->with('success', 'Jadwal berhasil diperbarui.');
     }
