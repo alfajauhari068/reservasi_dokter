@@ -3,144 +3,198 @@
 @section('title', 'Dashboard Dokter')
 
 @section('content')
-<div class="page-heading mb-4">
-    <div class="row gy-4">
-        <div class="col-lg-8">
-            <div class="glass-card p-4 h-100">
-                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
-                    <div>
-                        <span class="badge bg-info bg-opacity-15 text-info mb-3">Dashboard Dokter</span>
-                        <h1 class="h2 mb-2">Selamat datang, {{ auth()->user()->name }}</h1>
-                        <p class="text-muted mb-3">Kelola reservasi pasien, tinjau jadwal, dan selesaikan pemeriksaan dengan cepat.</p>
+<div class="ds-dashboard-content">
+    <section class="ds-hero-band mb-4">
+        <div class="container-fluid">
+            <div class="row g-4 align-items-start">
+                <div class="col-lg-7">
+                    <div class="ds-hero-left">
+                        <div class="ds-label-badge">DASHBOARD DOKTER</div>
+                        <h1 class="ds-hero-title">Halo, {{ auth()->user()->name }}</h1>
+                        <p class="ds-hero-description">
+                            Kelola reservasi pasien Anda dengan mudah dan pantau statistik harian secara real-time.
+                        </p>
                         <div class="d-flex flex-wrap gap-2">
-                            <a href="{{ route('dokter.reservasi.history') }}" class="btn btn-primary">Lihat Riwayat</a>
-                            <a href="{{ route('dokter.dashboard') }}" class="btn btn-secondary">Segarkan Dashboard</a>
+                            <a href="{{ route('dokter.reservasi.history') }}" class="ds-btn-primary">
+                                Lihat Riwayat
+                            </a>
+                            <a href="{{ route('dokter.dashboard') }}" class="ds-btn-secondary">
+                                Segarkan Dashboard
+                            </a>
                         </div>
                     </div>
-                    <div class="text-md-end text-white-75">
-                        <p class="mb-1 text-uppercase text-secondary small">Status Akun</p>
-                        <h5 class="mb-1">{{ optional($doctor->specialization)->name ?? 'Spesialisasi belum lengkap' }}</h5>
-                        <p class="mb-0">ID Dokter: <strong>{{ optional($doctor)->id ?? '-' }}</strong></p>
-                    </div>
+                </div>
+                <div class="col-lg-5">
+                    @if($doctor)
+                        <div class="ds-doctor-sidebar">
+                            <div class="ds-doctor-avatar">
+                                @if($doctor->photo)
+                                    <img src="{{ asset('storage/' . $doctor->photo) }}" alt="Foto Profil Dokter">
+                                @else
+                                    <img src="{{ asset('assets/doctor-avatar-circle.svg') }}" alt="Avatar Dokter">
+                                @endif
+                            </div>
+                            <div class="ds-badge-success">Aktif</div>
+                            <div class="ds-info-row">
+                                <span class="ds-info-label">Spesialisasi</span>
+                                <span class="ds-info-value">
+                                    {{ optional($doctor->specialization)->name ?? 'Belum diatur' }}
+                                </span>
+                            </div>
+                            <div class="ds-info-row">
+                                <span class="ds-info-label">ID Dokter</span>
+                                <span class="ds-info-value">
+                                    {{ optional($doctor)->id ?? '-' }}
+                                </span>
+                            </div>
+                        </div>
+                    @else
+                        <div class="ds-empty-state">
+                            <div class="ds-empty-title">Profil dokter tidak ditemukan</div>
+                            <div class="ds-empty-description">
+                                Pastikan akun dokter sudah terhubung dengan data dokter.
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="glass-card p-4 h-100">
-                @if($doctor && $doctor->photo)
-                    <div class="text-center mb-3">
-                        <img src="{{ asset('storage/' . $doctor->photo) }}" alt="Foto Profil Dokter" class="rounded-circle border border-3 border-primary" style="width: 200px; height: 200px; object-fit: cover;">
-                    </div>
-                @endif
-                <div class="d-flex align-items-center mb-3">
-                    <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 54px; height: 54px;">
-                        <i class="fas fa-user-md text-primary fs-4"></i>
-                    </div>
-                    <div>
-                        <p class="text-secondary text-uppercase small mb-1">Profil Dokter</p>
-                        <h5 class="mb-0">{{ optional($doctor->user)->name ?? auth()->user()->name }}</h5>
-                        <small class="text-muted">{{ optional($doctor->specialization)->name ?? 'Spesialisasi tidak tersedia' }}</small>
-                    </div>
-                </div>
+    </section>
+
+    @if($doctor)
+        <section class="mb-4">
+            <div class="container-fluid">
                 <div class="row g-3">
-                    <div class="col-6">
-                        <div class="p-3 bg-white bg-opacity-10 rounded-3">
-                            <p class="text-muted small mb-1">Reservasi Baru</p>
-                            <h4 class="mb-0">{{ $pendingAppointments->count() }}</h4>
+                    <div class="col-12 col-md-4">
+                        <div class="ds-stat-card">
+                            <svg class="ds-stat-icon ds-stat-icon-primary" aria-hidden="true"></svg>
+                            <div class="ds-stat-value">{{ $pendingAppointments->count() }}</div>
+                            <div class="ds-stat-label">Permintaan Baru</div>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <div class="p-3 bg-white bg-opacity-10 rounded-3">
-                            <p class="text-muted small mb-1">Sudah Selesai</p>
-                            <h4 class="mb-0">{{ $completedCount }}</h4>
+                    <div class="col-12 col-md-4">
+                        <div class="ds-stat-card">
+                            <svg class="ds-stat-icon ds-stat-icon-success" aria-hidden="true"></svg>
+                            <div class="ds-stat-value">{{ $completedCount }}</div>
+                            <div class="ds-stat-label">Riwayat Selesai</div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="ds-stat-card">
+                            <svg class="ds-stat-icon ds-stat-icon-ink" aria-hidden="true"></svg>
+                            <div class="ds-stat-value">
+                                {{ $pendingAppointments->count() + $completedCount }}
+                            </div>
+                            <div class="ds-stat-label">Total Pasien Hari Ini</div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
+
+        <section class="mb-4">
+            <div class="container-fluid">
+                <div class="row g-3">
+                    <div class="col-xl-8">
+                        <div class="ds-table-wrapper">
+                            <div class="p-3 border-bottom ds-table-header">
+                                <h5 class="mb-1">Daftar Reservasi Pasien</h5>
+                                <p class="mb-0 ds-table-subtitle">
+                                    Daftar reservasi yang perlu ditindaklanjuti oleh dokter.
+                                </p>
+                            </div>
+
+                            @if($pendingAppointments->isEmpty())
+                                <div class="p-0">
+                                    <div class="ds-empty-state">
+                                        <div class="ds-empty-title">Belum ada reservasi baru</div>
+                                        <div class="ds-empty-description">
+                                            Reservasi pasien akan muncul di sini.
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="table-responsive">
+                                    <table class="ds-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Tanggal</th>
+                                                <th>Pasien</th>
+                                                <th>Nomor Antrian</th>
+                                                <th>Status</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($pendingAppointments as $appointment)
+                                                <tr>
+                                                    <td>{{ $appointment->appointment_date->format('d-m-Y') }}</td>
+                                                    <td>
+                                                        {{ optional($appointment->patient->user)->name
+                                                        ?? $appointment->patient->full_name
+                                                        ?? $appointment->patient->identity_number }}
+                                                    </td>
+                                                    <td>{{ $appointment->queue_number ?? '-' }}</td>
+                                                    <td>
+                                                        <span class="ds-badge-warning">
+                                                            {{ ucfirst($appointment->status) }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ route('dokter.reservasi.show', $appointment) }}"
+                                                           class="ds-text-link">
+                                                            Periksa
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4">
+                        @php
+                        $nextAppointment = $pendingAppointments->first();
+                        @endphp
+                        @if($nextAppointment)
+                            <div class="ds-next-patient-card">
+                                <h3 class="ds-card-title">Pasien Berikutnya</h3>
+                                <div class="ds-patient-name">
+                                    {{ optional($nextAppointment->patient->user)->name
+                                    ?? $nextAppointment->patient->full_name
+                                    ?? $nextAppointment->patient->identity_number }}
+                                </div>
+                                <div class="ds-patient-meta">
+                                    <div class="ds-meta-item">
+                                        📅 {{ $nextAppointment->appointment_date->format('d-m-Y') }}
+                                    </div>
+                                    <div class="ds-meta-item">
+                                        🎫 Antrian: {{ $nextAppointment->queue_number ?? '-' }}
+                                    </div>
+                                </div>
+                                <span class="ds-badge-warning">
+                                    {{ ucfirst($nextAppointment->status) }}
+                                </span>
+                                <a href="{{ route('dokter.reservasi.show', $nextAppointment) }}"
+                                   class="ds-btn-primary ds-btn-full mt-2">
+                                    Buka Detail
+                                </a>
+                            </div>
+                        @else
+                            <div class="ds-empty-state">
+                                <div class="ds-empty-title">Tidak ada pasien berikutnya</div>
+                                <div class="ds-empty-description">
+                                    Semua reservasi telah diproses.
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </section>
+    @endif
 </div>
-
-@if(! $doctor)
-    <div class="alert alert-warning">Profil dokter tidak ditemukan. Pastikan akun dokter sudah terhubung dengan data dokter.</div>
-@else
-    <div class="row row-cols-1 row-cols-lg-3 g-4 mb-4">
-        <div class="col">
-            <div class="glass-card p-4 h-100">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div>
-                        <p class="text-uppercase text-secondary small mb-1">Permintaan Baru</p>
-                        <h3 class="mb-0">{{ $pendingAppointments->count() }}</h3>
-                    </div>
-                    <span class="badge bg-warning text-dark">Baru</span>
-                </div>
-                <p class="text-muted mb-0">Reservasi yang menunggu tindak lanjut dokter.</p>
-            </div>
-        </div>
-        <div class="col">
-            <div class="glass-card p-4 h-100">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div>
-                        <p class="text-uppercase text-secondary small mb-1">Riwayat Selesai</p>
-                        <h3 class="mb-0">{{ $completedCount }}</h3>
-                    </div>
-                    <span class="badge bg-success">Selesai</span>
-                </div>
-                <p class="text-muted mb-0">Reservasi yang sudah selesai dan tercatat di riwayat.</p>
-            </div>
-        </div>
-        <div class="col">
-            <div class="glass-card p-4 h-100">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div>
-                        <p class="text-uppercase text-secondary small mb-1">Total Pasien Hari Ini</p>
-                        <h3 class="mb-0">{{ $pendingAppointments->count() + $completedCount }}</h3>
-                    </div>
-                    <span class="badge bg-info text-dark">Hari Ini</span>
-                </div>
-                <p class="text-muted mb-0">Jumlah total reservasi yang terkait dengan dokter hari ini.</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="card shadow-sm">
-        <div class="card-header bg-white border-bottom-0 d-flex justify-content-between align-items-center">
-            <div>
-                <h5 class="mb-1">Reservasi Pasien</h5>
-                <p class="mb-0 text-muted small">Daftar reservasi yang perlu ditindaklanjuti oleh dokter.</p>
-            </div>
-            <a href="{{ route('dokter.reservasi.history') }}" class="btn btn-secondary btn-sm">Lihat Semua Riwayat</a>
-        </div>
-        <div class="card-body p-0">
-            @if($pendingAppointments->isEmpty())
-                <div class="p-4 text-center text-muted">Belum ada reservasi baru.</div>
-            @else
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0 align-middle">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Tanggal</th>
-                                <th>Pasien</th>
-                                <th>Nomor Antrian</th>
-                                <th>Status</th>
-                                <th class="text-end">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($pendingAppointments as $appointment)
-                                <tr>
-                                    <td>{{ $appointment->appointment_date->format('d-m-Y') }}</td>
-                                    <td>{{ optional($appointment->patient->user)->name ?? $appointment->patient->full_name ?? $appointment->patient->identity_number }}</td>
-                                    <td>{{ $appointment->queue_number ?? '-' }}</td>
-                                    <td><span class="badge bg-warning text-dark">{{ ucfirst($appointment->status) }}</span></td>
-                                    <td class="text-end"><a href="{{ route('dokter.reservasi.show', $appointment) }}" class="btn btn-sm btn-primary">Periksa</a></td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            @endif
-        </div>
-    </div>
-@endif
 @endsection
