@@ -59,14 +59,7 @@
                         </li>
                     @endguest
 
-                    @auth
-                        <li class="nav-item ms-lg-3">
-                            <a class="btn btn-secondary btn-lg" href="{{ url('/') }}">
-                                Reservasi
-                            </a>
-                        </li>
-                        @include('components.notification-dropdown')
-                    @endauth
+                   
                 </ul>
 
                 @auth
