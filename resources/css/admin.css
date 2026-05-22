@@ -100,10 +100,6 @@ body {
   transition: margin-left 0.3s ease;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
-  max-width: 100%;
-  width: calc(100% - 260px);
-  overflow-x: hidden;
 }
 
 .admin-main.expanded {
@@ -262,12 +258,7 @@ body {
 /* Content area spacing should be generous and consistent */
 .admin-content {
   padding: 28px 32px;
-  max-width: 100%;
-  width: 100%;
-  box-sizing: border-box;
-  overflow-x: hidden;
 }
-
 
 /* Sidebar nav links (keep existing bootstrap markup) */
 .admin-sidebar .nav-link {
@@ -760,14 +751,12 @@ body {
   border-radius: var(--r-xxl);
   padding: 24px;
   box-shadow: var(--shadow-1);
-  max-width: 100%;
-  width: 100%;
 }
 
 .appointment-summary-card__header {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 24px;
@@ -784,7 +773,7 @@ body {
 
 .appointment-summary-card__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
 }
 
@@ -792,61 +781,25 @@ body {
   background: var(--surface-soft);
   border-radius: var(--r-xl);
   padding: 16px;
-  min-height: auto;
 }
 
 .appointment-summary-card__value {
   font-size: 28px;
   font-weight: 700;
   color: var(--ink-deep);
-  line-height: 1.1;
 }
 
 .appointment-summary-card__label {
   font-size: 14px;
   font-weight: 600;
   color: var(--charcoal);
-  margin-top: 8px;
-}
-
-@media (max-width: 1024px) {
-  .appointment-summary-card {
-    padding: 20px;
-  }
-  .appointment-summary-card__grid {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  }
 }
 
 @media (max-width: 768px) {
-  .appointment-summary-card {
-    padding: 16px;
-  }
-  .appointment-summary-card__header {
-    flex-direction: column;
-    gap: 12px;
-  }
-  .appointment-summary-card__grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 480px) {
-  .appointment-summary-card {
-    padding: 12px;
-  }
   .appointment-summary-card__grid {
     grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  .appointment-summary-card__value {
-    font-size: 24px;
-  }
-  .appointment-summary-card__label {
-    font-size: 12px;
   }
 }
-
 
 
 /* Buttons */
