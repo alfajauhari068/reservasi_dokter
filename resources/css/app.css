@@ -1,4 +1,5 @@
 @import "./design-system-premium.css";
+@import "./admin.css";
 
 /* Emergency guard: admin layout should not be styled globally if broken.
    Remove admin-only overrides that could affect admin.
