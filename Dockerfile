@@ -7,7 +7,9 @@ RUN apt-get update && apt-get install -y \
     unzip \
     zip \
     libpng-dev \
-    libzip-dev
+    libzip-dev \
+    nodejs \
+    npm
 
 # Install PHP extensions
 RUN docker-php-ext-install gd zip pdo pdo_mysql
@@ -30,7 +32,7 @@ RUN php artisan route:cache || true
 RUN php artisan view:cache || true
 
 # Expose Railway port
-EXPOSE 8080
+EXPOSE 8000
 
 # Start Laravel
 CMD php artisan serve --host=0.0.0.0 --port=8000
