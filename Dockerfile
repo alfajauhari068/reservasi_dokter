@@ -28,13 +28,24 @@ RUN composer install --no-dev --optimize-autoloader
 RUN npm install
 
 # Build Vite assets
+<<<<<<< HEAD
 RUN npm run build 
+=======
+RUN npm run build
+>>>>>>> be7b541 (fix proxy)
 
 # Laravel cache
 RUN php artisan config:cache || true
 RUN php artisan route:cache || true
 RUN php artisan view:cache || true
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+# Expose Railway port
+=======
+>>>>>>> 571ba84 (fix docker file)
+>>>>>>> be7b541 (fix proxy)
 EXPOSE 8000
 
 CMD php artisan serve --host=0.0.0.0 --port=${PORT}
