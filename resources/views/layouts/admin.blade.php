@@ -1,4 +1,4 @@
-﻿{{-- Layout khusus untuk Admin Dashboard --}}
+{{-- Layout khusus untuk Admin Dashboard --}}
 {{-- File: resources/views/layouts/admin.blade.php --}}
 
 <!DOCTYPE html>
@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     {{-- Admin Styling (external CSS) --}}
-    @vite('resources/css/admin.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @stack('styles')
 </head>
@@ -44,6 +44,9 @@
                     </div>
                     <button class="sidebar-toggle d-none d-md-inline-flex" id="sidebarToggle" aria-label="Toggle sidebar">
                         <i class="fas fa-bars"></i>
+                    </button>
+                    <button class="sidebar-toggle d-inline-flex d-md-none" id="sidebarClose" aria-label="Close sidebar">
+                        <i class="fas fa-times"></i>
                     </button>
                 </div>
 
@@ -118,10 +121,6 @@
                             <i class="far fa-clock me-2"></i>
                             <span>{{ now()->format('l, d F Y') }}</span>
                         </div>
-                        {{-- Notification Dropdown --}}
-                        <ul class="navbar-nav">
-                            @include('components.notification-dropdown')
-                        </ul>
                         <div class="dropdown admin-user-menu">
                             <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-user me-2"></i>
@@ -144,6 +143,7 @@
                     </div>
                 </div>
             </header>
+
             <main class="admin-content">
                 @yield('content')
             </main>
@@ -176,7 +176,7 @@
             const overlay = document.getElementById('mobileOverlay');
             const sidebarToggle = document.getElementById('sidebarToggle');
             const sidebarOpen = document.getElementById('sidebarOpen');
-            const sidebarCloseButtons = document.querySelectorAll('.sidebar-close');
+            const sidebarClose = document.getElementById('sidebarClose');
 
             if (sidebarToggle) {
                 sidebarToggle.addEventListener('click', function() {
@@ -192,12 +192,12 @@
                 });
             }
 
-            sidebarCloseButtons.forEach(button => {
-                button.addEventListener('click', function() {
+            if (sidebarClose) {
+                sidebarClose.addEventListener('click', function() {
                     sidebar.classList.remove('show');
                     overlay.classList.remove('show');
                 });
-            });
+            }
 
             if (overlay) {
                 overlay.addEventListener('click', function() {
@@ -221,3 +221,6 @@
     @stack('scripts')
 </body>
 </html>
+
+
+
