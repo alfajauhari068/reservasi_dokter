@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Queue;
+use App\Models\Schedule;
 use App\Models\Specialization;
 use App\Models\Appointment;
 use Illuminate\Support\Facades\Hash;
@@ -45,7 +46,7 @@ class DatabaseSeeder extends Seeder
             // Create Doctor record if not exists
             $specialization = Specialization::where('name', $spec)->first();
             if ($specialization) {
-                Doctor::updateOrCreate(
+                $doctor = Doctor::updateOrCreate(
                     ['user_id' => $doctorUser->id],
                     [
                         'specialization_id' => $specialization->id,
@@ -54,6 +55,16 @@ class DatabaseSeeder extends Seeder
                         'consultation_fee' => 100000 + ($index * 50000),
                         'bio' => 'Dokter spesialis ' . $spec,
                         'is_available' => true,
+                    ]
+                );
+
+                Schedule::updateOrCreate(
+                    ['doctor_id' => $doctor->id, 'day_of_week' => 'monday'],
+                    [
+                        'start_time' => '08:00:00',
+                        'end_time' => '16:00:00',
+                        'quota' => 20,
+                        'is_active' => true,
                     ]
                 );
             }
@@ -80,7 +91,7 @@ class DatabaseSeeder extends Seeder
         }
 
         // Create sample appointments - HARI INI
-        $doctors = Doctor::with('user')->limit(2)->get();
+        $doctors = Doctor::with(['user', 'schedules'])->limit(2)->get();
         $patients = Patient::with('user')->limit(2)->get();
 
         if ($doctors->count() > 0 && $patients->count() > 0) {
@@ -92,10 +103,10 @@ class DatabaseSeeder extends Seeder
                         [
                             'patient_id' => $patient->id,
                             'doctor_id' => $doctor->id,
-                            'schedule_id' => 1,
+                            'schedule_id' => $doctor->schedules->first()?->id ?? 1,
                             'appointment_date' => now()->toDateString(), // HARI INI
                             'complaint' => 'Checkup rutin',
-                            'status' => 'approved',
+                            'status' => 'in_progress',
                         ]
                     );
 

@@ -59,8 +59,11 @@ class RegisterController extends Controller
                 // Buat profil pasien
                 Patient::create([
                     'user_id' => $user->id,
+                    'full_name' => $validated['name'],
                     'gender' => $validated['gender'],
                     'date_of_birth' => $validated['date_of_birth'],
+                    'phone' => $validated['phone'],
+                    'address' => $validated['address'] ?? null,
                     // blood_type & identity_number optional, can be updated later
                 ]);
             });

@@ -28,6 +28,7 @@ class Patient extends Model
         'blood_type',
         'identity_number',
         'address',
+        'phone',
     ];
 
     /**
@@ -44,5 +45,13 @@ class Patient extends Model
     public function appointments()
     {
         return $this->hasMany(Appointment::class);
+    }
+
+    /**
+     * Accessor for patient phone number.
+     */
+    public function getPhoneNumberAttribute(): ?string
+    {
+        return $this->phone;
     }
 }

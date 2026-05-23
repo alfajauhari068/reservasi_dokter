@@ -28,7 +28,7 @@ RUN composer install --no-dev --optimize-autoloader
 RUN npm install
 
 # Build Vite assets
-RUN npm run build
+RUN npm run build 
 
 # Laravel cache
 RUN php artisan config:cache || true
