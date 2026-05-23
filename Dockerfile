@@ -29,10 +29,14 @@ RUN npm install
 
 # Build Vite assets
 <<<<<<< HEAD
+<<<<<<< HEAD
 RUN npm run build 
 =======
 RUN npm run build
 >>>>>>> be7b541 (fix proxy)
+=======
+RUN npm run build 
+>>>>>>> 21a9eb0 (perbaiki column phone db pasien)
 
 # Laravel cache
 RUN php artisan config:cache || true
