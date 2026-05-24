@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="ds-dashboard-content">
-    <section class="ds-hero-band mb-4">
+    <section class="ds-hero-band">
         <div class="container-fluid">
             <div class="row g-4 align-items-start">
                 <div class="col-lg-7">

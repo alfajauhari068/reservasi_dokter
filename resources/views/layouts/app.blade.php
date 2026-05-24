@@ -14,6 +14,14 @@
 </head>
 <body>
 <div class="ds-app-shell">
+    {{-- Background effect layer: purely decorative --}}
+    <div class="ds-background">
+        <div class="ds-gradient"></div>
+        <div class="ds-grid"></div>
+        <div class="ds-orb ds-orb-1"></div>
+        <div class="ds-orb ds-orb-2"></div>
+    </div>
+
     <nav class="ds-navbar navbar navbar-expand-lg">
         <div class="container ds-container">
             <a class="navbar-brand" href="{{ url('/') }}">
