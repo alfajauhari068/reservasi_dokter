@@ -71,7 +71,9 @@
                 </ul>
 
                 @auth
-                    <div class="d-flex align-items-center ms-4">
+                    <div class="d-flex align-items-center ms-4 gap-3">
+                        @include('components.notification-dropdown')
+
                         <span class="me-3 text-dark" style="font-weight: 650;">{{ auth()->user()->name }}</span>
                         <form action="{{ route('logout') }}" method="POST" class="d-inline">
                             @csrf
