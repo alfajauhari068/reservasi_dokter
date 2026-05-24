@@ -116,22 +116,33 @@
                             <p class="admin-page-subtitle">@yield('page-subtitle', 'Ringkasan aktivitas hari ini')</p>
                         </div>
                     </div>
-                    <div class="admin-header-actions">
-                        <div class="admin-topbar-time d-none d-sm-flex align-items-center me-4">
+                    <div class="admin-header-actions d-flex align-items-center gap-3">
+                        <div class="admin-topbar-time d-none d-sm-flex align-items-center">
                             <i class="far fa-clock me-2"></i>
-                            <span>{{ now()->format('l, d F Y') }}</span>
+                            <span>{{ now()->format('H:i') }} WIB</span>
                         </div>
+
+                        <div class="admin-notification-wrapper">
+                            @include('components.notification-dropdown')
+                        </div>
+
                         <div class="dropdown admin-user-menu">
-                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn btn-outline-secondary btn-admin-user dropdown-toggle"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false">
                                 <i class="fas fa-user me-2"></i>
                                 {{ auth()->user()->name }}
                             </button>
+
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
                                 <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
-                                    <a class="dropdown-item text-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form-header').submit();">
+                                    <a class="dropdown-item text-danger"
+                                       href="{{ route('logout') }}"
+                                       onclick="event.preventDefault(); document.getElementById('logout-form-header').submit();">
                                         <i class="fas fa-sign-out-alt me-2"></i>Logout
                                     </a>
                                     <form id="logout-form-header" action="{{ route('logout') }}" method="POST" class="d-none">

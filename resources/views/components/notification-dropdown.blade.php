@@ -16,15 +16,17 @@
         : 0;
 @endphp
 
-<li class="nav-item dropdown ms-3">
-    <a class="nav-link position-relative" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="fas fa-bell fs-6"></i>
+<div class="dropdown admin-notification-dropdown">
+    <button class="btn btn-outline-secondary btn-notification position-relative p-0" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="notification-icon-wrapper d-inline-flex align-items-center justify-content-center">
+            <i class="fas fa-bell fs-5"></i>
+        </span>
         @if($unreadCount > 0)
             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.7rem; padding: 0.25rem 0.4rem;">
                 {{ $unreadCount }}
             </span>
         @endif
-    </a>
+    </button>
 
     <div class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="notificationDropdown" style="min-width: 380px; max-height: 500px; overflow-y: auto;">
         <div class="dropdown-header border-bottom d-flex justify-content-between align-items-center">
