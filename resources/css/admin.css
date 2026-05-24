@@ -357,6 +357,63 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+/* Safe responsive rules (mobile-first). Keep small set of breakpoints
+   and avoid using !important or hard overrides to Popper/Bootstrap. */
+@media (max-width: 768px) {
+
+  /* Sidebar becomes overlay on mobile and is hidden by default */
+  .admin-sidebar {
+    transform: translateX(-100%);
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    z-index: 1050;
+    transition: transform 0.28s ease;
+  }
+
+  .admin-sidebar.show {
+    transform: translateX(0);
+  }
+
+  /* Main content uses full width when sidebar is hidden */
+  .admin-main {
+    margin-left: 0;
+  }
+
+  /* Reduce header padding and title scale for small screens */
+  .admin-header-inner {
+    padding: 12px 16px;
+    gap: 10px;
+  }
+
+  .admin-page-title {
+    font-size: 1.1rem;
+  }
+
+  /* Notification dropdown should fit viewport without forcing Popper.
+     Use a predictable max width that follows viewport percentage. */
+  .admin-notification-wrapper .dropdown-menu {
+    min-width: unset;
+    width: min(360px, 95vw);
+    right: 0;
+    left: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  }
+
+  /* Keep header controls consistent height for touch targets */
+  .admin-topbar-time,
+  .btn-admin-user,
+  .admin-notification-wrapper .btn-notification {
+    min-height: 40px;
+    height: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+}
+
+
 .admin-sidebar .nav-link.active,
 .admin-sidebar .nav-link:hover {
   background-color: rgba(255, 255, 255, 0.14);
