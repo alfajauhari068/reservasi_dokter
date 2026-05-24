@@ -123,38 +123,56 @@
                     <h5 class="mb-0">Tambah Jadwal Baru</h5>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.doctors.schedules.store', $doctor) }}" method="POST">
+                    <!-- Error Summary Alert -->
+                    @if ($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <h6 class="alert-heading"><i class="fas fa-exclamation-circle"></i> Gagal Menambah Jadwal</h6>
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
+
+                    <form action="{{ route('admin.doctors.schedules.store', $doctor) }}" method="POST" novalidate class="needs-validation @if ($errors->any()) was-validated @endif">
                         @csrf
                         <div class="mb-3">
-                            <label for="day_of_week" class="form-label">Hari</label>
+                            <label for="day_of_week" class="form-label">Hari <span class="text-danger">*</span></label>
                             <select name="day_of_week" id="day_of_week" class="form-select @error('day_of_week') is-invalid @enderror" required>
                                 <option value="">-- Pilih Hari --</option>
-                                <option value="monday">Senin</option>
-                                <option value="tuesday">Selasa</option>
-                                <option value="wednesday">Rabu</option>
-                                <option value="thursday">Kamis</option>
-                                <option value="friday">Jumat</option>
-                                <option value="saturday">Sabtu</option>
-                                <option value="sunday">Minggu</option>
+                                <option value="monday" {{ old('day_of_week') === 'monday' ? 'selected' : '' }}>Senin</option>
+                                <option value="tuesday" {{ old('day_of_week') === 'tuesday' ? 'selected' : '' }}>Selasa</option>
+                                <option value="wednesday" {{ old('day_of_week') === 'wednesday' ? 'selected' : '' }}>Rabu</option>
+                                <option value="thursday" {{ old('day_of_week') === 'thursday' ? 'selected' : '' }}>Kamis</option>
+                                <option value="friday" {{ old('day_of_week') === 'friday' ? 'selected' : '' }}>Jumat</option>
+                                <option value="saturday" {{ old('day_of_week') === 'saturday' ? 'selected' : '' }}>Sabtu</option>
+                                <option value="sunday" {{ old('day_of_week') === 'sunday' ? 'selected' : '' }}>Minggu</option>
                             </select>
-                            @error('day_of_week') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            @error('day_of_week') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="start_time" class="form-label">Jam Mulai</label>
-                            <input type="time" name="start_time" id="start_time" class="form-control @error('start_time') is-invalid @enderror" required>
-                            @error('start_time') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            <label for="start_time" class="form-label">Jam Mulai <span class="text-danger">*</span></label>
+                            <input type="time" name="start_time" id="start_time" class="form-control @error('start_time') is-invalid @enderror" value="{{ old('start_time') }}" required>
+                            <small class="form-text text-muted">Format: HH:mm (contoh: 08:00)</small>
+                            @error('start_time') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="end_time" class="form-label">Jam Selesai</label>
-                            <input type="time" name="end_time" id="end_time" class="form-control @error('end_time') is-invalid @enderror" required>
-                            @error('end_time') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            <label for="end_time" class="form-label">Jam Selesai <span class="text-danger">*</span></label>
+                            <input type="time" name="end_time" id="end_time" class="form-control @error('end_time') is-invalid @enderror" value="{{ old('end_time') }}" required>
+                            <small class="form-text text-muted">Harus lebih akhir dari jam mulai</small>
+                            @error('end_time') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="quota" class="form-label">Kuota Pasien</label>
-                            <input type="number" name="quota" id="quota" class="form-control @error('quota') is-invalid @enderror" min="1" value="10" required>
-                            @error('quota') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            <label for="quota" class="form-label">Kuota Pasien <span class="text-danger">*</span></label>
+                            <input type="number" name="quota" id="quota" class="form-control @error('quota') is-invalid @enderror" min="1" value="{{ old('quota', 10) }}" required>
+                            <small class="form-text text-muted">Minimum: 1 pasien</small>
+                            @error('quota') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Tambah Jadwal</button>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-plus me-2"></i>Tambah Jadwal
+                        </button>
                     </form>
                 </div>
             </div>

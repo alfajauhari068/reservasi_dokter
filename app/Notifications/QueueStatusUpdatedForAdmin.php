@@ -45,12 +45,13 @@ class QueueStatusUpdatedForAdmin extends Notification
             'skipped' => 'dilewati',
         ];
         $statusText = $statusLabels[$queue->queue_status] ?? $queue->queue_status;
+        $patientName = $patient?->user?->name ?? 'Pasien';
 
         return [
             'role'           => 'admin',
             'event'          => 'queue_status_updated',
             'title'          => 'Status antrian diperbarui',
-            'message'        => "Antrian #{$queue->queue_number} ({$patient->user->name}) sekarang {$statusText}.",
+            'message'        => "Antrian #{$queue->queue_number} ({$patientName}) sekarang {$statusText}.",
             'icon'           => 'fas fa-bullhorn',
             'level'          => $level,
             'appointment_id' => $appointment->id,

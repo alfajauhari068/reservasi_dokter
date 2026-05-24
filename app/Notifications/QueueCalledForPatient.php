@@ -27,12 +27,13 @@ class QueueCalledForPatient extends Notification
         $queue = $this->queue;
         $appointment = $queue->appointment;
         $doctor = $appointment->doctor;
+        $doctorName = $doctor?->user?->name ?? 'Dokter';
 
         return [
             'role'           => 'pasien',
             'event'          => 'queue_called',
             'title'          => 'Giliran Anda dipanggil',
-            'message'        => "Antrian #{$queue->queue_number} untuk dr. {$doctor->user->name} sedang dipanggil, segera ke ruang periksa.",
+            'message'        => "Antrian #{$queue->queue_number} untuk dr. {$doctorName} sedang dipanggil, segera ke ruang periksa.",
             'icon'           => 'fas fa-bullhorn',
             'level'          => 'info',
             'appointment_id' => $appointment->id,

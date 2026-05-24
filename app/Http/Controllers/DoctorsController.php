@@ -156,7 +156,19 @@ class DoctorsController extends Controller
             'day_of_week' => 'required|string|in:monday,tuesday,wednesday,thursday,friday,saturday,sunday',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
-            'quota' => 'required|integer|min:1',
+            'quota' => 'required|integer|min:1|max:100',
+        ], [
+            'day_of_week.required' => 'Hari harus dipilih',
+            'day_of_week.in' => 'Hari yang dipilih tidak valid',
+            'start_time.required' => 'Jam mulai harus diisi',
+            'start_time.date_format' => 'Format jam mulai tidak valid. Gunakan format HH:mm (contoh: 08:00)',
+            'end_time.required' => 'Jam selesai harus diisi',
+            'end_time.date_format' => 'Format jam selesai tidak valid. Gunakan format HH:mm (contoh: 17:00)',
+            'end_time.after' => 'Jam selesai harus lebih akhir dari jam mulai',
+            'quota.required' => 'Kuota pasien harus diisi',
+            'quota.integer' => 'Kuota harus berupa angka',
+            'quota.min' => 'Kuota minimal adalah 1 pasien',
+            'quota.max' => 'Kuota maksimal adalah 100 pasien',
         ]);
 
         // Check for overlapping schedules

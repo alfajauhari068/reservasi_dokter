@@ -27,12 +27,14 @@ class NewReservationCreatedForAdmin extends Notification
         $appointment = $this->appointment;
         $patient = $appointment->patient;
         $doctor = $appointment->doctor;
+        $patientName = $patient?->user?->name ?? 'Pasien';
+        $doctorName = $doctor?->user?->name ?? 'Dokter';
 
         return [
             'role'           => 'admin',
             'event'          => 'reservation_created',
             'title'          => 'Reservasi baru dibuat',
-            'message'        => "Pasien {$patient->user->name} membuat reservasi ke {$doctor->user->name}.",
+            'message'        => "Pasien {$patientName} membuat reservasi ke {$doctorName}.",
             'icon'           => 'fas fa-calendar-plus',
             'level'          => 'info',
             'appointment_id' => $appointment->id,

@@ -27,12 +27,13 @@ class NewReservationForDoctor extends Notification
         $appointment = $this->appointment;
         $patient = $appointment->patient;
         $scheduledDate = $appointment->appointment_date?->format('d-m-Y H:i') ?? 'tidak terjadwal';
+        $patientName = $patient?->user?->name ?? 'Pasien';
 
         return [
             'role'           => 'dokter',
             'event'          => 'reservation_assigned',
             'title'          => 'Reservasi baru untuk Anda',
-            'message'        => "Pasien {$patient->user->name} dijadwalkan pada {$scheduledDate}.",
+            'message'        => "Pasien {$patientName} dijadwalkan pada {$scheduledDate}.",
             'icon'           => 'fas fa-user-plus',
             'level'          => 'info',
             'appointment_id' => $appointment->id,

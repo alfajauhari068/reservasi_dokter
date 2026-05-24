@@ -27,12 +27,13 @@ class ReservationApprovedForPatient extends Notification
         $appointment = $this->appointment;
         $doctor = $appointment->doctor;
         $scheduledDate = $appointment->appointment_date?->format('d-m-Y H:i') ?? 'tidak terjadwal';
+        $doctorName = $doctor?->user?->name ?? 'Dokter';
 
         return [
             'role'           => 'pasien',
             'event'          => 'reservation_approved',
             'title'          => 'Reservasi Anda disetujui',
-            'message'        => "Reservasi ke dr. {$doctor->user->name} pada {$scheduledDate} telah disetujui.",
+            'message'        => "Reservasi ke dr. {$doctorName} pada {$scheduledDate} telah disetujui.",
             'icon'           => 'fas fa-check-circle',
             'level'          => 'success',
             'appointment_id' => $appointment->id,

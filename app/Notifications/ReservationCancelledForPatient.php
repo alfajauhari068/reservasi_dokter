@@ -27,12 +27,13 @@ class ReservationCancelledForPatient extends Notification
         $appointment = $this->appointment;
         $doctor = $appointment->doctor;
         $scheduledDate = $appointment->appointment_date?->format('d-m-Y H:i') ?? 'tidak terjadwal';
+        $doctorName = $doctor?->user?->name ?? 'Dokter';
 
         return [
             'role'           => 'pasien',
             'event'          => 'reservation_cancelled',
             'title'          => 'Reservasi dibatalkan',
-            'message'        => "Reservasi ke dr. {$doctor->user->name} pada {$scheduledDate} telah dibatalkan.",
+            'message'        => "Reservasi ke dr. {$doctorName} pada {$scheduledDate} telah dibatalkan.",
             'icon'           => 'fas fa-times-circle',
             'level'          => 'critical',
             'appointment_id' => $appointment->id,
