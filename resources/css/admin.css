@@ -367,6 +367,7 @@ body {
     position: fixed;
     left: 0;
     top: 0;
+    width: 220px;
     height: 100vh;
     z-index: 1050;
     transition: transform 0.28s ease;
@@ -381,23 +382,82 @@ body {
     margin-left: 0;
   }
 
+  .admin-content {
+    padding: 12px;
+  }
+
   /* Reduce header padding and title scale for small screens */
   .admin-header-inner {
-    padding: 12px 16px;
+    padding: 12px 14px;
     gap: 10px;
+    min-height: 64px;
   }
 
   .admin-page-title {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+
+  .admin-page-subtitle {
+    font-size: 0.78rem;
+    opacity: 0.8;
+  }
+
+  .admin-shell {
+    font-size: 14px;
+  }
+
+  .admin-shell h1,
+  .admin-shell h2,
+  .admin-shell h3 {
+    line-height: 1.25;
+  }
+
+  .admin-shell .admin-card,
+  .admin-shell .admin-stat-card {
+    border-radius: 16px;
+    padding: 14px;
+  }
+
+  .admin-shell .admin-stat-grid {
+    gap: 12px;
+  }
+
+  .admin-shell .admin-stat-card__value,
+  .admin-shell .admin-stat-card h4,
+  .admin-shell .admin-stat-card h5 {
+    font-size: 1.35rem;
+  }
+
+  .admin-shell .admin-stat-card__kicker {
+    font-size: 0.72rem;
+  }
+
+  /* Button density system for admin shell only */
+  .admin-shell .btn,
+  .admin-shell .btn-sm,
+  .admin-shell .btn-lg {
+    min-height: 38px;
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    border-radius: 10px;
+  }
+
+  .admin-shell .btn-icon,
+  .admin-shell .admin-notification-wrapper .btn-notification {
+    width: 40px;
+    height: 40px;
   }
 
   /* Notification dropdown should fit viewport without forcing Popper.
      Use a predictable max width that follows viewport percentage. */
   .admin-notification-wrapper .dropdown-menu {
     min-width: unset;
-    width: min(360px, 95vw);
+    width: min(340px, 94vw);
     right: 0;
     left: auto;
+    border-radius: 18px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.12);
   }
 
@@ -411,6 +471,63 @@ body {
     padding-right: 10px;
   }
 
+}
+
+@media (max-width: 576px) {
+  .admin-shell .admin-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .admin-header-inner {
+    padding: 10px 12px;
+  }
+
+  .admin-shell .admin-card,
+  .admin-shell .admin-stat-card {
+    padding: 12px;
+  }
+
+  .admin-shell .admin-stat-card__header {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .admin-shell .admin-stat-card__icon {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+  }
+
+  .admin-shell .admin-stat-card h4,
+  .admin-shell .admin-stat-card h5 {
+    font-size: 1.2rem;
+  }
+
+  .admin-shell .admin-stat-card__kicker,
+  .admin-shell .admin-stat-card p.text-muted,
+  .admin-shell .admin-stat-card .text-muted {
+    font-size: 0.72rem;
+  }
+
+  .admin-shell .btn,
+  .admin-shell .btn-sm,
+  .admin-shell .btn-lg {
+    min-height: 36px;
+    padding: 8px 12px;
+    font-size: 0.82rem;
+  }
+
+  .admin-shell .btn-icon,
+  .admin-shell .admin-notification-wrapper .btn-notification {
+    width: 36px;
+    height: 36px;
+  }
+
+  .admin-sidebar {
+    width: 200px;
+  }
 }
 
 

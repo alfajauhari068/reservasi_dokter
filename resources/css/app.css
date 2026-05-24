@@ -225,6 +225,7 @@ img {
   border-radius: 0;
   min-height: 100%;
   color: #ffffff;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
 }
 
 .ds-doctor-avatar {
@@ -292,6 +293,7 @@ img {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
 }
 
 .ds-empty-title {
@@ -310,6 +312,7 @@ img {
   border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: 0;
   overflow: hidden;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
 }
 
 .ds-table-header {
@@ -377,6 +380,7 @@ img {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
 }
 
 .ds-empty-title {
@@ -399,6 +403,7 @@ img {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
 }
 
 .ds-card-title {
@@ -441,6 +446,7 @@ img {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
 }
 
 .ds-stat-icon {
@@ -480,6 +486,66 @@ img {
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
+
+@media (max-width: 767.98px) {
+  .ds-content-card {
+    padding: 1.25rem;
+  }
+
+  .ds-hero-band {
+    padding: 2rem 0.75rem;
+  }
+
+  .ds-label-badge {
+    padding: 0.5rem 0.85rem;
+    font-size: 0.72rem;
+  }
+
+  .ds-hero-title {
+    font-size: clamp(1.8rem, 6vw, 2.4rem);
+    margin-bottom: 0.85rem;
+  }
+
+  .ds-hero-description {
+    max-width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .ds-btn-primary,
+  .ds-btn-secondary {
+    padding: 0.75rem 1.1rem;
+    font-size: 0.95rem;
+  }
+
+  .ds-doctor-sidebar {
+    padding: 1.25rem;
+  }
+
+  .ds-info-row {
+    gap: 0.75rem;
+    padding: 0.7rem 0;
+  }
+
+  .ds-stat-card,
+  .ds-empty-state,
+  .ds-next-patient-card {
+    padding: 18px;
+    min-height: auto;
+  }
+
+  .ds-stat-value {
+    font-size: 1.7rem;
+  }
+
+  .ds-stat-label {
+    font-size: 0.85rem;
+  }
+
+  .ds-table-wrapper {
+    border-radius: 0;
+  }
+}
+
 
 /* Patient dashboard */
 .ps-hero-band {
@@ -548,6 +614,7 @@ img {
   border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: 0;
   padding: 24px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
 }
 
 .ps-patient-summary-header {
@@ -622,6 +689,7 @@ img {
   min-height: 180px;
   display: grid;
   gap: 16px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
 }
 
 .ps-stat-icon {
@@ -658,6 +726,7 @@ img {
   border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: 0;
   padding: 24px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
 }
 
 .ps-table-header,
@@ -749,6 +818,57 @@ img {
   text-decoration: underline;
 }
 
+@media (max-width: 576px) {
+  .ps-stat-row > .col-12 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  .ps-stat-card {
+    padding: 16px;
+    min-height: auto;
+  }
+
+  .ps-stat-icon {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+
+  .ps-stat-value {
+    font-size: 1.65rem;
+  }
+
+  .ps-stat-label {
+    font-size: 0.9rem;
+  }
+
+  .ps-btn-primary,
+  .ps-btn-secondary {
+    padding: 12px 18px;
+    font-size: 0.88rem;
+    border-radius: 8px;
+  }
+
+  .ps-btn-primary,
+  .ps-btn-secondary,
+  .ps-text-link {
+    min-height: 36px;
+  }
+
+  .ps-hero-band {
+    padding: 24px 0;
+  }
+
+  .ps-hero-title {
+    font-size: 1.85rem;
+  }
+
+  .ps-hero-description {
+    font-size: 0.95rem;
+    margin-bottom: 18px;
+  }
+}
+
 .ps-upcoming-card {
   display: flex;
   flex-direction: column;
@@ -789,6 +909,7 @@ img {
   border: 1px dashed rgba(15, 23, 42, 0.14);
   border-radius: 0;
   color: var(--color-muted);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
 }
 
 .ps-empty-title {
@@ -860,14 +981,14 @@ img {
   background: var(--color-canvas);
   border-radius: 16px; /* {rounded.xl} */
   border: 1px solid rgba(14, 165, 233, 0.20);
-  box-shadow: none;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
 }
 .ds-card,
 .card.ds-card {
   background: var(--bg-0, #ffffff);
   border-radius: 16px; /* {rounded.xl} */
   border: 1px solid var(--hairline-soft, rgba(14, 165, 233, 0.20));
-  box-shadow: none;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
 }
 
 /* Appointment Summary Card (admin) */
@@ -1874,14 +1995,64 @@ img {
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
   }
-}
 
-@media (max-width: 480px) {
-  .appointment-summary-card__grid {
-    grid-template-columns: 1fr;
+  /* Compact mobile buttons for dokter/pasien pages */
+  .btn-doctor-primary,
+  .btn-doctor-ghost {
+    min-height: 38px !important;
+    padding: 10px 16px !important;
+    font-size: 0.88rem !important;
+    border-radius: 14px !important;
+  }
+
+  .patient-action-buttons .btn {
+    min-width: 120px;
+    padding: 10px 16px;
+    font-size: 0.88rem;
   }
 }
 
+@media (max-width: 576px) {
+  .appointment-summary-card__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .patient-action-buttons {
+    display: grid;
+    gap: 10px;
+  }
+
+  .patient-action-buttons .btn {
+    width: 100%;
+    min-width: auto;
+    padding: 8px 14px;
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn-doctor-primary,
+  .btn-doctor-ghost {
+    min-height: 36px !important;
+    padding: 8px 14px !important;
+    font-size: 0.82rem !important;
+  }
+
+  .patient-action-buttons .btn {
+    padding: 8px 14px;
+    font-size: 0.82rem;
+    width: 100%;
+  }
+
+  .patient-hero-title {
+    font-size: clamp(1.5rem, 6vw, 1.9rem);
+  }
+
+  .patient-copy,
+  .patient-hero-copy {
+    font-size: 0.95rem;
+  }
+}
 
 /* Hero landing for admin reservation dashboard */
 .hero-reservasi {

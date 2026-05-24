@@ -65,21 +65,21 @@
         <section class="mb-4">
             <div class="container-fluid">
                 <div class="row g-3">
-                    <div class="col-12 col-md-4">
+                    <div class="col-6 col-md-4">
                         <div class="ds-stat-card">
                             <svg class="ds-stat-icon ds-stat-icon-primary" aria-hidden="true"></svg>
                             <div class="ds-stat-value">{{ $pendingAppointments->count() }}</div>
                             <div class="ds-stat-label">Permintaan Baru</div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-4">
+                    <div class="col-6 col-md-4">
                         <div class="ds-stat-card">
                             <svg class="ds-stat-icon ds-stat-icon-success" aria-hidden="true"></svg>
                             <div class="ds-stat-value">{{ $completedCount }}</div>
                             <div class="ds-stat-label">Riwayat Selesai</div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-4">
+                    <div class="col-6 col-md-4">
                         <div class="ds-stat-card">
                             <svg class="ds-stat-icon ds-stat-icon-ink" aria-hidden="true"></svg>
                             <div class="ds-stat-value">

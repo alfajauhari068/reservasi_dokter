@@ -273,7 +273,7 @@
 @endsection
 
 @push('styles')
-<style>
+    <style>
 .form-select-lg, .form-control-lg {
     font-size: 1.1rem;
     padding: 0.75rem 1rem;
@@ -286,11 +286,12 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.card {
+/* Scoped to admin shell to avoid global .card collisions */
+.admin-shell .card {
     transition: all 0.3s ease;
 }
 
-.card:hover {
+.admin-shell .card:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
 }

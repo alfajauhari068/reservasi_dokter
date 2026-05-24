@@ -75,7 +75,7 @@
 
 <section class="mb-4">
     <div class="container-fluid">
-        <div class="row g-3">
+        <div class="row g-3 ps-stat-row">
             <div class="col-12 col-md-4">
                 <div class="ps-stat-card">
                     <div class="ps-stat-icon ps-stat-icon-primary"></div>
