@@ -102,6 +102,7 @@ class ReservasiController extends Controller
 
             app(\App\Services\NotificationService::class)->notifyAdminsNewReservation($appointment);
             app(\App\Services\NotificationService::class)->notifyDoctorNewReservation($appointment);
+            app(\App\Services\NotificationService::class)->notifyPatientReservationApproved($appointment);
         } catch (\Throwable $e) {
             DB::rollBack();
             throw $e;
