@@ -1,297 +1,395 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Daftar - Reservasi Dokter</title>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#EBF5FF',
-                            100: '#D6EBFF',
-                            200: '#ADD8FF',
-                            300: '#85C4FF',
-                            400: '#5CB1FF',
-                            500: '#339DFF',
-                            600: '#1D9BF0',
-                            700: '#187FCA',
-                            800: '#1363A3',
-                            900: '#0E477D',
-                        },
-                        success: {
-                            50: '#ECFDF5',
-                            100: '#D1FAE5',
-                            200: '#A7F3D0',
-                            300: '#6EE7B7',
-                            400: '#34D399',
-                            500: '#10B981',
-                            600: '#22C55E',
-                            700: '#16A34A',
-                            800: '#15803D',
-                            900: '#166534',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    
+@extends('layouts.app')
+
+@section('title', 'Daftar Akun Pasien - Reservasi Dokter')
+
+@section('content')
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .register-gradient { background: linear-gradient(135deg, #EBF5FF 0%, #ECFDF5 50%, #EBF5FF 100%); }
-        .transition-smooth { transition: all 0.3s ease; }
-        .input-focus:focus { box-shadow: 0 0 0 3px rgba(29, 155, 240, 0.2); }
-        .btn-hover:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(29, 155, 240, 0.3); }
-        .card-shadow { box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08); }
-        .illustration-bg { background: linear-gradient(135deg, #1D9BF0 0%, #22C55E 100%); }
+        :root {
+            --teal-premium: #0D9488;
+            --teal-premium-2: #0F766E;
+        }
+
+        .register-page {
+            min-height: calc(100vh - 120px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .register-card {
+            max-width: 1100px;
+            border-radius: 2.5rem;
+        }
+
+        .register-gradient {
+            background: linear-gradient(135deg, #2563EB 0%, #22C55E 120%);
+        }
+
+        .input-pill {
+            border: 0;
+            background: #F3F4F6;
+            padding-top: 0.9rem;
+            padding-bottom: 0.9rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            border-radius: 0.75rem;
+        }
+
+        .input-pill:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(29, 155, 240, 0.18);
+            background: #fff;
+        }
+
+        .btn-teal {
+            background: var(--teal-premium);
+            color: #fff;
+            border: 0;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 28px rgba(13, 148, 136, 0.18);
+        }
+
+        .btn-teal:hover {
+            background: var(--teal-premium-2);
+            color: #fff;
+        }
+
+        .icon-left {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 1rem;
+            color: #6b7280;
+        }
+
+        .toggle-eye {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 0.75rem;
+            border: 0;
+            background: transparent;
+            color: #6b7280;
+        }
+
+        .field-icon-input {
+            position: relative;
+        }
+
+        .field-icon-input input {
+            padding-left: 2.8rem !important;
+            padding-right: 2.8rem !important;
+        }
+
+        .field-icon-input .toggle-eye {
+            padding: 0;
+            width: 2.2rem;
+            height: 2.2rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .radio-tile {
+            border-radius: 999px;
+            padding: 0.55rem 1.1rem;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            background: #F9FAFB;
+            transition: all 0.15s ease;
+        }
+
+        .radio-tile input {
+            transform: scale(1.1);
+        }
+
+        .radio-tile:has(input:checked) {
+            border-color: rgba(13, 148, 136, 0.55);
+            background: rgba(13, 148, 136, 0.08);
+        }
+
+        /* Bento cards right */
+        .bento-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 0.9rem;
+        }
+
+        .bg-transparent-compass {
+            position: absolute;
+            inset: -60px -60px auto auto;
+            opacity: 0.1;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            pointer-events: none;
+        }
     </style>
-</head>
-<body class="register-gradient min-h-screen flex items-center justify-center p-4 md:p-8">
-    
-    <!-- Main Card -->
-    <div class="w-full max-w-5xl card-shadow rounded-3xl overflow-hidden bg-white">
-        <div class="flex flex-col lg:flex-row">
-            
-            <!-- Left Side - Register Form -->
-            <div class="w-full lg:w-1/2 p-8 md:p-12">
-                
-                <!-- Logo & Header -->
-                <div class="mb-8">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="w-12 h-12 bg-primary-600 rounded-xl flex items-center justify-center">
-                            <i class="fa-solid fa-user-plus text-white text-xl"></i>
+
+    <div class="register-page bg-light p-2 p-md-4">
+        <div class="card border-0 shadow-lg register-card overflow-hidden bg-white">
+            <div class="row g-0">
+                {{-- Left: Register Form --}}
+                <div class="col-12 col-lg-6 p-4 p-md-5 bg-white">
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <i class="fas fa-heartbeat text-danger me-2" style="font-size: 1.1rem;"></i>
+                            <div class="fw-bold">MediReservasi</div>
                         </div>
-                        <span class="text-xl font-bold text-gray-800">Reservasi Dokter</span>
+
+                        <h2 class="fw-extrabold mb-1">Daftar Akun Pasien</h2>
+                        <div class="text-muted small">Buat akun untuk mulai reservasi dokter</div>
                     </div>
-                    
-                    <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                        Daftar Akun Pasien
-                    </h1>
-                    <p class="text-gray-500 text-sm">
-                        Buat akun untuk mulai reservasi dokter
-                    </p>
+
+                    {{-- Error Alert --}}
+                    @if(session('error'))
+                        <div class="alert alert-danger border-0 rounded-4 mb-4" role="alert">
+                            <i class="fa-solid fa-circle-exclamation me-2"></i>
+                            <span class="fw-bold">{{ session('error') }}</span>
+                        </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('register.perform') }}">
+                        @csrf
+
+                        {{-- Nama Lengkap --}}
+                        <div class="mb-3">
+                            <label for="name" class="form-label fw-semibold">Nama Lengkap</label>
+                            <div class="field-icon-input">
+                                <i class="fas fa-user icon-left"></i>
+                                <input
+                                    id="name"
+                                    type="text"
+                                    name="name"
+                                    value="{{ old('name') }}"
+                                    placeholder="Nama lengkap sesuai KTP"
+                                    class="form-control input-pill"
+                                    required
+                                >
+                            </div>
+                            @error('name')
+                                <div class="invalid-feedback d-block text-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        {{-- Email --}}
+                        <div class="mb-3">
+                            <label for="email" class="form-label fw-semibold">Email</label>
+                            <div class="field-icon-input">
+                                <i class="fas fa-envelope icon-left"></i>
+                                <input
+                                    id="email"
+                                    type="email"
+                                    name="email"
+                                    value="{{ old('email') }}"
+                                    placeholder="email@example.com"
+                                    class="form-control input-pill"
+                                    required
+                                >
+                            </div>
+                            @error('email')
+                                <div class="invalid-feedback d-block text-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        {{-- Password & Konfirmasi (side-by-side) --}}
+                        <div class="row g-3 mb-3">
+                            <div class="col-12 col-md-6">
+                                <label for="password" class="form-label fw-semibold">Kata Sandi</label>
+                                <div class="field-icon-input">
+                                    <i class="fas fa-lock icon-left"></i>
+                                    <input
+                                        id="password"
+                                        type="password"
+                                        name="password"
+                                        placeholder="Minimal 8 karakter"
+                                        class="form-control input-pill"
+                                        required
+                                    >
+                                    <button type="button" id="togglePassword" class="toggle-eye" aria-label="Toggle password">
+                                        <i class="far fa-eye" id="eyeIcon"></i>
+                                    </button>
+                                </div>
+                                @error('password')
+                                    <div class="invalid-feedback d-block text-danger mt-2">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label for="password_confirmation" class="form-label fw-semibold">Konfirmasi Kata Sandi</label>
+                                <div class="field-icon-input">
+                                    <i class="fas fa-lock icon-left"></i>
+                                    <input
+                                        id="password_confirmation"
+                                        type="password"
+                                        name="password_confirmation"
+                                        placeholder="Ulangi kata sandi"
+                                        class="form-control input-pill"
+                                        required
+                                    >
+                                </div>
+                                @error('password_confirmation')
+                                    <div class="invalid-feedback d-block text-danger mt-2">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        {{-- Phone & Date of Birth --}}
+                        <div class="row g-3 mb-3">
+                            <div class="col-12 col-sm-6">
+                                <label for="phone" class="form-label fw-semibold">Nomor Telepon</label>
+                                <div class="field-icon-input">
+                                    <i class="fas fa-phone icon-left"></i>
+                                    <input
+                                        id="phone"
+                                        type="tel"
+                                        name="phone"
+                                        value="{{ old('phone') }}"
+                                        placeholder="081234567890"
+                                        class="form-control input-pill"
+                                        required
+                                    >
+                                </div>
+                                @error('phone')
+                                    <div class="invalid-feedback d-block text-danger mt-2">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-12 col-sm-6">
+                                <label for="date_of_birth" class="form-label fw-semibold">Tanggal Lahir</label>
+                                <div class="field-icon-input">
+                                    <i class="fas fa-cake-candles icon-left"></i>
+                                    <input
+                                        id="date_of_birth"
+                                        type="date"
+                                        name="date_of_birth"
+                                        value="{{ old('date_of_birth') }}"
+                                        class="form-control input-pill"
+                                        required
+                                    >
+                                </div>
+                                @error('date_of_birth')
+                                    <div class="invalid-feedback d-block text-danger mt-2">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        {{-- Gender --}}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Jenis Kelamin</label>
+                            <div class="d-flex flex-wrap gap-3">
+                                <label class="radio-tile d-flex align-items-center gap-2">
+                                    <input
+                                        type="radio"
+                                        name="gender"
+                                        value="male"
+                                        {{ old('gender') == 'male' ? 'checked' : '' }}
+                                    >
+                                    <span class="fw-semibold">Laki-laki</span>
+                                </label>
+                                <label class="radio-tile d-flex align-items-center gap-2">
+                                    <input
+                                        type="radio"
+                                        name="gender"
+                                        value="female"
+                                        {{ old('gender') == 'female' ? 'checked' : '' }}
+                                    >
+                                    <span class="fw-semibold">Perempuan</span>
+                                </label>
+                            </div>
+                            @error('gender')
+                                <div class="invalid-feedback d-block text-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        {{-- Address (Opsional) --}}
+                        <div class="mb-3">
+                            <label for="address" class="form-label fw-semibold">Alamat (Opsional)</label>
+                            <div class="position-relative">
+                                <i class="fas fa-map-marker-alt" style="position:absolute; left: 1rem; top: 0.9rem; color:#6b7280;"></i>
+                                <textarea
+                                    id="address"
+                                    name="address"
+                                    rows="2"
+                                    placeholder="Alamat lengkap domisili"
+                                    class="form-control input-pill"
+                                    style="padding-left: 2.8rem;"
+                                >{{ old('address') }}</textarea>
+                            </div>
+                            @error('address')
+                                <div class="invalid-feedback d-block text-danger mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <button type="submit" class="btn btn-teal w-100 py-3 rounded-4 fw-bold shadow-md">
+                            <i class="fas fa-user-plus me-2"></i> Daftar Akun
+                        </button>
+                    </form>
+
+                    <div class="mt-4 pt-3 text-center border-top">
+                        <div class="text-muted small">
+                            Sudah punya akun? 
+                            <a href="{{ route('login') }}" class="fw-bold" style="color:#2563EB; text-decoration:none;">Masuk sekarang</a>
+                        </div>
+                    </div>
                 </div>
-                
-                <!-- Error Alert -->
-                @if(session('error'))
-                    <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-3">
-                        <i class="fa-solid fa-circle-exclamation text-red-500"></i>
-                        <span class="text-red-700 text-sm">{{ session('error') }}</span>
-                    </div>
-                @endif
-                
-                <!-- Register Form -->
-                <form method="POST" action="{{ route('register.perform') }}" class="space-y-5">
-                    @csrf
-                    
-                    <!-- Name Field -->
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <i class="fa-solid fa-user text-gray-400"></i>
-                            </div>
-                            <input id="name" type="text" name="name" value="{{ old('name') }}" placeholder="Nama lengkap sesuai KTP"
-                                class="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl input-focus transition-smooth focus:bg-white focus:border-primary-500 @error('name') border-red-500 @enderror"
-                                required>
-                        </div>
-                        @error('name')
-                            <p class="mt-1 text-sm text-red-500 flex items-center gap-1"><i class="fa-solid fa-circle-exclamation"></i>{{ $message }}</p>
-                        @enderror
-                    </div>
-                    
-                    <!-- Email Field -->
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <i class="fa-regular fa-envelope text-gray-400"></i>
-                            </div>
-                            <input id="email" type="email" name="email" value="{{ old('email') }}" placeholder="email@example.com"
-                                class="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl input-focus transition-smooth focus:bg-white focus:border-primary-500 @error('email') border-red-500 @enderror"
-                                required>
-                        </div>
-                        @error('email')
-                            <p class="mt-1 text-sm text-red-500 flex items-center gap-1"><i class="fa-solid fa-circle-exclamation"></i>{{ $message }}</p>
-                        @enderror
-                    </div>
-                    
-                    <!-- Password Fields -->
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Kata Sandi</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <i class="fa-solid fa-lock text-gray-400"></i>
-                            </div>
-                            <input id="password" type="password" name="password" placeholder="Minimal 8 karakter"
-                                class="w-full pl-12 pr-14 py-3.5 bg-gray-50 border border-gray-200 rounded-xl input-focus transition-smooth focus:bg-white focus:border-primary-500 @error('password') border-red-500 @enderror"
-                                required>
-                            <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600">
-                                <i class="fa-regular fa-eye" id="eyeIcon"></i>
-                            </button>
-                        </div>
-                        @error('password')
-                            <p class="mt-1 text-sm text-red-500 flex items-center gap-1"><i class="fa-solid fa-circle-exclamation"></i>{{ $message }}</p>
-                        @enderror
-                    </div>
-                    
-                    <div>
-                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-2">Konfirmasi Kata Sandi</label>
-                        <input id="password_confirmation" type="password" name="password_confirmation" placeholder="Ulangi kata sandi"
-                            class="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl input-focus transition-smooth focus:bg-white focus:border-primary-500 @error('password_confirmation') border-red-500 @enderror"
-                            required>
-                    </div>
-                    
-                    <!-- Phone Field -->
-                    <div>
-                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Nomor Telepon</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <i class="fa-solid fa-phone text-gray-400"></i>
-                            </div>
-                            <input id="phone" type="tel" name="phone" value="{{ old('phone') }}" placeholder="081234567890"
-                                class="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl input-focus transition-smooth focus:bg-white focus:border-primary-500 @error('phone') border-red-500 @enderror"
-                                required>
-                        </div>
-                        @error('phone')
-                            <p class="mt-1 text-sm text-red-500 flex items-center gap-1"><i class="fa-solid fa-circle-exclamation"></i>{{ $message }}</p>
-                        @enderror
-                    </div>
-                    
-                    <!-- Date of Birth -->
-                    <div>
-                        <label for="date_of_birth" class="block text-sm font-medium text-gray-700 mb-2">Tanggal Lahir</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <i class="fa-solid fa-cake-candles text-gray-400"></i>
-                            </div>
-                            <input id="date_of_birth" type="date" name="date_of_birth" value="{{ old('date_of_birth') }}"
-                                class="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl input-focus transition-smooth focus:bg-white focus:border-primary-500 @error('date_of_birth') border-red-500 @enderror"
-                                required>
-                        </div>
-                        @error('date_of_birth')
-                            <p class="mt-1 text-sm text-red-500 flex items-center gap-1"><i class="fa-solid fa-circle-exclamation"></i>{{ $message }}</p>
-                        @enderror
-                    </div>
-                    
-                    <!-- Gender -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Kelamin</label>
-                        <div class="flex gap-4">
-                            <label class="flex items-center cursor-pointer">
-                                <input type="radio" name="gender" value="male" {{ old('gender') == 'male' ? 'checked' : '' }} class="w-4 h-4 text-primary-600 border-gray-300 rounded">
-                                <span class="ml-2 text-sm text-gray-700">Laki-laki</span>
-                            </label>
-                            <label class="flex items-center cursor-pointer">
-                                <input type="radio" name="gender" value="female" {{ old('gender') == 'female' ? 'checked' : '' }} class="w-4 h-4 text-primary-600 border-gray-300 rounded">
-                                <span class="ml-2 text-sm text-gray-700">Perempuan</span>
-                            </label>
-                        </div>
-                        @error('gender')
-                            <p class="mt-1 text-sm text-red-500 flex items-center gap-1"><i class="fa-solid fa-circle-exclamation"></i>{{ $message }}</p>
-                        @enderror
-                    </div>
-                    
-                    <!-- Address (Optional) -->
-                    <div>
-                        <label for="address" class="block text-sm font-medium text-gray-700 mb-2">Alamat (Opsional)</label>
-                        <textarea id="address" name="address" rows="2" placeholder="Alamat lengkap domisili"
-                            class="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl input-focus transition-smooth focus:bg-white focus:border-primary-500 @error('address') border-red-500 @enderror">{{ old('address') }}</textarea>
-                        @error('address')
-                            <p class="mt-1 text-sm text-red-500 flex items-center gap-1"><i class="fa-solid fa-circle-exclamation"></i>{{ $message }}</p>
-                        @enderror
-                    </div>
-                    
-                    <!-- Submit Button -->
-                    <button type="submit"
-                        class="w-full py-3.5 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl btn-hover transition-smooth flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-user-plus"></i>
-                        Daftar Akun
-                    </button>
-                </form>
-                
-                <!-- Login Link -->
-                <div class="mt-8 pt-6 border-t border-gray-100 text-center">
-                    <p class="text-gray-500 text-sm">
-                        Sudah punya akun? 
-                        <a href="{{ route('login') }}" class="text-primary-600 font-medium hover:text-primary-700 transition-smooth">
-                            Masuk sekarang
-                        </a>
-                    </p>
-                </div>
-            </div>
-            
-            <!-- Right Side - Illustration (Desktop Only) -->
-            <div class="hidden lg:flex lg:w-1/2 illustration-bg p-12 flex-col justify-between text-white">
-                <div>
-                    <h2 class="text-2xl md:text-3xl font-bold mb-4">Mulai Reservasi Mudah</h2>
-                    <p class="text-white/90 text-lg leading-relaxed">
-                        Daftarkan diri Anda sekarang dan nikmati layanan reservasi dokter 
-                        tanpa antrian panjang, kapan saja dan di mana saja.
-                    </p>
-                </div>
-                
-                <!-- Features -->
-                <div class="space-y-6">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                            <i class="fa-solid fa-calendar-check text-xl"></i>
-                        </div>
+
+                {{-- Right: Promo (Desktop only) --}}
+                <div class="col-12 col-lg-6 d-none d-lg-flex register-gradient text-white p-4 p-md-5 position-relative">
+                    <div class="bg-transparent-compass"></div>
+                    <div class="d-flex flex-column h-100 justify-content-between w-100">
                         <div>
-                            <h3 class="font-semibold">Booking Instan</h3>
-                            <p class="text-white/80 text-sm">Pilih dokter & jadwal favorit</p>
+                            <h2 class="fw-extrabold">Mulai Reservasi Mudah</h2>
+                            <div class="text-white-50" style="max-width: 52ch; line-height:1.6;">
+                                Daftarkan diri Anda sekarang dan nikmati layanan reservasi dokter tanpa antrian panjang, kapan saja dan di mana saja.
+                            </div>
                         </div>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                            <i class="fa-solid fa-sms text-xl"></i>
-                        </div>
+
                         <div>
-                            <h3 class="font-semibold">Notifikasi Otomatis</h3>
-                            <p class="text-white/80 text-sm">Ingatkan jadwal periksa Anda</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                            <i class="fa-solid fa-file-medical-alt text-xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold">Riwayat Lengkap</h3>
-                            <p class="text-white/80 text-sm">Rekam medis digital terjaga</p>
+                            <div class="bento-card p-3 mb-3 d-flex align-items-start gap-3">
+                                <div class="rounded-3 d-flex align-items-center justify-content-center" style="width:44px; height:44px; background: rgba(255,255,255,0.12);">
+                                    <i class="fas fa-calendar-check text-light fa-lg"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-bold">Booking Instan</div>
+                                    <div class="text-white-50 small">Pilih dokter & jadwal favorit</div>
+                                </div>
+                            </div>
+
+                            <div class="bento-card p-3 mb-3 d-flex align-items-start gap-3">
+                                <div class="rounded-3 d-flex align-items-center justify-content-center" style="width:44px; height:44px; background: rgba(255,255,255,0.12);">
+                                    <i class="fas fa-comment-dots text-light fa-lg"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-bold">Notifikasi Otomatis</div>
+                                    <div class="text-white-50 small">Ingatkan jadwal periksa Anda</div>
+                                </div>
+                            </div>
+
+                            <div class="bento-card p-3 mb-0 d-flex align-items-start gap-3">
+                                <div class="rounded-3 d-flex align-items-center justify-content-center" style="width:44px; height:44px; background: rgba(255,255,255,0.12);">
+                                    <i class="fas fa-file-medical-alt text-light fa-lg"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-bold">Riwayat Lengkap</div>
+                                    <div class="text-white-50 small">Rekam medis digital terjaga</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- JavaScript for Password Toggle -->
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const togglePassword = document.getElementById('togglePassword');
             const passwordInput = document.getElementById('password');
             const eyeIcon = document.getElementById('eyeIcon');
-            
+
             if (togglePassword && passwordInput && eyeIcon) {
-                togglePassword.addEventListener('click', function() {
+                togglePassword.addEventListener('click', function () {
                     const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
                     passwordInput.setAttribute('type', type);
                     eyeIcon.classList.toggle('fa-eye');
@@ -300,5 +398,5 @@
             }
         });
     </script>
-</body>
-</html>
+@endsection
+

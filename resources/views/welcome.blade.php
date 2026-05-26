@@ -7,7 +7,7 @@
     {{-- Custom Welcome Navbar (Bootstrap 5 utility classes) --}}
     
     {{-- HERO: Bento Grid Asimetris --}}
-    <section id="hero" class="ds-landing-section py-5 py-lg-2">
+    <section id="hero" class="ds-landing-section  py-lg-2">
         <div class="container">
             <div class="row g-2 align-items-stretch mx-0">
                 {{-- Hero Banner Utama --}}
@@ -624,7 +624,8 @@
     </section>
 
     {{-- FOOTER SISTEM --}}
-    <footer id="contact" class="pt-5 pb-4" style="background:#ffffff; border-top:1px solid rgba(148,163,184,0.35);">
+    <footer id="contact" class="pt-5 pb-4" style="background: linear-gradient(180deg, #ffffff 0%, rgba(28,105,212,0.03) 100%); border-top: 1px solid rgba(148,163,184,0.35); position: relative; overflow: visible;">
+        <div aria-hidden="true" style="position:absolute; top:-110px; right:-120px; width:520px; height:520px; background: radial-gradient(circle at 30% 30%, rgba(28,105,212,0.18) 0%, rgba(34,197,94,0.10) 45%, rgba(255,255,255,0) 72%); pointer-events:none;"></div>
         <div class="container">
             <div class="row g-4">
                 {{-- Kolom 1 --}}

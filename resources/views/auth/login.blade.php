@@ -1,379 +1,242 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Masuk - Reservasi Dokter</title>
+@extends('layouts.app')
 
-    {{-- Fonts --}}
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
+@section('title', 'Masuk - Reservasi Dokter')
 
-    {{-- Icons --}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+@section('content')
     <style>
-        :root {
-            --aqua-50: #EBF5FF;
-            --aqua-100: #D6EBFF;
-            --aqua-200: #ADD8FF;
-            --aqua-primary: #23d1c7;
-            --aqua-ink: #083a3a;
-        }
-
-        body {
-            font-family: 'Figtree', sans-serif;
-            background: linear-gradient(180deg, #ffffff 0%, #EAF6FF 30%, #D9FCF8 65%, #ffffff 100%);
-            min-height: 100vh;
-        }
-
-        .login-shell {
-            min-height: 100vh;
+        /* Login-only styling (no nested <html>/<body>) */
+        .login-page-wrapper {
+            min-height: calc(100vh - 120px);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 1.5rem;
+        }
+
+        .bg-gradient-login {
+            background: linear-gradient(135deg, #2563EB, #4F46E5);
         }
 
         .login-card {
             width: 100%;
-            max-width: 920px;
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid rgba(14, 165, 233, 0.16);
-            border-radius: 28px;
-            box-shadow: 0 22px 60px rgba(15, 23, 42, 0.08);
-            overflow: hidden;
+            max-width: 1024px;
+            border-radius: 2rem;
         }
 
-        .login-form-wrap {
-            padding: 2rem;
+        .btn-back {
+            transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease;
         }
 
-        .login-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 1rem;
-        }
-
-        .login-logo {
-            width: 44px;
-            height: 44px;
-            border-radius: 16px;
-            background: rgba(35, 209, 199, 0.18);
-            border: 1px solid rgba(35, 209, 199, 0.28);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--aqua-primary);
-            flex: 0 0 auto;
-        }
-
-        .login-input {
-            background: rgba(15, 23, 42, 0.035);
-            border: 1px solid rgba(14, 165, 233, 0.18);
-            border-radius: 16px;
-            padding: 0.85rem 1rem;
-            width: 100%;
-            outline: none;
-            transition: box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
-        }
-
-        .login-input:focus {
-            border-color: rgba(14, 165, 233, 0.45);
-            box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.16);
-            background: rgba(255, 255, 255, 0.95);
-        }
-
-        .login-label {
-            font-weight: 700;
-            color: rgba(15, 23, 42, 0.72);
-            font-size: 0.92rem;
-            margin-bottom: 0.35rem;
-        }
-
-        .login-help {
-            color: rgba(15, 23, 42, 0.65);
-            font-size: 0.92rem;
-        }
-
-        .login-divider {
-            height: 1px;
-            background: rgba(14, 165, 233, 0.18);
-            margin: 1.5rem 0;
-        }
-
-        .login-illustration {
-            padding: 2rem;
-            background:
-                radial-gradient(circle at top left, rgba(14, 165, 233, 0.22), transparent 55%),
-                radial-gradient(circle at bottom right, rgba(35, 209, 199, 0.18), transparent 45%);
-            border-left: 1px solid rgba(14, 165, 233, 0.12);
-        }
-
-        @media (max-width: 991.98px) {
-            .login-card { border-radius: 22px; }
-            .login-illustration { display: none; }
-            .login-form-wrap { padding: 1.6rem; }
-        }
-
-        /* keep "name"/"id" unchanged as requested */
-        .login-icon-input {
-            position: relative;
-        }
-
-        .login-icon-input .icon-left {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(15, 23, 42, 0.45);
-        }
-
-        .login-icon-input .icon-right {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            color: rgba(15, 23, 42, 0.45);
-            padding: .25rem;
-        }
-
-        .login-icon-input input {
-            padding-left: 46px;
-        }
-
-        .login-icon-input input[type="password"] {
-            padding-right: 46px;
-        }
-
-        .login-alert {
-            background: rgba(239, 68, 68, 0.10);
-            border: 1px solid rgba(239, 68, 68, 0.20);
-            border-radius: 16px;
-            padding: 0.9rem 1rem;
-            color: rgba(185, 28, 28, 1);
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            margin-bottom: 1.2rem;
-        }
-
-        .login-link {
-            color: rgba(13, 110, 253, 0.95);
-            text-decoration: none;
-            font-weight: 700;
-        }
-        .login-link:hover { text-decoration: underline; }
-
-        .login-btn {
-            border-radius: 16px;
-            font-weight: 800;
-            padding: 0.95rem 1.1rem;
+        .login-page-bg {
+            background: linear-gradient(180deg, #ffffff 0%, #EAF6FF 30%, #D9FCF8 65%, #ffffff 100%);
         }
     </style>
-</head>
-<body>
-    <div class="login-shell">
-        <div class="login-card">
+
+    <div class="login-page-wrapper login-page-bg p-3">
+        <div class="card border-0 shadow-lg login-card">
             <div class="row g-0">
-                {{-- Left: Login form --}}
-                <div class="col-12 col-lg-6">
-                    <div class="login-form-wrap">
-                        <div class="login-brand">
-                            <div class="login-logo">
-                                <i class="fa-solid fa-stethoscope"></i>
-                            </div>
-                            <div>
-                                <div style="font-weight: 850; font-size: 1.1rem;">Reservasi Dokter</div>
-                                <div class="login-help" style="font-size: .9rem;">Masuk untuk melanjutkan</div>
+                {{-- Left: Login form (5 grid) --}}
+                <div class="col-12 col-lg-5 p-4 p-sm-5 bg-white">
+                    <div class="h-100 d-flex flex-column">
+                        <div class="d-flex align-items-center justify-content-between mb-4 gap-3 flex-wrap">
+                            <a href="{{ url('/') }}" class="btn btn-sm btn-light border btn-back" style="color:#6b7280; border-radius: 999px;">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                Kembali
+                            </a>
+
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="fas fa-heartbeat text-primary animate-pulse"></i>
+                                <div class="fw-bold" style="letter-spacing: .2px;">MediReservasi</div>
                             </div>
                         </div>
 
-                        {{-- Error Alert (keep @error directive block unchanged) --}}
+                        {{-- Error Alert --}}
                         @if(session('error'))
-                            <div class="login-alert">
-                                <i class="fa-solid fa-circle-exclamation"></i>
+                            <div class="alert alert-danger border-0 rounded-4 mb-4" role="alert">
+                                <i class="fa-solid fa-circle-exclamation me-2"></i>
                                 <span style="font-weight: 700;">{{ session('error') }}</span>
                             </div>
                         @endif
 
-                        {{-- Login Form (keep method/action, @csrf, @error, name/id unchanged) --}}
-                        <form method="POST" action="{{ route('login.perform') }}" class="space-y-5">
+                        {{-- Login Form --}}
+                        <form method="POST" action="{{ route('login') }}" class="mt-1">
                             @csrf
 
-                            <div class="mb-4">
-                                <label for="email" class="login-label">Email</label>
-                                <div class="login-icon-input">
-                                    <span class="icon-left"><i class="fa-regular fa-envelope"></i></span>
+                            <div class="mb-3">
+                                <label for="email" class="form-label fw-semibold">Email</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white">
+                                        <i class="fas fa-envelope"></i>
+                                    </span>
                                     <input
                                         id="email"
                                         type="email"
                                         name="email"
                                         value="{{ old('email') }}"
                                         placeholder="masukkan email terdaftar"
-                                        class="login-input"
+                                        class="form-control"
                                         required
                                         autofocus
                                     >
                                 </div>
                                 @error('email')
-                                    <p class="mt-2" style="color: #dc2626; font-weight: 700; display:flex; gap:8px; align-items:center;">
-                                        <i class="fa-solid fa-circle-exclamation"></i>
-                                        <span>{{ $message }}</span>
-                                    </p>
+                                    <div class="invalid-feedback d-block text-danger mt-2">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <div class="mb-4">
-                                <label for="password" class="login-label">Kata Sandi</label>
-                                <div class="login-icon-input">
-                                    <span class="icon-left"><i class="fa-solid fa-lock"></i></span>
+                            <div class="mb-3">
+                                <label for="password" class="form-label fw-semibold">Kata Sandi</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
                                     <input
                                         id="password"
                                         type="password"
                                         name="password"
                                         placeholder="masukkan kata sandi"
-                                        class="login-input"
+                                        class="form-control"
                                         required
                                     >
-                                    <button
-                                        type="button"
-                                        id="togglePassword"
-                                        class="icon-right"
-                                        aria-label="toggle password"
-                                    >
-                                        <i class="fa-regular fa-eye" id="eyeIcon"></i>
-                                    </button>
                                 </div>
                                 @error('password')
-                                    <p class="mt-2" style="color: #dc2626; font-weight: 700; display:flex; gap:8px; align-items:center;">
-                                        <i class="fa-solid fa-circle-exclamation"></i>
-                                        <span>{{ $message }}</span>
-                                    </p>
+                                    <div class="invalid-feedback d-block text-danger mt-2">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            {{-- Remember me + forgot password (no directive/route changes) --}}
-                            <div class="d-flex align-items-center justify-content-between mb-4" style="gap: 1rem; flex-wrap: wrap;">
+                            <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
                                 <label class="d-flex align-items-center gap-2" style="cursor:pointer; user-select:none;">
-                                    <input
-                                        type="checkbox"
-                                        name="remember"
-                                        id="remember"
-                                        style="width: 18px; height: 18px; accent-color: #23d1c7;"
-                                    >
-                                    <span class="login-help" style="font-weight:700;">Ingat saya</span>
+                                    <input type="checkbox" name="remember" id="remember" class="form-check-input" />
+                                    <span class="fw-semibold" style="font-size: .95rem;">Ingat Saya</span>
                                 </label>
 
-                                <a href="#" class="login-link">Lupa kata sandi?</a>
+                                <a href="#" class="text-decoration-none fw-semibold" style="color:#2563EB;">
+                                    Lupa kata sandi?
+                                </a>
                             </div>
 
-                            <button
-                                type="submit"
-                                class="w-100 login-btn btn-primary btn"
-                            >
-                                <span class="d-inline-flex align-items-center justify-content-center gap-2">
-                                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                                    Masuk
-                                </span>
+                            <button type="submit" class="btn btn-primary w-100 rounded-pill py-3 fw-bold" style="border-radius: 1.25rem;">
+                                <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
+                                Masuk
                             </button>
 
-                            <div class="login-divider"></div>
-
-                            <div class="text-center">
-                                <span class="login-help">Belum punya akun? </span>
-                                <a href="{{ route('register') }}" class="login-link">Daftar sebagai pasien</a>
+                            <div class="mt-4 text-center">
+                                <div class="fw-semibold" style="color:#6b7280;">Belum punya akun?</div>
+                                <a href="{{ route('register') }}" class="fw-bold text-decoration-none" style="color:#2563EB;">
+                                    Daftar sebagai pasien
+                                </a>
                             </div>
                         </form>
                     </div>
                 </div>
 
-                {{-- Right: Illustration (desktop only) --}}
-                <div class="col-12 col-lg-6">
-                    <div class="login-illustration h-100">
-                        <div class="d-flex align-items-start gap-3 mb-4">
-                            <img
-                                src="{{ asset('assets/dokter-dokter.jpg') }}"
-                                alt="Ilustrasi"
-                                loading="lazy"
-                                style="width: 52px; height: 52px; object-fit: cover; border-radius: 18px; border: 1px solid rgba(14,165,233,0.18); box-shadow: 0 18px 46px rgba(15,23,42,0.06);"
-                                onerror="this.style.display='none'"
-                            >
-                            <div>
-                                <div style="color: rgba(15, 23, 42, 0.92); font-weight: 900; font-size: 1.3rem;">Reservasi Dokter Online</div>
-                                <div class="login-help" style="color: rgba(15, 23, 42, 0.68);">Cepat, jelas, dan tanpa antre lama.</div>
+                {{-- Right: Bento Clinic Highlights (desktop only) --}}
+                <div class="col-12 col-lg-7 p-4 p-sm-5 d-none d-lg-flex bg-gradient-login position-relative overflow-hidden">
+                    <div class="w-100 h-100 d-flex flex-column justify-content-center position-relative" style="z-index: 1;">
+                        <div class="mb-4">
+                            <div class="text-white-50 fw-semibold" style="letter-spacing:.12em; text-transform:uppercase; font-size:.85rem;">
+                                Clinic Highlights
+                            </div>
+                            <div class="text-white fw-bold" style="font-size: 1.8rem; line-height:1.1;">
+                                Reservasi Dokter Online
+                            </div>
+                            <div class="text-white-50 mt-2" style="max-width: 48ch;">
+                                Cepat, jelas, dan tanpa antre lama.
                             </div>
                         </div>
 
-                        <div style="display:grid; gap: 18px;">
-                            <div class="d-flex align-items-center gap-3" style="padding: 16px; background: rgba(255,255,255,0.55); border: 1px solid rgba(14,165,233,0.14); border-radius: 22px;">
-                                <div style="width:46px; height:46px; border-radius: 18px; background: rgba(35,209,199,0.16); border: 1px solid rgba(35,209,199,0.20); display:flex; align-items:center; justify-content:center; color: #0b76ac;">
-                                    <i class="fa-solid fa-calendar-check"></i>
-                                </div>
-                                <div>
-                                    <div style="font-weight: 900;">Booking Mudah</div>
-                                    <div class="login-help">Jadwalkan kunjungan dalam hitungan menit</div>
-                                </div>
-                            </div>
-
-                            <div class="d-flex align-items-center gap-3" style="padding: 16px; background: rgba(255,255,255,0.55); border: 1px solid rgba(14,165,233,0.14); border-radius: 22px;">
-                                <div style="width:46px; height:46px; border-radius: 18px; background: rgba(35,209,199,0.16); border: 1px solid rgba(35,209,199,0.20); display:flex; align-items:center; justify-content:center; color: #0b76ac;">
-                                    <i class="fa-solid fa-clock"></i>
-                                </div>
-                                <div>
-                                    <div style="font-weight: 900;">Tidak Perlu Antri</div>
-                                    <div class="login-help">Datang sesuai waktu yang ditentukan</div>
+                        <div class="w-100">
+                            <div class="mb-3 bg-white bg-opacity-10 border border-white border-opacity-10 rounded-4 p-4">
+                                <div class="d-flex align-items-start gap-3">
+                                    <div class="rounded-3" style="width:48px; height:48px; background: rgba(255,255,255,0.16); display:flex; align-items:center; justify-content:center;">
+                                        <i class="fas fa-calendar-alt text-white" style="font-size: 1.2rem;"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-white fw-bold" style="font-size: 1.15rem;">Kalender Terstruktur</div>
+                                        <div class="text-white-50" style="margin-top: .2rem;">Pilih jadwal yang tersedia secara real-time.</div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="d-flex align-items-center gap-3" style="padding: 16px; background: rgba(255,255,255,0.55); border: 1px solid rgba(14,165,233,0.14); border-radius: 22px;">
-                                <div style="width:46px; height:46px; border-radius: 18px; background: rgba(35,209,199,0.16); border: 1px solid rgba(35,209,199,0.20); display:flex; align-items:center; justify-content:center; color: #0b76ac;">
-                                    <i class="fa-solid fa-file-medical"></i>
-                                </div>
-                                <div>
-                                    <div style="font-weight: 900;">Rekam Medis Digital</div>
-                                    <div class="login-help">Riwayat kesehatan tersimpan aman</div>
+                            <div class="mb-3 bg-white bg-opacity-10 border border-white border-opacity-10 rounded-4 p-4">
+                                <div class="d-flex align-items-start gap-3">
+                                    <div class="rounded-3" style="width:48px; height:48px; background: rgba(255,255,255,0.16); display:flex; align-items:center; justify-content:center;">
+                                        <i class="fas fa-clock text-white" style="font-size: 1.2rem;"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-white fw-bold" style="font-size: 1.15rem;">Jam Otomatis</div>
+                                        <div class="text-white-50" style="margin-top: .2rem;">Pengingat membantu Anda datang tepat waktu.</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div style="margin-top: 1.4rem; padding-top: 1rem; border-top: 1px solid rgba(14,165,233,0.16);">
-                            <div style="font-style: italic; color: rgba(15, 23, 42, 0.70); font-weight: 700;">"Kesehatan adalah kekayaan yang sebenarnya."</div>
+                            <div class="mb-3 bg-white bg-opacity-10 border border-white border-opacity-10 rounded-4 p-4">
+                                <div class="d-flex align-items-start gap-3">
+                                    <div class="rounded-3" style="width:48px; height:48px; background: rgba(255,255,255,0.16); display:flex; align-items:center; justify-content:center;">
+                                        <i class="fas fa-file-medical text-white" style="font-size: 1.2rem;"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-white fw-bold" style="font-size: 1.15rem;">Rekam Medis Digital</div>
+                                        <div class="text-white-50" style="margin-top: .2rem;">Data tersimpan lebih rapi dan mudah diakses.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 text-white-50 fw-semibold" style="font-size: .95rem;">
+                                Mulai reservasi sekarang dan rasakan pengalaman yang lebih nyaman.
+                            </div>
                         </div>
                     </div>
+
+                    <img
+                        src="{{ asset('assets/hero_pasien.jpg') }}"
+                        alt="Doctor hero"
+                        style="position: absolute; bottom: -6%; right: -10%; height: 100%; width: auto; object-fit: contain; max-width: 80%; opacity: 0.1; pointer-events: none; z-index: 0;"
+                        onerror="this.style.display='none'"
+                    >
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- JavaScript for Password Toggle (kept IDs: togglePassword, eyeIcon, password) --}}
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const togglePassword = document.getElementById('togglePassword');
-            const passwordInput = document.getElementById('password');
-            const eyeIcon = document.getElementById('eyeIcon');
+        // Optional Client-side Role Autodetect Preview
+        // Jika email mengandung 'dokter' atau 'dr', maka beri hint UI (tanpa mengubah backend role)
+        (function () {
+            const emailInput = document.getElementById('email');
+            if (!emailInput) return;
 
-            if (togglePassword && passwordInput && eyeIcon) {
-                togglePassword.addEventListener('click', function() {
-                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                    passwordInput.setAttribute('type', type);
+            const hintId = 'role-autodetect-hint';
+            function ensureHint() {
+                let el = document.getElementById(hintId);
+                if (el) return el;
 
-                    if (type === 'text') {
-                        eyeIcon.classList.remove('fa-eye');
-                        eyeIcon.classList.add('fa-eye-slash');
-                    } else {
-                        eyeIcon.classList.remove('fa-eye-slash');
-                        eyeIcon.classList.add('fa-eye');
-                    }
-                });
+                el = document.createElement('div');
+                el.id = hintId;
+                el.className = 'mt-2 text-end';
+                el.style.color = '#2563EB';
+                el.style.fontWeight = '700';
+                el.style.fontSize = '.9rem';
+                emailInput.parentElement.parentElement.appendChild(el);
+                return el;
             }
-        });
+
+            function applyHint() {
+                const hint = ensureHint();
+                const v = (emailInput.value || '').toLowerCase();
+
+                if (!v) {
+                    hint.textContent = '';
+                    return;
+                }
+
+                const isDoctor = v.includes('dokter') || v.includes('@dr') || v.includes(' dr ') || v.includes('dr.');
+                hint.textContent = isDoctor ? 'Hint: kemungkinan akun role Dokter' : 'Hint: kemungkinan akun role Pasien';
+            }
+
+            emailInput.addEventListener('input', applyHint);
+            applyHint();
+        })();
     </script>
-</body>
-</html>
+@endsection
+
 
