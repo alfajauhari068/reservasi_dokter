@@ -6,23 +6,51 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Reservasi Dokter')</title>
 
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="{{ asset('css/clinical-dashboard.css') }}">
+
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #F8FAFC;
+            color: #1E293B;
+        }
+
+        .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .bg-soft-blue {
+            background-color: #F8FAFC;
+        }
+
+        .rounded-3xl {
+            border-radius: 1.5rem !important;
+        }
+
+        .rounded-4xl {
+            border-radius: 2rem !important;
+        }
+    </style>
 </head>
+
 <body>
 <div class="ds-app-shell">
     {{-- Background effect layer: purely decorative --}}
     <div class="ds-background">
-        <div class="ds-gradient"></div>
-        <div class="ds-grid"></div>
-        <div class="ds-orb ds-orb-1"></div>
-        <div class="ds-orb ds-orb-2"></div>
-    </div>
+    <div class="ds-gradient"></div>
+    <div class="ds-grid"></div>
+    <div class="ds-orb ds-orb-1"></div>
+    <div class="ds-orb ds-orb-2"></div>
+    <!-- Opsional: Tambahkan overlay noise untuk kesan tekstur halus jika diinginkan -->
+</div>
 
     <nav class="ds-navbar navbar navbar-expand-lg">
         <div class="container ds-container">
