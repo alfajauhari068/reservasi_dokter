@@ -3,23 +3,105 @@
 @section('title', 'Dashboard Pasien')
 
 @section('content')
-<section class="ps-hero-band mb-4">
+<div class="container-fluid py-4 bg-light min-vh-100">
+
+    <!-- Header Greeting & Status -->
+    <div class="row g-4 mb-4">
+        <!-- Greetings -->
+        <div class="col-lg-8 col-md-12">
+            <div class="card clinical-card h-100 p-4 d-flex justify-content-between">
+                <div>
+                    <span class="badge-soft-primary px-3 py-1 text-xs-caps">PATIENT DASHBOARD</span>
+                    <h1 class="display-6 font-sans fw-bold text-dark mt-2 mb-1">
+                        Halo, {{ $patient->full_name ?? auth()->user()->name ?? 'Pasien' }}
+                    </h1>
+                    <p class="text-secondary mb-4 col-xl-10">
+                        Pantau janji temu aktif, kemajuan antrean, dan riwayat pemeriksaan Anda dalam satu tempat terpadu.
+                    </p>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{{ route('pasien.reservasi.create') }}" class="btn btn-primary px-4 py-2-5 rounded-3 fw-semibold shadow-sm text-white">
+                        <i class="bi bi-calendar-plus me-2"></i> Buat Reservasi
+                    </a>
+                    <a href="{{ route('pasien.reservasi.history') }}" class="btn btn-outline-primary px-4 py-2-5 rounded-3 fw-semibold bg-white border-light-subtle">
+                        <i class="bi bi-clock-history me-2"></i> Lihat Riwayat
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Info Widget -->
+        <div class="col-lg-4 col-md-12">
+            <div class="card clinical-card h-100 p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="d-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle" style="width: 52px; height: 52px;">
+                        <i class="bi bi-person-badge fs-4"></i>
+                    </div>
+                    <div class="ms-3">
+                        <h6 class="mb-0 fw-bold font-sans text-dark">{{ $patient->full_name ?? auth()->user()->name ?? 'Pasien' }}</h6>
+                        <span class="text-xs-caps text-secondary font-mono">ID PASIEN: {{ $patient->id ?? '-' }}</span>
+                    </div>
+                </div>
+
+                <hr class="my-3 border-light">
+
+                <div class="row text-center mt-2">
+                    <div class="col-6 border-end border-light-subtle">
+                        <div class="text-xs-caps text-secondary mb-1">Reservasi Aktif</div>
+                        <h2 class="fw-bold text-primary font-mono m-0 mb-1">{{ $activeCount ?? 0 }}</h2>
+                        <span class="text-xs text-muted">Aktif</span>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-xs-caps text-secondary mb-1">Reservasi Selesai</div>
+                        <h2 class="fw-bold text-success font-mono m-0 mb-1">{{ $completedCount ?? 0 }}</h2>
+                        <span class="text-xs text-muted">Selesai</span>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <a href="{{ route('pasien.profile.edit') }}" class="btn btn-outline-primary w-full py-1-5 rounded-3 fs-7 fw-semibold">
+                        <i class="bi bi-gear-fill me-1"></i> Atur Profil & BPJS
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container-fluid">
         <div class="row g-4 align-items-center">
             <div class="col-lg-8">
                 <div class="ps-hero-left">
-                    <div class="ps-label-badge">DASHBOARD PASIEN</div>
-                    <h1 class="ps-hero-title">Halo, {{ auth()->user()->name }}</h1>
-                    <p class="ps-hero-description">
-                        Pantau janji temu, status reservasi, dan riwayat pemeriksaan Anda dalam satu tempat.
-                    </p>
-                    <div class="d-flex flex-wrap gap-2">
-                        <a href="{{ route('pasien.reservasi.create') }}" class="ps-btn-primary">Buat Reservasi</a>
-                        <a href="{{ route('pasien.reservasi.history') }}" class="ps-btn-secondary">Lihat Riwayat</a>
-                    </div>
+<!-- <div class="ps-poster" style="position:relative; overflow:hidden; padding:24px; border-radius:24px; background:linear-gradient(135deg, rgba(0,100,224,0.10), rgba(255,255,255,0.96)); border:1px solid rgba(14,165,233,0.18); box-shadow:0 24px 60px rgba(15,23,42,0.08);">
+    <div style="position:absolute; inset:-40px; background:radial-gradient(circle at 20% 10%, rgba(14,165,233,0.25), transparent 35%), radial-gradient(circle at 90% 60%, rgba(34,197,94,0.18), transparent 40%); pointer-events:none;"></div>
+
+    <div style="position:relative; z-index:1;">
+        <div class="ps-label-badge" style="background:rgba(255,255,255,0.85); border:1px solid rgba(14,165,233,0.14); color:rgba(0,100,224,0.95);">POSTER DASHBOARD PASIEN</div>
+
+        <h1 class="ps-hero-title" style="margin-top:12px; font-size:clamp(1.6rem,3vw,2.4rem); line-height:1.05;">Halo, {{ auth()->user()->name }}</h1>
+
+        <p class="ps-hero-description" style="max-width:44rem; margin-bottom:18px;">
+            Pantau janji temu, status reservasi, dan riwayat pemeriksaan Anda dalam satu poster ringkas yang informatif.
+        </p>
+
+        <div class="d-flex flex-wrap gap-2" style="gap:12px;">
+            <a href="{{ route('pasien.reservasi.create') }}" class="ps-btn-primary" style="text-decoration:none;">Buat Reservasi</a>
+            <a href="{{ route('pasien.reservasi.history') }}" class="ps-btn-secondary" style="text-decoration:none;">Lihat Riwayat</a>
+        </div>
+
+        <div style="display:flex; flex-wrap:wrap; gap:14px; margin-top:18px;">
+            <div style="flex:1 1 180px; background:rgba(255,255,255,0.9); border:1px solid rgba(14,165,233,0.14); border-radius:18px; padding:14px 16px;">
+                <div style="font-size:0.78rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:rgba(15,23,42,0.6);">Reservasi Aktif</div>
+                <div style="font-size:1.9rem; font-weight:900; color:rgba(0,100,224,0.95); margin-top:4px;">{{ $activeCount ?? 0 }}</div>
+            </div>
+            <div style="flex:1 1 180px; background:rgba(255,255,255,0.9); border:1px solid rgba(34,197,94,0.14); border-radius:18px; padding:14px 16px;">
+                <div style="font-size:0.78rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; color:rgba(15,23,42,0.6);">Reservasi Selesai</div>
+                <div style="font-size:1.9rem; font-weight:900; color:rgba(22,101,52,0.95); margin-top:4px;">{{ $completedCount ?? 0 }}</div>
+            </div>
+        </div>
+    </div>
+</div> -->
                 </div>
             </div>
-            <div class="col-lg-4">
+            <!-- <div class="col-lg-4, pb-4">
                 <div class="ps-patient-summary-card">
                     <div class="ps-patient-summary-header">
                         <div class="ps-patient-avatar">
@@ -45,7 +127,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </section>
@@ -73,7 +155,7 @@
     </div>
 @endif
 
-<section class="mb-4">
+<!-- <section class="mb-4">
     <div class="container-fluid">
         <div class="row g-3 ps-stat-row">
             <div class="col-12 col-md-4">
@@ -99,7 +181,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 <section class="mb-4">
     <div class="container-fluid">

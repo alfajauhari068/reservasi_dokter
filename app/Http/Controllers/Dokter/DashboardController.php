@@ -16,7 +16,7 @@ class DashboardController extends Controller
     public function index()
     {
         $doctor = Doctor::where('user_id', auth()->id())
-            ->with(['appointments.patient.user', 'appointments.schedule'])
+            ->with(['specialization', 'appointments.patient.user', 'appointments.schedule'])
             ->first();
 
         $pendingAppointments = collect();
