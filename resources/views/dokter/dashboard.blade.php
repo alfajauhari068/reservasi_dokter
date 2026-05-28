@@ -1,10 +1,11 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Dashboard Dokter')
+@section('fullwidth', true)
 
 @section('content')
 <div class="container-fluid py-4 min-vh-100 clinical-page-bg" >
-    <div class="container-xl px-0">
+    <div class="container-fluid fluid-dashboard-container">
         <div class="row g-4 mb-4" >
             {{-- Backup hero header lama:
                 <div class="col-lg-7">
@@ -252,7 +253,7 @@
         <span>Informasi reservasi dan riwayat Anda diperbarui secara real-time.</span>
         <span>
             <a href="#" class="ps-footer-link">Kebijakan Privasi</a>
-            ·
+            �
             <a href="#" class="ps-footer-link">Syarat & Ketentuan</a>
         </span>
     </div>

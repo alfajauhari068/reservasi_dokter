@@ -1769,7 +1769,7 @@ img {
   top: 0;
   bottom: 0;
   width: 48%;
-  background-image: url('/assets/hero_pasien.jpg');
+  background-image: url('/hero_pasien.jpg');
   background-size: cover;
   background-position: center right;
   filter: saturate(1.05) contrast(0.95) brightness(0.95);
@@ -1778,7 +1778,7 @@ img {
 }
 
 .patient-hero-illustration {
-  max-width: 320px;
+  max-width: 520px;
   position: relative;
 }
 

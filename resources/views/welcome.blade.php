@@ -9,24 +9,24 @@
     
     {{-- HERO: Bento Grid Asimetris --}}
     <section id="hero" class="ds-landing-section  py-lg-2">
-        <div class="container-fluid px-0">
-            <div class="row g-6 align-items-stretch mx-0">
+        <div class="fluid-dashboard-container">
+            <div class="row g-6 align-items-stretch">
                 {{-- Hero Banner Utama --}}
                 <div class="col-lg-8">
-                    <div class="position-relative bg-white rounded-4xl p-0 shadow-sm overflow-hidden w-100" style="border-radius: 2rem; box-shadow: 0 10px 30px rgba(2, 6, 23, 0.06) !important;">
+                    <div class="position-relative bg-white rounded-4xl p-2 p-md-6 shadow-sm overflow-hidden w-100" style="border-radius: 2rem; box-shadow: 0 10px 30px rgba(2, 6, 23, 0.06) !important;">
                         {{-- Badge --}}
-                        <div class="d-inline-flex align-items-center gap-0 px-3 py-2 rounded-pill" style="background: rgba(59, 130, 246, 0.10); border: 1px solid rgba(59, 130, 246, 0.20); color: #1d4ed8; font-weight: 800; letter-spacing: 0.02em;">
-                            <span style="font-size: 1.05rem;">🚀</span>
+                        <div class="d-inline-flex align-items-center gap-4 px-3 py-2 rounded-pill" style="background: rgba(59, 130, 246, 0.10); border: 1px solid rgba(59, 130, 246, 0.20); color: #1d4ed8; font-weight: 800; letter-spacing: 0.02em;">
+                            <span style="font-size: 1.05rem;">??</span>
                             <span>Reservasi Dokter Online, Cepat dan Mudah</span>
                         </div>
 
                         <div class="position-relative" style="z-index: 1;">
-                            <h1 class="font-display fw-bold mt-4 mb-3" style="font-size: clamp(2rem, 3vw, 3rem); line-height: 1.05;">
+                            <h1 class="font-display fw-bold mt-2 mb-3" style="font-size: clamp(2rem, 3vw, 3rem); line-height: 1.05; word-break: break-word;">
                                 Reservasi mudah dengan pengalaman
                                 <span style="background: linear-gradient(90deg, #1c69d4 0%, #7c3aed 100%); -webkit-background-clip: text; background-clip: text; color: transparent;">yang nyaman</span>
                             </h1>
 
-                            <p class="ds-muted mb-4" style="max-width: 52ch; font-size: 1.05rem;">
+                            <p class="ds-muted mb-4" style="font-size: 1.05rem;">
                                 Pilih dokter terverifikasi, atur jadwal kunjungan, dan dapatkan pengingat otomatis. Semua dirancang agar Anda tidak perlu antre.
                             </p>
 
@@ -52,13 +52,12 @@
                         </div>
 
                         {{-- Dokter hero image (absolute bottom-right) --}}
-                        <div class="position-absolute bottom-0 end-0 d-none d-md-block" style="width: 65%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden;">
+                        <div class="position-absolute bottom-0 end-0 d-none d-md-block" style="width: 58%; max-width: 320px; min-width: 240px; height: auto; pointer-events: none; z-index: 0; overflow: hidden;">
 
                             <img
-                                src="{{ asset('assets\doctor_hero_1779793696768.png') }}"
+                                src="{{ asset('assets\doctor_hero_1779793696768-removebg-preview.png') }}"
                                 alt="Dokter hero"
-
-                                style="width: 100%; height: 100%; object-fit: contain;"
+                                style="width: 100%; height: auto; object-fit: contain; display: block;"
                                 loading="lazy"
                             />
                         </div>
@@ -67,9 +66,9 @@
 
                 {{-- Interactive Sampingan --}}
                 <div class="col-lg-4">
-                    <div class="d-flex flex-column gap-3 h-100">
+                    <div class="d-flex flex-column gap-1 h-100">
                         {{-- Kartu 1: Jadwal Terstruktur (gelap) --}}
-                        <div class="rounded-4xl p-4 h-50" style="border-radius: 2rem; background: #0f172a; box-shadow: 0 10px 30px rgba(2, 6, 23, 0.10) !important;">
+                        <div class="rounded-4xl p-4" style="border-radius: 2rem; min-height: 150px; background: #0f172a; box-shadow: 0 10px 30px rgba(2, 6, 23, 0.10) !important;">
                             <div class="d-flex align-items-start gap-3">
                                 <div class="d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; border-radius: 16px; background: rgba(99, 102, 241, 0.18); border: 1px solid rgba(99, 102, 241, 0.28); color: #a5b4fc;">
                                     <i class="fa-solid fa-calendar-days" aria-hidden="true"></i>
@@ -84,7 +83,7 @@
                         </div>
 
                         {{-- Kartu 2: Asisten Pengingat Notifikasi otomatis (biru royal) --}}
-                        <div class="rounded-4xl p-4 h-50" style="border-radius: 2rem; background: #1c69d4; box-shadow: 0 10px 30px rgba(28, 105, 212, 0.22) !important;">
+                        <div class="rounded-4xl p-4" style="border-radius: 2rem; min-height: 150px; background: #1c69d4; box-shadow: 0 10px 30px rgba(28, 105, 212, 0.22) !important;">
                             <div class="d-flex align-items-start gap-3">
                                 <div class="d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; border-radius: 16px; background: rgba(255, 255, 255, 0.18); border: 1px solid rgba(255, 255, 255, 0.28); color: #ffffff;">
                                     <i class="fa-solid fa-bell" aria-hidden="true"></i>
@@ -106,8 +105,8 @@
 
 
     {{-- Fitur & Layanan Utama --}}
-    <section id="features" class="ds-landing-section py-5">
-        <div class="container">
+    <section id="features" class="ds-landing-section py-2">
+        <div class="fluid-dashboard-container">
             <div class="ds-section-heading text-center mb-4 mb-lg-2">
                 <span class="badge" style="background:#1c69d4; color:#fff; padding:0.55rem 1rem; border-radius:9999px; font-weight:800; letter-spacing:0.08em; text-transform:uppercase;">
                     Fitur Utama
@@ -173,7 +172,7 @@
 
     {{-- Fasilitas dan Layanan Kesehatan --}}
     <section id="facilities" class="ds-landing-section py-5 bg-white">
-        <div class="container">
+        <div class="fluid-dashboard-container">
             <div class="row align-items-start g-4">
                 {{-- Kolom kiri --}}
                 <div class="col-lg-4">
@@ -222,15 +221,15 @@
                         {{-- Bento panjang penuh --}}
                         <div class="col-12">
                             <div class="p-5 rounded-4xl" style="background:rgba(28,105,212,0.12); border:1px solid rgba(28,105,212,0.18); border-radius:2rem; position:relative; overflow:hidden;">
-                                <div class=" align-items-center">
-                                    <div class="corow g-2 l-lg-7">
+                                <div class="row align-items-center g-3">
+                                    <div class="col-12 col-lg-7">
                                         <div class="d-inline-flex align-items-center gap-2 mb-2">
                                             <span class="ds-icon-pill" style="background:rgba(255,255,255,0.55); border:1px solid rgba(28,105,212,0.18); color:#1c69d4;"> <i class="fa-solid fa-sparkles"></i></span>
                                             <div class="fw-bold">Klinik Lengkap dalam Satu Platform</div>
                                         </div>
                                         <p class="ds-muted mb-0">Booking online, konsultasi, dan pengingat jadwal dalam satu alur yang rapi.</p>
                                     </div>
-                                    <div class="col-lg-5 text-lg-end">
+                                    <div class="col-12 col-lg-5 text-lg-end">
                                         <a href="{{ route('register') }}" class="btn btn-primary btn-lg px-4" style="border-radius:1rem;">Daftar Sekarang</a>
                                         <div class="ds-muted small mt-2">Mulai reservasi tanpa ribet.</div>
                                     </div>
@@ -245,7 +244,7 @@
 
     {{-- existing sections continue --}}
 
-        <div class="container">
+        <div class="fluid-dashboard-container">
             <div class="row align-items-center g-4 g-lg-5">
                 <div class="col-lg-5">
                     <span class="badge bg-primary-subtle text-primary ds-pill-badge mb-2">Facilities and Services</span>
@@ -353,7 +352,7 @@
 
     {{-- PROMO 24/7 ONLINE CONSULTATION --}}
     <section id="consultation" class="ds-landing-section py-5">
-        <div class="container">
+        <div class="fluid-dashboard-container">
             <div class="ds-section-heading text-center mb-4 mb-lg-5">
                 <span class="badge bg-primary-subtle text-primary ds-pill-badge mb-2">24/7 Online Consultation</span>
                 <h2 class="mb-2">Konsultasi online kapan saja, di mana saja</h2>
@@ -422,7 +421,7 @@
 
     {{-- TESTIMONIAL --}}
     <section id="testimonial" class="ds-landing-section py-5 bg-white">
-        <div class="container">
+        <div class="fluid-dashboard-container">
             <div class="ds-section-heading text-center mb-4 mb-lg-5">
                 <span class="badge bg-primary-subtle text-primary ds-pill-badge mb-2">Patient&apos;s Testimonial</span>
                 <h2 class="mb-2">Pasien merasa lebih mudah dan aman</h2>
@@ -441,7 +440,7 @@
                                 <div class="ds-muted small">Pasien reguler</div>
                             </div>
                         </div>
-                        <p class="ds-muted mb-0">â€œReservasi online sangat mudah, tim medis responsif, dan waktu tunggu jauh lebih pendek. Saya merasa lebih tenang datang ke klinik.â€</p>
+                        <p class="ds-muted mb-0">“Reservasi online sangat mudah, tim medis responsif, dan waktu tunggu jauh lebih pendek. Saya merasa lebih tenang datang ke klinik.”</p>
                     </div>
                 </div>
 
@@ -456,7 +455,7 @@
                                 <div class="ds-muted small">Pengguna baru</div>
                             </div>
                         </div>
-                        <p class="ds-muted mb-0">â€œAplikasi ini membantu saya menemukan jadwal dokter yang cocok tanpa antre panjang. Notifikasi pengingat juga sangat berguna.â€</p>
+                        <p class="ds-muted mb-0">“Aplikasi ini membantu saya menemukan jadwal dokter yang cocok tanpa antre panjang. Notifikasi pengingat juga sangat berguna.”</p>
                     </div>
                 </div>
             </div>
@@ -465,11 +464,11 @@
 
     {{-- DIREKTORI DOKTER --}}
     <section id="doctor-directory" class="ds-landing-section py-5">
-        <div class="container">
+        <div class="fluid-dashboard-container">
             <div class="ds-section-heading text-center mb-4 mb-lg-5">
                 <span class="badge bg-primary-subtle text-primary ds-pill-badge mb-2">Direktori Dokter</span>
                 <h2 class="mb-2">Temukan Dokter Rawat Jalan Anda</h2>
-                <p class="mb-0">Cari berdasarkan nama atau spesialis. Klik “Daftar Konsultasi” untuk lanjut pendaftaran akun pasien.</p>
+                <p class="mb-0">Cari berdasarkan nama atau spesialis. Klik �Daftar Konsultasi� untuk lanjut pendaftaran akun pasien.</p>
             </div>
 
             {{-- pencarian & klasifikasi sederhana (client-side) --}}
@@ -511,12 +510,12 @@
                             <div style="height: 84px; background: linear-gradient(90deg, rgba(28,105,212,0.95) 0%, rgba(124,58,237,0.85) 100%);"></div>
 
                             <div class="p-4" style="margin-top: -36px;">
-                                <div class="d-flex align-items-center justify-content-between gap-3">
-                                    <div>
+                                <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                                    <div style="min-width:0;">
                                         <div class="fw-bold" style="font-size: 1.05rem; color:#0f172a;">{{ $d['name'] }}</div>
                                         <div class="ds-muted small mt-1">{{ $d['specialty'] }}</div>
                                     </div>
-                                    <div class="text-end">
+                                    <div class="text-end" style="min-width:0;">
                                         <div class="text-warning" style="font-size: 0.95rem; font-weight: 800;">
                                             @for($i=1;$i<=5;$i++)
                                                 <i class="fa-solid fa-star" style="opacity: {{ ($d['rating'] >= $i) ? 1 : 0.35 }};"></i>
@@ -536,7 +535,7 @@
                                     </div>
                                 </div>
 
-                                <div class="d-flex align-items-center justify-content-between mt-3">
+                                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-3">
                                     <span class="badge" style="background: rgba(34,197,94,0.12); color:#166534; border:1px solid rgba(34,197,94,0.20); font-weight:800;">
                                         <i class="fa-solid fa-circle-check me-1"></i>{{ $d['status'] }}
                                     </span>
@@ -586,10 +585,61 @@
         </div>
     </section>
 
+    <style>
+        @media (max-width: 991.98px) {
+            #hero .container-fluid {
+                padding-left: 1.5rem !important;
+                padding-right: 1.5rem !important;
+            }
+
+            #hero .rounded-4xl.p-4 {
+                max-width: 100%;
+            }
+
+            #doctor-directory .input-group,
+            #doctor-directory .form-select {
+                width: 100%;
+            }
+
+            #doctor-directory .doctor-card > div {
+                min-height: 100%;
+            }
+
+            footer#contact > div[aria-hidden="true"] {
+                display: none;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .ds-landing-bg {
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+            }
+
+            #hero .row {
+                gap: 1.5rem;
+            }
+
+            #hero .position-relative.bg-white {
+                padding: 1.5rem !important;
+            }
+
+            #hero .ds-hero-illustration,
+            #hero img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            #doctor-directory .doctor-card > div {
+                transition: none;
+            }
+        }
+    </style>
+
     {{-- BOOKING (WAJIB: logic @auth & route tidak boleh diubah) --}}
     <section id="booking" class="ds-landing-section py-5 ds-panel-soft">
 
-        <div class="container">
+        <div class="fluid-dashboard-container">
             <div class="row justify-content-center text-center">
                 <div class="col-lg-8">
                     <h2 class="fw-bold mb-2">Siap untuk membuat reservasi dokter pertama Anda?</h2>
@@ -627,7 +677,7 @@
     {{-- FOOTER SISTEM --}}
     <footer id="contact" class="pt-5 pb-4" style="background: linear-gradient(180deg, #ffffff 0%, rgba(28,105,212,0.03) 100%); border-top: 1px solid rgba(148,163,184,0.35); position: relative; overflow: visible;">
         <div aria-hidden="true" style="position:absolute; top:-110px; right:-120px; width:520px; height:520px; background: radial-gradient(circle at 30% 30%, rgba(28,105,212,0.18) 0%, rgba(34,197,94,0.10) 45%, rgba(255,255,255,0) 72%); pointer-events:none;"></div>
-        <div class="container">
+        <div class="fluid-dashboard-container">
             <div class="row g-4">
                 {{-- Kolom 1 --}}
                 <div class="col-12 col-md-4">
