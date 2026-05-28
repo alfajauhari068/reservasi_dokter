@@ -2,6 +2,104 @@
    Based on tokens from DESIGN.md.
 */
 
+/* Premium toast notification (anti layout shift) */
+.admin-toast {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 9999;
+  width: min(420px, calc(100vw - 32px));
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.30);
+  background: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 20px 60px rgba(2, 6, 23, 0.22);
+  transform: translateY(12px);
+  opacity: 0;
+  animation: adminToastIn 200ms ease forwards;
+}
+
+@keyframes adminToastIn {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.admin-toast--hide {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.admin-toast__inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 12px;
+}
+
+.admin-toast__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.admin-toast__message {
+  flex: 1;
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 650;
+}
+
+.admin-toast__close {
+  width: 36px;
+  height: 36px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.admin-toast__close:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.admin-toast--success {
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
+.admin-toast--success .admin-toast__icon {
+  background: rgba(34, 197, 94, 0.18);
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
+.admin-toast--error {
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+.admin-toast--error .admin-toast__icon {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+.admin-toast--info {
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+.admin-toast--info .admin-toast__icon {
+  background: rgba(59, 130, 246, 0.18);
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+
+
 :root {
   /* Radius (rounded.*) */
   --r-xs: 2px;
@@ -536,6 +634,225 @@ body {
   background-color: rgba(255, 255, 255, 0.14);
   color: #ffffff;
 }
+
+/* ============================================================
+   HERO ADMIN PREMIUM (Top banner dashboard)
+   Glassmorphism + ambient radial glow
+   ============================================================ */
+
+.hero-admin-premium {
+  background: linear-gradient(to bottom right, #2563eb 0%, #4f46e5 45%, #1d4ed8 100%);
+  position: relative;
+}
+
+.hero-admin-premium::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.10), transparent 35%),
+    radial-gradient(circle at 75% 30%, rgba(255, 255, 255, 0.07), transparent 38%),
+    radial-gradient(circle at 45% 80%, rgba(255, 255, 255, 0.08), transparent 42%);
+  opacity: 0.6;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.hero-admin-premium__inner,
+.hero-admin-premium__ambient,
+.hero-admin-premium__vignette {
+  position: relative;
+  z-index: 1;
+
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  box-shadow: 0 28px 90px rgba(2, 6, 23, 0.35);
+}
+
+.hero-admin-premium__ambient {
+  position: absolute;
+  inset: -40px;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.28), transparent 32%),
+    radial-gradient(circle at 85% 25%, rgba(99, 102, 241, 0.22), transparent 36%),
+    radial-gradient(circle at 80% 85%, rgba(14, 165, 233, 0.18), transparent 40%);
+  filter: blur(14px);
+  opacity: 0.95;
+  pointer-events: none;
+}
+
+.hero-admin-premium__inner {
+  position: relative;
+  padding: 22px;
+}
+
+@media (min-width: 992px) {
+  .hero-admin-premium__inner {
+    padding: 28px 34px;
+  }
+}
+
+.hero-admin-premium__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(1100px 400px at 50% -80px, rgba(59, 130, 246, 0.18), transparent 55%),
+    radial-gradient(900px 300px at 10% 110%, rgba(99, 102, 241, 0.14), transparent 60%),
+    radial-gradient(900px 300px at 90% 110%, rgba(14, 165, 233, 0.12), transparent 60%);
+}
+
+.hero-admin-premium__kicker {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.22);
+  color: #93c5fd;
+  font-weight: 800;
+}
+
+.hero-admin-premium__title {
+  color: #000000;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.hero-admin-premium__subtitle {
+  color: rgba(15, 23, 42, 0.75);
+}
+
+/* Buttons: main blue + outlined card buttons */
+.btn-hero-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-weight: 900;
+  text-decoration: none;
+  background: #2563eb;
+  color: #ffffff;
+  border: 1px solid rgba(37, 99, 235, 0.65);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  box-shadow: 0 16px 30px rgba(37, 99, 235, 0.22);
+}
+
+.btn-hero-primary:hover {
+  background: #1d4ed8;
+  transform: scale(0.99);
+}
+
+.btn-hero-primary:active {
+  transform: scale(0.95);
+}
+
+.btn-hero-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-weight: 900;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-hero-outline:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(148, 163, 184, 0.38);
+  transform: translateY(-1px);
+}
+
+.hero-admin-audit-card {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 24px;
+  padding: 18px 18px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.hero-admin-audit-card__label {
+  color: rgba(148, 163, 184, 0.95);
+  font-weight: 900;
+}
+
+.hero-admin-audit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.hero-admin-audit-row {
+  display: grid;
+  grid-template-columns: 12px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.hero-admin-audit-row__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 1);
+  box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.18);
+}
+
+.hero-admin-audit-row__name {
+  color: rgba(226, 232, 240, 0.92);
+  font-weight: 800;
+}
+
+.hero-admin-audit-row__value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.95);
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.20);
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.hero-admin-audit-row--blue .hero-admin-audit-row__dot {
+  background: #3b82f6;
+  box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.18);
+}
+
+.hero-admin-audit-row--green .hero-admin-audit-row__dot {
+  background: #22c55e;
+  box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.18);
+}
+
+.hero-admin-audit-row--red .hero-admin-audit-row__dot {
+  background: #ef4444;
+  box-shadow: 0 0 0 6px rgba(239, 68, 68, 0.18);
+}
+
+.hero-admin-audit-row--blue .hero-admin-audit-row__value {
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+.hero-admin-audit-row--green .hero-admin-audit-row__value {
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
+.hero-admin-audit-row--red .hero-admin-audit-row__value {
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+
 
 .admin-sidebar.collapsed span {
   opacity: 0;

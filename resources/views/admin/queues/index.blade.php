@@ -299,8 +299,50 @@ function refreshStats() {
 }
 
 function showToast(message, type) {
-    // Simple alert for now - could be enhanced with toast library
-    alert(message);
+    // Premium toast (frosted glass) without layout shift.
+    // type: 'success' | 'error' | 'info'
+    const existing = document.getElementById('adminToast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.id = 'adminToast';
+    toast.setAttribute('role', 'status');
+
+    const icon = {
+        success: 'fas fa-check-circle',
+        error: 'fas fa-times-circle',
+        info: 'fas fa-info-circle'
+    }[type] || 'fas fa-info-circle';
+
+    const tone = {
+        success: 'toast--success',
+        error: 'toast--error',
+        info: 'toast--info'
+    }[type] || 'toast--info';
+
+    toast.className = `admin-toast ${tone}`;
+    toast.innerHTML = `
+        <div class="admin-toast__inner">
+            <span class="admin-toast__icon"><i class="${icon}"></i></span>
+            <div class="admin-toast__message">${message}</div>
+            <button class="admin-toast__close" type="button" aria-label="Close toast">
+                <i class="fas fa-xmark"></i>
+            </button>
+        </div>
+    `;
+
+    document.body.appendChild(toast);
+
+    const closeBtn = toast.querySelector('.admin-toast__close');
+    closeBtn?.addEventListener('click', () => {
+        toast.classList.add('admin-toast--hide');
+        setTimeout(() => toast.remove(), 180);
+    });
+
+    setTimeout(() => {
+        toast.classList.add('admin-toast--hide');
+        setTimeout(() => toast.remove(), 180);
+    }, 2600);
 }
 </script>
 @endpush

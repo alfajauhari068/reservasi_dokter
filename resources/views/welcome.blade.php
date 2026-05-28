@@ -1,6 +1,7 @@
 ﻿@extends('layouts.app')
 
 @section('title', 'Reservasi Dokter - Pesan Jadwal Online')
+@section('fullwidth', true)
 
 @section('content')
 <div class="ds-landing-bg">
@@ -8,11 +9,11 @@
     
     {{-- HERO: Bento Grid Asimetris --}}
     <section id="hero" class="ds-landing-section  py-lg-2">
-        <div class="container">
-            <div class="row g-2 align-items-stretch mx-0">
+        <div class="container-fluid px-0">
+            <div class="row g-6 align-items-stretch mx-0">
                 {{-- Hero Banner Utama --}}
                 <div class="col-lg-8">
-                    <div class="position-relative bg-white rounded-4xl p-5 shadow-sm overflow-hidden" style="border-radius: 2rem; box-shadow: 0 10px 30px rgba(2, 6, 23, 0.06) !important;">
+                    <div class="position-relative bg-white rounded-4xl p-0 shadow-sm overflow-hidden w-100" style="border-radius: 2rem; box-shadow: 0 10px 30px rgba(2, 6, 23, 0.06) !important;">
                         {{-- Badge --}}
                         <div class="d-inline-flex align-items-center gap-0 px-3 py-2 rounded-pill" style="background: rgba(59, 130, 246, 0.10); border: 1px solid rgba(59, 130, 246, 0.20); color: #1d4ed8; font-weight: 800; letter-spacing: 0.02em;">
                             <span style="font-size: 1.05rem;">🚀</span>
@@ -54,7 +55,7 @@
                         <div class="position-absolute bottom-0 end-0 d-none d-md-block" style="width: 65%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden;">
 
                             <img
-                                src="{{ asset('assets/dokter2.png') }}"
+                                src="{{ asset('assets\doctor_hero_1779793696768.png') }}"
                                 alt="Dokter hero"
 
                                 style="width: 100%; height: 100%; object-fit: contain;"

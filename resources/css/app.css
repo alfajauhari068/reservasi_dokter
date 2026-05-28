@@ -2,6 +2,12 @@
 @import "./background-effects.css";
 @import "./admin.css";
 
+.ds-main.ds-main-fullwidth {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  max-width: 100%;
+}
+
 /* Emergency guard: admin layout should not be styled globally if broken.
    Remove admin-only overrides that could affect admin.
 */

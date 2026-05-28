@@ -22,6 +22,8 @@
 
     {{-- Admin Styling (external CSS) --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/admin_bento_extra.css') }}">
+
 
     @stack('styles')
 </head>

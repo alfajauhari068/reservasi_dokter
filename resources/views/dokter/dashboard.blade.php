@@ -49,13 +49,28 @@
                         <div class="d-flex align-items-center gap-3 mb-4">
                             <div class="flex-shrink-0">
                                 @if($avatarPath)
-                                    <img src="{{ asset('storage/' . $doctor->avatar) }}" alt="Foto Profil Dokter" class="rounded-circle avatar-placeholder">
+                                    <button type="button"
+                                            class="btn btn-link p-0"
+                                            style="border:none; background:transparent;"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#doctorProfileModal"
+                                            aria-label="Lihat profil dokter">
+                                        <img src="{{ asset('storage/' . $doctor->avatar) }}" alt="Foto Profil Dokter" class="rounded-circle avatar-placeholder">
+                                    </button>
                                 @else
-                                    <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center avatar-placeholder">
-                                        <i class="bi bi-person-fill fs-2"></i>
-                                    </div>
+                                    <button type="button"
+                                            class="btn btn-link p-0"
+                                            style="border:none; background:transparent;"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#doctorProfileModal"
+                                            aria-label="Lihat profil dokter">
+                                        <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center avatar-placeholder">
+                                            <i class="bi bi-person-fill fs-2"></i>
+                                        </div>
+                                    </button>
                                 @endif
                             </div>
+
                             <div class="flex-grow-1">
                                 <h3 class="h5 fw-bold mb-1 font-sans">{{ auth()->user()->name ?? 'Dokter' }}</h3>
                                 <span class="badge status-badge-active">Aktif</span>
@@ -242,4 +257,61 @@
         </span>
     </div>
 </div>
+<!-- Doctor Profile Modal -->
+<div class="modal fade" id="doctorProfileModal" tabindex="-1" aria-labelledby="doctorProfileModalLabel" aria-hidden="true" data-bs-backdrop="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0" style="background: rgba(2,132,196,0.12);">
+                <h5 class="modal-title font-sans fw-bold" id="doctorProfileModalLabel">
+                    <i class="bi bi-person-badge me-2"></i> Profil Dokter
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="p-3 rounded-3" style="background: rgba(2,132,196,0.08); border: 1px solid rgba(2,132,196,0.18);">
+                            <div class="d-flex align-items-center justify-content-center" style="width: 90px; height: 90px; margin: 0 auto;">
+                                @if(isset($doctor) && ($doctor->avatar ?? null))
+                                    <img src="{{ asset('storage/' . $doctor->avatar) }}" alt="Foto Profil Dokter" class="rounded-circle avatar-placeholder" style="width:90px;height:90px;object-fit:cover;">
+                                @else
+                                    <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center avatar-placeholder" style="width:90px;height:90px;">
+                                        <i class="bi bi-person-fill fs-1"></i>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="text-center mt-3">
+                                <div class="fw-bold">{{ auth()->user()->name ?? 'Dokter' }}</div>
+                                <div class="text-muted small">ID: {{ $doctor->id ?? '-' }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <div class="small text-muted">Spesialisasi</div>
+                                <div class="fw-semibold">{{ optional($doctor->specialization ?? null)->name ?? '-' }}</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="small text-muted">ID Dokter</div>
+                                <div class="fw-semibold">{{ $doctor->id ?? '-' }}</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="small text-muted">Nama User</div>
+                                <div class="fw-semibold">{{ auth()->user()->name ?? '-' }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection

@@ -31,7 +31,9 @@ class ProfileController extends Controller
             'blood_type' => 'nullable|string|max:3',
             'identity_number' => 'nullable|string|max:50',
             'address' => 'nullable|string',
+            'phone_number' => 'nullable|string|max:20',
         ]);
+
 
         Patient::updateOrCreate(
             ['user_id' => auth()->id()],
@@ -42,6 +44,8 @@ class ProfileController extends Controller
                 'blood_type' => $validated['blood_type'] ?? null,
                 'identity_number' => $validated['identity_number'] ?? null,
                 'address' => $validated['address'] ?? null,
+                'phone' => $validated['phone_number'] ?? null,
+
             ]
         );
 

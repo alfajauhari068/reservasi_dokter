@@ -3,9 +3,16 @@
 */
 
 :root {
-  --color-primary: #0064e0;
-  --color-primary-deep: #0457cb;
-  --color-primary-soft: rgba(0, 145, 255, 0.12);
+  /* Palet Warna Utama - Azure Medis Modern (BPJS JKN Alignment) */
+  --color-primary: #0284c4; /* Sky/Azure Primary */
+  --color-primary-hover: #0369a1; /* Hover state deep sky */
+  --color-accent: #4f46e5; /* Indigo accent */
+  --color-emerald-active: #10b981; /* Status Selesai/Aktif */
+  --color-rose-danger: #ea580c; /* Status Antrean Dibatalkan */
+
+  /* Token kompatibilitas dengan design system lama (tetap diset ulang ke var Azure) */
+  --color-primary-deep: #0369a1;
+  --color-primary-soft: rgba(2, 132, 196, 0.12);
   --color-on-primary: #ffffff;
   --color-ink-button: #000000;
   --color-on-ink-button: #ffffff;
@@ -21,16 +28,41 @@
   --color-stone: #8595a4;
   --color-disabled-text: #bcc0c4;
 
-  --color-success: #31a24c;
-  --color-success-bg: #24e400;
+  /* Status semantic */
+  --color-success: var(--color-emerald-active);
+  --color-success-bg: rgba(16, 185, 129, 0.15);
   --color-attention: #f2a918;
   --color-warning: #f7b928;
   --color-warning-bg: #ffe200;
-  --color-critical: #e41e3f;
+  --color-critical: var(--color-rose-danger);
   --color-critical-strong: #f0284a;
+
+  /* Gradien Premium */
+  --gradient-azure-medis: linear-gradient(135deg, #1d4ed8 0%, #0284c7 50%, #4f46e5 100%);
+  --gradient-glass: rgba(255, 255, 255, 0.12);
+  --border-glass: rgba(255, 255, 255, 0.2);
+
+  /* Spacing & Radius (Azure) */
+  --spacing-xs: 0.5rem;
+  --spacing-md: 1.25rem;
+  --spacing-lg: 2rem;
+  --radius-xxl: 1.5rem; /* 24px untuk kartu Bento */
+  --radius-xl: 1rem; /* 16px untuk tombol & input */
+
+  /* Efek & Shadow */
+  --bento-shadow: 0 10px 30px -10px rgba(2, 132, 196, 0.15);
+  --hover-elevation: 0 20px 40px -15px rgba(2, 132, 196, 0.25);
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Token lama yang masih dipakai class existing */
+  --radius-feature: 40px;
+  --radius-full: 100px;
+
+  /* NOTE: radius-xs/sm/md/lg/xxl/xxxl di bawah tetap dipakai design system lama */
 
   --font-primary: "Optimistic VF", Montserrat, Helvetica, Arial, "Noto Sans", sans-serif;
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+
 
   --space-xxs: 4px;
   --space-xs: 8px;
@@ -97,6 +129,9 @@ a {
 }
 
 .ds-navbar {
+  position: sticky;
+  top: 0;
+
   background: rgba(255, 255, 255, 0.96);
   border-bottom: 1px solid var(--color-hairline-soft);
   position: relative;

@@ -53,7 +53,7 @@
 </div>
 
     <nav class="ds-navbar navbar navbar-expand-lg">
-        <div class="container ds-container">
+        <div class="@hasSection('fullwidth') container-fluid px-0 @else container ds-container @endif">
             <a class="navbar-brand" href="{{ url('/') }}">
                 {{-- Prefer asset logo if exists; fallback text-only handled by layout --}}
                 <img
@@ -73,6 +73,15 @@
             <button class="navbar-toggler border-0 text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
             </button>
+
+            <!-- <button
+                class="navbar-toggler border-0 text-primary d-inline-flex d-lg-none"
+                type="button"
+                id="mobileSidebarToggle"
+                aria-label="Toggle sidebar"
+            >
+                <i class="fas fa-bars"></i>
+            </button> -->
 
             <div class="collapse navbar-collapse" id="navbarMenu">
                 <ul class="navbar-nav ms-auto align-items-center">
@@ -117,15 +126,50 @@
         </div>
     </nav>
 
-    <main class="ds-main">
-        <div class="container ds-container">
-            <div class="ds-content-card">
-                @yield('content')
+    <main class="ds-main @hasSection('fullwidth') ds-main-fullwidth @endif">
+        @hasSection('fullwidth')
+            @yield('content')
+        @else
+            <div class="container ds-container">
+                <div class="ds-content-card">
+                    @yield('content')
+                </div>
             </div>
-        </div>
+        @endif
     </main>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Sidebar toggle helper for mobile phone view.
+    // If admin sidebar exists on the page (admin layout), toggle it.
+    // Otherwise do nothing.
+    document.addEventListener('DOMContentLoaded', function () {
+        const btn = document.getElementById('mobileSidebarToggle');
+        const sidebar = document.getElementById('adminSidebar');
+        const overlay = document.getElementById('mobileOverlay');
+
+        if (!btn || !sidebar) return;
+
+        btn.addEventListener('click', function () {
+            sidebar.classList.toggle('show');
+            if (overlay) overlay.classList.toggle('show');
+        });
+
+        const navLinks = sidebar.querySelectorAll('.admin-nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function () {
+                if (window.innerWidth < 768) {
+                    sidebar.classList.remove('show');
+                    if (overlay) overlay.classList.remove('show');
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
+</body>
+</html>
+

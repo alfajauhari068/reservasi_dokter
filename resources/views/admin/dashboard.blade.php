@@ -4,47 +4,86 @@
 @section('page-subtitle', 'Ringkasan statistik reservasi hari ini')
 
 @section('content')
-{{-- HERO SUMMARY --}}
+{{-- HERO SUMMARY (Premium Glassmorphism) --}}
 <section class="mb-4" aria-label="Admin Landing">
-    <div class="admin-card hero-reservasi position-relative p-4 p-lg-5 d-flex flex-column flex-lg-row align-items-start justify-content-between gap-4" role="region" aria-label="Hero Admin">
-        {{-- Unsplash hero image background --}}
-        <div class="hero-reservasi__bg" aria-hidden="true">
-            <img
-                src="{{ asset('assets/hero-1.jpg') }}"
-                alt="Hero background"
-            />
-            <div class="hero-reservasi__overlay"></div>
-        </div>
+    <div class="hero-admin-premium position-relative" role="region" aria-label="Hero Admin">
+        <div class="hero-admin-premium__ambient" aria-hidden="true"></div>
 
-        <div class="hero-reservasi__content">
-            <div class="row w-100 g-3 align-items-center">
+        <div class="hero-admin-premium__inner">
+            <div class="row w-100 g-4 align-items-center">
 
+                {{-- Konten Kiri: Sambutan & Aksi Cepat --}}
                 <div class="col-12 col-lg-7">
-<span class="badge badge-status-info mb-3">Control Center</span>
-                    <h1 class="ds-h1 mb-2">Selamat datang, Admin</h1>
-                    <p class="ds-body mb-3">Kelola reservasi, antrian, dokter, dan laporan dengan tampilan yang rapi, modern, dan informatif.</p>
-                    <div class="d-flex flex-wrap gap-2">
-<a href="{{ route('admin.approvals.index') }}" class="btn btn-primary">Lihat Riwayat</a>
-<a href="{{ route('admin.queues.index') }}" class="btn btn-secondary">Kelola Antrian</a>
-                        <a href="{{ route('admin.doctors.index') }}" class="btn btn-secondary">Kelola Dokter</a>
-                    </div>
+                    <span class="hero-admin-premium__kicker badge badge-status-info">Control Center</span>
+                    <h1 class="hero-admin-premium__title ds-h1 mb-3">Selamat datang, {{ auth()->user()->name }}</h1>
+                    <p class="hero-admin-premium__subtitle ds-body mb-4">
+                        Kelola reservasi, antrian, dokter, dan laporan dengan tampilan yang rapi, modern, dan informatif.
+                    </p>
 
+                    <div class="d-flex flex-wrap gap-2">
+                        {{-- Tombol utama: simulasi data (demo) --}}
+                        <a href="{{ route('admin.approvals.index') }}"
+                           class="btn btn-hero-primary"
+                           aria-label="Simulasikan data">
+                            <i class="fas fa-bolt me-2"></i> Simulasi Data
+                        </a>
+
+                        {{-- Tombol sekunder (outlined card buttons) --}}
+                        <a href="{{ route('admin.queues.index') }}"
+                           class="btn btn-hero-outline"
+                           aria-label="Kelola antrian">
+                            <i class="fas fa-list-check me-2"></i> Kelola Antrian
+                        </a>
+
+                        <a href="{{ route('admin.doctors.index') }}"
+                           class="btn btn-hero-outline"
+                           aria-label="Kelola dokter">
+                            <i class="fas fa-user-md me-2"></i> Kelola Dokter
+                        </a>
+                    </div>
                 </div>
 
+                {{-- Konten Kanan: Widget Audit Klinis (Glass Card) --}}
                 <div class="col-12 col-lg-5">
-                    <div class="text-lg-end">
-                        <p class="ds-caption text-uppercase mb-1">Ringkasan hari ini</p>
-                        <div class="d-flex flex-column gap-2 align-items-lg-end">
-                            <div class="badge badge-status-info px-4 py-2">Total: <strong>{{ $todayStats['total'] }}</strong></div>
-                            <div class="badge badge-status-success px-4 py-2">Selesai: <strong>{{ $todayStats['done'] }}</strong></div>
-                            <div class="badge badge-status-info px-4 py-2">Approved: <strong>{{ $todayStats['approved'] }}</strong></div>
+                    <div class="hero-admin-audit-card text-start text-lg-end">
+                        <p class="hero-admin-audit-card__label ds-caption text-uppercase mb-2">Audit Klinis Hari Ini</p>
+
+                        <div class="hero-admin-audit-list">
+                            <div class="hero-admin-audit-row hero-admin-audit-row--blue">
+                                <span class="hero-admin-audit-row__dot" aria-hidden="true"></span>
+                                <span class="hero-admin-audit-row__name">Total Janji Temu</span>
+                                <span class="hero-admin-audit-row__value">{{ $todayStats['total'] ?? 0 }}</span>
+                            </div>
+
+                            <div class="hero-admin-audit-row hero-admin-audit-row--blue">
+                                <span class="hero-admin-audit-row__dot" aria-hidden="true"></span>
+                                <span class="hero-admin-audit-row__name">Status Disetujui</span>
+                                <span class="hero-admin-audit-row__value">{{ $todayStats['approved'] ?? 0 }}</span>
+                            </div>
+
+                            <div class="hero-admin-audit-row hero-admin-audit-row--green">
+                                <span class="hero-admin-audit-row__dot" aria-hidden="true"></span>
+                                <span class="hero-admin-audit-row__name">Pemeriksaan Selesai</span>
+                                <span class="hero-admin-audit-row__value">{{ $todayStats['done'] ?? 0 }}</span>
+                            </div>
+
+                            <div class="hero-admin-audit-row hero-admin-audit-row--red">
+                                <span class="hero-admin-audit-row__dot" aria-hidden="true"></span>
+                                <span class="hero-admin-audit-row__name">Sesi Batal</span>
+                                <span class="hero-admin-audit-row__value">{{ $todayStats['cancelled'] ?? 0 }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
+
+        {{-- ambient glow vignette --}}
+        <div class="hero-admin-premium__vignette" aria-hidden="true"></div>
     </div>
 </section>
+
 
 <div class="admin-stat-grid mb-4">
     <div class="admin-card p-4 h-100 ds-card">
@@ -138,49 +177,9 @@
     </div>
 </div>
 
-{{-- MANAGEMENT EXPERIENCE --}}
-<div class="admin-stat-grid mb-4">
-    <div class="admin-card p-4 h-100">
-        <div class="d-flex align-items-start gap-3 mb-3">
-            <span class="badge badge-status-info p-3"><i class="fas fa-clock"></i></span>
-            <div>
-                <h6 class="mb-1 fw-bold">Antrian Real-Time</h6>
-                <p class="text-muted small mb-0">Pantau posisi antrian dan alur pasien dengan cepat.</p>
-            </div>
-        </div>
-        <a href="{{ route('admin.queues.index') }}" class="btn btn-secondary btn-ghost">Buka Antrian</a>
-    </div>
-    <div class="admin-card p-4 h-100">
-        <div class="d-flex align-items-start gap-3 mb-3">
-            <span class="badge badge-status-success p-3"><i class="fas fa-user-md"></i></span>
-            <div>
-                <h6 class="mb-1 fw-bold">Manajemen Dokter</h6>
-                <p class="text-muted small mb-0">Kelola data dokter dan spesialisasi tanpa ribet.</p>
-            </div>
-        </div>
-        <a href="{{ route('admin.doctors.index') }}" class="btn btn-secondary btn-ghost">Kelola Dokter</a>
-    </div>
-    <div class="admin-card p-4 h-100">
-        <div class="d-flex align-items-start gap-3 mb-3">
-            <span class="badge badge-status-info p-3"><i class="fas fa-chart-line"></i></span>
-            <div>
-                <h6 class="mb-1 fw-bold">Laporan Kunjungan</h6>
-                <p class="text-muted small mb-0">Analisis kunjungan pasien dengan data lengkap.</p>
-            </div>
-        </div>
-        <a href="{{ route('admin.reports.visitation') }}" class="btn btn-secondary btn-ghost">Lihat Laporan</a>
-    </div>
-    <div class="admin-card p-4 h-100">
-        <div class="d-flex align-items-start gap-3 mb-3">
-            <span class="badge badge-status-warning p-3"><i class="fas fa-file-medical-alt"></i></span>
-            <div>
-                <h6 class="mb-1 fw-bold">History & Audit</h6>
-                <p class="text-muted small mb-0">Akses riwayat reservasi dan catatan audit dengan mudah.</p>
-            </div>
-        </div>
-        <a href="{{ route('admin.approvals.index') }}" class="btn btn-ghost">Lihat History</a>
-    </div>
-</div>
+{{-- MANAGEMENT EXPERIENCE (Analitik Taktis - Bento Grid) --}}
+<!--  -->
+
 
 {{-- RINGKASAN PER DOKTER --}}
 <div class="admin-card admin-card--flat mb-4">

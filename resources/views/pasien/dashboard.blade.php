@@ -33,15 +33,21 @@
         <!-- Quick Info Widget -->
         <div class="col-lg-4 col-md-12">
             <div class="card clinical-card h-100 p-4">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="d-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle" style="width: 52px; height: 52px;">
+                    <div class="d-flex align-items-center mb-3">
+                    <button type="button"
+                            class="d-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle border-0"
+                            style="width: 52px; height: 52px; cursor:pointer;"
+                            data-bs-toggle="modal"
+                            data-bs-target="#patientProfileModal"
+                            aria-label="Lihat profil pasien">
                         <i class="bi bi-person-badge fs-4"></i>
-                    </div>
+                    </button>
                     <div class="ms-3">
                         <h6 class="mb-0 fw-bold font-sans text-dark">{{ $patient->full_name ?? auth()->user()->name ?? 'Pasien' }}</h6>
                         <span class="text-xs-caps text-secondary font-mono">ID PASIEN: {{ $patient->id ?? '-' }}</span>
                     </div>
                 </div>
+
 
                 <hr class="my-3 border-light">
 
@@ -302,4 +308,76 @@
         </div>
     </div>
 </div>
+<!-- Patient Profile Modal -->
+<div class="modal fade" id="patientProfileModal" tabindex="-1" aria-labelledby="patientProfileModalLabel" aria-hidden="true" data-bs-backdrop="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0" style="background: rgba(2,132,196,0.12);">
+                <h5 class="modal-title font-sans fw-bold" id="patientProfileModalLabel">
+                    <i class="bi bi-person-badge me-2"></i> Profil Pasien
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="p-3 rounded-3" style="background: rgba(2,132,196,0.08); border: 1px solid rgba(2,132,196,0.18);">
+                            <div class="d-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle" style="width: 90px; height: 90px; margin: 0 auto;">
+                                <i class="bi bi-person-fill fs-1"></i>
+                            </div>
+                            <div class="text-center mt-3">
+                                <div class="fw-bold">{{ $patient->full_name ?? auth()->user()->name ?? 'Pasien' }}</div>
+                                <div class="text-muted small">ID: {{ $patient->id ?? '-' }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <div class="small text-muted">Gender</div>
+                                <div class="fw-semibold">{{ $patient->gender ?? '-' }}</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="small text-muted">Tanggal Lahir</div>
+                                <div class="fw-semibold">
+                                    @if(isset($patient->date_of_birth) && $patient->date_of_birth)
+                                        {{ \Carbon\Carbon::parse($patient->date_of_birth)->format('d-m-Y') }}
+                                    @else
+                                        -
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="small text-muted">Golongan Darah</div>
+                                <div class="fw-semibold">{{ $patient->blood_type ?? '-' }}</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="small text-muted">No. Identitas</div>
+                                <div class="fw-semibold">{{ $patient->identity_number ?? '-' }}</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="small text-muted">No. Telepon</div>
+                                <div class="fw-semibold">{{ $patient->phone ?? '-' }}</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="small text-muted">Alamat</div>
+                                <div class="fw-semibold">{{ $patient->address ?? '-' }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer border-0">
+                <a href="{{ route('pasien.profile.edit') }}" class="btn btn-primary">
+                    <i class="bi bi-gear-fill me-2"></i> Edit Profil
+                </a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection

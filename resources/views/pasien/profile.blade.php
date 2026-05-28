@@ -118,6 +118,23 @@
                 @enderror
             </div>
 
+            <div class="col-12 col-md-6">
+                <label for="phone_number" class="form-label fw-semibold">Nomor Telepon</label>
+                <input
+                    type="tel"
+                    name="phone_number"
+                    id="phone_number"
+                    maxlength="20"
+                    class="form-control @error('phone_number') is-invalid @enderror"
+                    value="{{ old('phone_number', optional($patient)->phone_number) }}"
+                    placeholder="081234567890"
+                >
+                @error('phone_number')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+
             <div class="col-12 d-flex justify-content-end gap-2">
                 <a href="{{ route('pasien.dashboard') }}" class="btn btn-outline-secondary">Batal</a>
                 <button type="submit" class="btn btn-primary">Simpan Profil</button>
