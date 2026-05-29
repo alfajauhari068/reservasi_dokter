@@ -4,7 +4,7 @@
 @section('fullwidth', true)
 
 @section('content')
-<div class="container-fluid py-4 min-vh-100 clinical-page-bg" >
+<div class="container-fluid py-4 min-vh-100" >
     <div class="container-fluid fluid-dashboard-container">
         <div class="row g-4 mb-4" >
             {{-- Backup hero header lama:

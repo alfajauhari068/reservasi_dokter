@@ -4,23 +4,23 @@
 @section('fullwidth', true)
 
 @section('content')
-<div class="container-fluid py-4 bg-light min-vh-100">
+<div class="container-fluid py-4 min-vh-100">
     <div class="container-fluid fluid-dashboard-container">
         <div class="row g-4 mb-4">
             <div class="col-lg-8">
                 <div class="card clinical-card h-100 p-4">
-                    <span class="badge-soft-primary px-3 py-1 text-xs-caps">PATIENT DASHBOARD</span>
-                    <h1 class="display-6 fw-bold text-dark mt-3 mb-2">
+<span class="badge-soft-primary px-3 py-1 rounded-pill text-uppercase" style="letter-spacing:0.08em; font-weight:800; font-size:0.75rem;">PATIENT DASHBOARD</span>
+                    <h1 class="fw-bold mt-3 mb-2" style="font-family: var(--font-primary); font-feature-settings:'ss01' 1,'ss02' 1; letter-spacing:-0.02em; font-size: clamp(2rem, 2.6vw, 3rem); line-height:1.06;">
                         Halo, {{ $patient->full_name ?? auth()->user()->name ?? 'Pasien' }}
                     </h1>
-                    <p class="text-secondary mb-4">
+                    <p class="text-secondary mb-4" style="max-width:58ch; line-height:1.7;">
                         Pantau janji temu aktif, status reservasi, dan riwayat pemeriksaan Anda dalam satu tampilan penuh lebar.
                     </p>
                     <div class="d-flex flex-wrap gap-2">
-                        <a href="{{ route('pasien.reservasi.create') }}" class="btn btn-primary px-4 py-2 rounded-3 fw-semibold text-white">
+<a href="{{ route('pasien.reservasi.create') }}" class="btn btn-primary px-4 py-2" style="border-radius:9999px; font-weight:800;">
                             <i class="bi bi-calendar-plus me-2"></i> Buat Reservasi
                         </a>
-                        <a href="{{ route('pasien.reservasi.history') }}" class="btn btn-outline-primary px-4 py-2 rounded-3 fw-semibold bg-white border-light-subtle">
+                        <a href="{{ route('pasien.reservasi.history') }}" class="btn" style="border-radius:9999px; border:2px solid rgba(10, 19, 23, 0.12); padding:0.6rem 1.4rem; color:#0a1317; font-weight:800; background:transparent;">
                             <i class="bi bi-clock-history me-2"></i> Lihat Riwayat
                         </a>
                     </div>

@@ -3,19 +3,21 @@
 */
 
 :root {
-  /* Palet Warna Utama - Azure Medis Modern (BPJS JKN Alignment) */
-  --color-primary: #0284c4; /* Sky/Azure Primary */
-  --color-primary-hover: #0369a1; /* Hover state deep sky */
-  --color-accent: #4f46e5; /* Indigo accent */
+  /* Palet Warna Utama - Meta Commerce System (from meta/DESIGN.md) */
+  --color-primary: #0064e0; /* cobalt primary */
+  --color-primary-hover: #0457cb; /* cobalt deep */
+  --color-accent: #0064e0; /* keep single-brand accent */
   --color-emerald-active: #10b981; /* Status Selesai/Aktif */
   --color-rose-danger: #ea580c; /* Status Antrean Dibatalkan */
 
+
   /* Token kompatibilitas dengan design system lama (tetap diset ulang ke var Azure) */
-  --color-primary-deep: #0369a1;
-  --color-primary-soft: rgba(2, 132, 196, 0.12);
+  --color-primary-deep: #0457cb;
+  --color-primary-soft: rgba(0, 100, 224, 0.12);
   --color-on-primary: #ffffff;
   --color-ink-button: #000000;
   --color-on-ink-button: #ffffff;
+
 
   --color-canvas: #ffffff;
   --color-surface-soft: #f1f4f7;
@@ -104,10 +106,11 @@ body {
 
 body {
   margin: 0;
-  font-family: var(--font-sans);
-  background: var(--color-surface-soft);
+  font-family: var(--font-primary);
+  background: var(--color-canvas);
   color: var(--color-ink);
 }
+
 
 img {
   max-width: 100%;

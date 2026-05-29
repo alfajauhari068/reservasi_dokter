@@ -5,38 +5,36 @@
 
 @section('content')
 <div class="ds-landing-bg">
-    {{-- Custom Welcome Navbar (Bootstrap 5 utility classes) --}}
-    
-    {{-- HERO: Bento Grid Asimetris --}}
-    <section id="hero" class="ds-landing-section  py-lg-2">
+    {{-- HERO (Meta-design faithful) --}}
+    <section id="hero" class="ds-landing-section py-5">
         <div class="fluid-dashboard-container">
             <div class="row g-6 align-items-stretch">
                 {{-- Hero Banner Utama --}}
                 <div class="col-lg-8">
-                    <div class="position-relative bg-white rounded-4xl p-2 p-md-6 shadow-sm overflow-hidden w-100" style="border-radius: 2rem; box-shadow: 0 10px 30px rgba(2, 6, 23, 0.06) !important;">
-                        {{-- Badge --}}
-                        <div class="d-inline-flex align-items-center gap-4 px-3 py-2 rounded-pill" style="background: rgba(59, 130, 246, 0.10); border: 1px solid rgba(59, 130, 246, 0.20); color: #1d4ed8; font-weight: 800; letter-spacing: 0.02em;">
-                            <span style="font-size: 1.05rem;">??</span>
-                            <span>Reservasi Dokter Online, Cepat dan Mudah</span>
+                    <div class="position-relative bg-white overflow-hidden w-100" style="border-radius: 2rem; border: 1px solid rgba(222,227,233,0.92);">
+                        {{-- Badge (pill) --}}
+                        <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill"
+                             style="background: rgba(0, 100, 224, 0.10); border: 1px solid rgba(0, 100, 224, 0.20); color: #0064e0; font-weight: 800; letter-spacing: 0.01em;">
+                            <i class="fa-solid fa-stethoscope" aria-hidden="true"></i>
+                            <span style="font-size:1rem;">Reservasi Dokter Online</span>
                         </div>
 
                         <div class="position-relative" style="z-index: 1;">
-                            <h1 class="font-display fw-bold mt-2 mb-3" style="font-size: clamp(2rem, 3vw, 3rem); line-height: 1.05; word-break: break-word;">
+                            <h1 class="fw-bold mt-2 mb-3" style="font-family: var(--font-primary); font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.06; word-break: break-word; letter-spacing: -0.02em; font-feature-settings: 'ss01' 1, 'ss02' 1;">
                                 Reservasi mudah dengan pengalaman
-                                <span style="background: linear-gradient(90deg, #1c69d4 0%, #7c3aed 100%); -webkit-background-clip: text; background-clip: text; color: transparent;">yang nyaman</span>
+                                <span style="color:#0064e0;">yang nyaman</span>
                             </h1>
 
-                            <p class="ds-muted mb-4" style="font-size: 1.05rem;">
-                                Pilih dokter terverifikasi, atur jadwal kunjungan, dan dapatkan pengingat otomatis. Semua dirancang agar Anda tidak perlu antre.
+                            <p class="ds-muted mb-4" style="font-size: 1.05rem; line-height: 1.6; max-width: 56ch;">
+                                Pilih dokter terverifikasi, atur jadwal kunjungan, dan dapatkan pengingat otomatis—dirancang supaya Anda tidak perlu antre.
                             </p>
 
                             <div class="d-flex flex-wrap gap-2 mb-4">
-                                {{-- CTA 1: tetap mengarah ke bagian booking --}}
-                                <a href="#booking" class="btn btn-primary btn-lg px-4">
+                                {{-- Dual CTA (Meta): ink primary + outlined secondary --}}
+                                <a href="#booking" class="btn btn-primary btn-lg px-4" style="background:#000; border-radius:9999px; padding:14px 30px;">
                                     Reservasi Sekarang
                                 </a>
-                                {{-- CTA 2: scroll ke fitur/daftar dokter --}}
-                                <a href="#facilities" class="btn btn-secondary btn-lg px-4">
+                                <a href="#facilities" class="btn" style="border-radius:9999px; border:2px solid rgba(10, 19, 23, 0.12); padding:12px 28px; color:#0a1317; font-weight:800;">
                                     Lihat Layanan
                                 </a>
                             </div>
@@ -52,8 +50,7 @@
                         </div>
 
                         {{-- Dokter hero image (absolute bottom-right) --}}
-                        <div class="position-absolute bottom-0 end-0 d-none d-md-block" style="width: 58%; max-width: 320px; min-width: 240px; height: auto; pointer-events: none; z-index: 0; overflow: hidden;">
-
+                        <div class="position-absolute bottom-0 end-0 d-none d-md-block" style="width: 58%; max-width: 360px; height: auto; pointer-events: none; z-index: 0; overflow: hidden; border-radius: 32px;">
                             <img
                                 src="{{ asset('assets\doctor_hero_1779793696768-removebg-preview.png') }}"
                                 alt="Dokter hero"
