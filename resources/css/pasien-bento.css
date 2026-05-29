@@ -1,0 +1,39 @@
+:root{
+}
+
+.bento-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px;}
+.bento-grid--tight{gap:14px;}
+
+/* Desktop: 4 sel simetris */
+.bento-cell--hero{grid-column:span 7;}
+.bento-cell--queue{grid-column:span 5;}
+.bento-cell--history{grid-column:span 6;}
+.bento-cell--vitals{grid-column:span 6;}
+
+/* Mobile: stack padat */
+@media (max-width:991.98px){
+  .bento-cell--hero{grid-column:span 12;}
+  .bento-cell--queue{grid-column:span 12;}
+  .bento-cell--history{grid-column:span 12;}
+  .bento-cell--vitals{grid-column:span 12;}
+}
+
+.bento-card{border-radius: 24px; border:1px solid rgba(15,23,42,0.08); background:#fff; box-shadow: 0 10px 30px -10px rgba(2,132,196,0.12);}
+.bento-card--padded{padding:20px;}
+
+.bento-card--queue{background: var(--gradient-azure-medis); color:#fff; border:0;}
+
+.bento-cell{min-height: 100%;}
+
+/* Azure Medika Bento Grid: enforce 8/4/6/6 symmetry on desktop */
+.bento-grid{align-items: stretch;}
+.bento-cell--hero{grid-column: span 8;}
+.bento-cell--queue{grid-column: span 4;}
+.bento-cell--history{grid-column: span 6;}
+.bento-cell--vitals{grid-column: span 6;}
+
+@media (max-width:991.98px){
+  .bento-cell--hero,.bento-cell--queue,.bento-cell--history,.bento-cell--vitals{grid-column: span 12;}
+}
+
+

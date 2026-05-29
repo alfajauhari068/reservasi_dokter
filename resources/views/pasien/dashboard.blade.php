@@ -1,274 +1,279 @@
-﻿@extends('layouts.app')
+﻿@extends('layouts.patient')
 
 @section('title', 'Dashboard Pasien')
 @section('fullwidth', true)
 
 @section('content')
-<div class="container-fluid py-4 min-vh-100">
-    <div class="container-fluid fluid-dashboard-container">
-        <div class="row g-4 mb-4">
-            <div class="col-lg-8">
-                <div class="card clinical-card h-100 p-4">
-<span class="badge-soft-primary px-3 py-1 rounded-pill text-uppercase" style="letter-spacing:0.08em; font-weight:800; font-size:0.75rem;">PATIENT DASHBOARD</span>
-                    <h1 class="fw-bold mt-3 mb-2" style="font-family: var(--font-primary); font-feature-settings:'ss01' 1,'ss02' 1; letter-spacing:-0.02em; font-size: clamp(2rem, 2.6vw, 3rem); line-height:1.06;">
+<div class="text-[#0F172A] space-y-6 transition-all">
+    <div class="max-w-7xl mx-auto w-full px-0 sm:px-0 md:px-0 pt-4 sm:pt-6 md:pt-8">
+    @if(session('error'))
+        <div class="alert alert-danger mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if(! isset($patient) || ! $patient)
+        <div class="alert alert-warning mb-4">
+            Profil pasien tidak ditemukan. Silakan lengkapi data pasien terlebih dahulu sebelum membuat reservasi.
+            <div class="mt-2">
+                <a href="{{ route('pasien.profile.edit') }}" class="text-decoration-none">Lengkapi Profil</a>
+            </div>
+        </div>
+    @endif
+
+<div class="patient-portal-root">
+
+    {{-- Banner Sambutan Utama (full-width rounded) --}}
+    <div class="patient-portal-welcome w-full p-4 sm:p-6 md:p-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="d-flex flex-column gap-4">
+                <div class="d-flex flex-wrap align-items-start justify-content-between gap-3">
+                    <span class="patient-portal-badge-primary px-3 py-1 rounded-pill text-uppercase">PATIENT DASHBOARD</span>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <a href="{{ route('pasien.reservasi.create') }}" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-300">
+                            <i class="bi bi-calendar-plus"></i> Buat Reservasi
+                        </a>
+                        <a href="{{ route('pasien.reservasi.history') }}" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition duration-200 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300">
+                            <i class="bi bi-clock-history"></i> Lihat Riwayat
+                        </a>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column gap-2">
+                    <h1 class="fw-bold" style="font-family: var(--font-primary); font-feature-settings:'ss01' 1,'ss02' 1; letter-spacing:-0.02em; font-size: clamp(2rem, 3vw, 3rem); line-height:1.06;">
                         Halo, {{ $patient->full_name ?? auth()->user()->name ?? 'Pasien' }}
                     </h1>
-                    <p class="text-secondary mb-4" style="max-width:58ch; line-height:1.7;">
-                        Pantau janji temu aktif, status reservasi, dan riwayat pemeriksaan Anda dalam satu tampilan penuh lebar.
+                    <p class="mb-0" style="max-width:62ch; line-height:1.7; color: rgba(15,23,42,0.7);">
+                        Pantau janji temu aktif, status reservasi, dan riwayat pemeriksaan Anda dalam satu tampilan yang nyaman.
                     </p>
-                    <div class="d-flex flex-wrap gap-2">
-<a href="{{ route('pasien.reservasi.create') }}" class="btn btn-primary px-4 py-2" style="border-radius:9999px; font-weight:800;">
-                            <i class="bi bi-calendar-plus me-2"></i> Buat Reservasi
-                        </a>
-                        <a href="{{ route('pasien.reservasi.history') }}" class="btn" style="border-radius:9999px; border:2px solid rgba(10, 19, 23, 0.12); padding:0.6rem 1.4rem; color:#0a1317; font-weight:800; background:transparent;">
-                            <i class="bi bi-clock-history me-2"></i> Lihat Riwayat
-                        </a>
-                    </div>
                 </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="card clinical-card h-100 p-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <button type="button"
-                                class="d-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle border-0"
-                                style="width: 52px; height: 52px; cursor:pointer;"
-                                data-bs-toggle="modal"
-                                data-bs-target="#patientProfileModal"
-                                aria-label="Lihat profil pasien">
-                            <i class="bi bi-person-badge fs-4"></i>
-                        </button>
-                        <div class="ms-3">
-                            <h6 class="mb-0 fw-bold font-sans text-dark">{{ $patient->full_name ?? auth()->user()->name ?? 'Pasien' }}</h6>
-                            <span class="text-xs-caps text-secondary font-mono">ID PASIEN: {{ $patient->id ?? '-' }}</span>
-                        </div>
-                    </div>
-
-                    <hr class="my-3 border-light">
-
-                    <div class="row text-center mt-2">
-                        <div class="col-6 border-end border-light-subtle">
-                            <div class="text-xs-caps text-secondary mb-1">Reservasi Aktif</div>
-                            <h2 class="fw-bold text-primary font-mono m-0 mb-1">{{ $activeCount ?? 0 }}</h2>
-                            <span class="text-xs text-muted">Aktif</span>
-                        </div>
-                        <div class="col-6">
-                            <div class="text-xs-caps text-secondary mb-1">Reservasi Selesai</div>
-                            <h2 class="fw-bold text-success font-mono m-0 mb-1">{{ $completedCount ?? 0 }}</h2>
-                            <span class="text-xs text-muted">Selesai</span>
-                        </div>
-                    </div>
-
-                    <div class="mt-3">
-                        <a href="{{ route('pasien.profile.edit') }}" class="btn btn-outline-primary w-100 py-2 rounded-3 fs-7 fw-semibold">
-                            <i class="bi bi-gear-fill me-1"></i> Atur Profil & BPJS
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        @if(session('error'))
-            <div class="alert alert-danger mb-4">
-                {{ session('error') }}
-            </div>
-        @endif
-
-        @if(! isset($patient) || ! $patient)
-            <div class="alert alert-warning mb-4">
-                Profil pasien tidak ditemukan. Silakan lengkapi data pasien terlebih dahulu sebelum membuat reservasi.
-                <div class="mt-2">
-                    <a href="{{ route('pasien.profile.edit') }}" class="text-decoration-none">Lengkapi Profil</a>
-                </div>
-            </div>
-        @endif
-
-        <div class="row g-4">
-            <div class="col-xl-8">
-                <div class="card clinical-card p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <div>
-                            <h5 class="mb-1">Reservasi Terbaru</h5>
-                            <p class="text-secondary mb-0">Daftar reservasi terbaru Anda dengan dokter.</p>
-                        </div>
-                    </div>
-
-                    @if(empty($appointments) || $appointments->isEmpty())
-                        <div class="py-5 text-center text-secondary">
-                            <div class="fw-bold">Belum ada reservasi</div>
-                            <div>Buat reservasi baru untuk mulai berkonsultasi dengan dokter.</div>
-                        </div>
-                    @else
-                        <div class="table-responsive">
-                            <table class="table mb-0">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Tanggal</th>
-                                        <th>Dokter</th>
-                                        <th>Spesialisasi</th>
-                                        <th>Status</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($appointments as $reservation)
-                                        <tr>
-                                            <td>{{ $reservation->appointment_date->format('d-m-Y') }}</td>
-                                            <td>{{ optional($reservation->doctor->user)->name ?? '-' }}</td>
-                                            <td>{{ optional($reservation->doctor->specialization)->name ?? '-' }}</td>
-                                            <td>
-                                                <span class="badge bg-secondary">{{ ucfirst($reservation->status) }}</span>
-                                            </td>
-                                            <td>
-                                                <a href="{{ route('pasien.reservasi.show', $reservation) }}" class="text-decoration-none">Lihat Detail</a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @endif
-                </div>
-            </div>
-
-            <div class="col-xl-4">
-                <div class="card clinical-card p-4">
-                    <h5 class="mb-3">Reservasi Mendatang</h5>
-                    @php
-                        $upcomingReservations = $appointments->whereIn('status', ['pending', 'in_progress'])->take(3);
-                    @endphp
-                    @if($upcomingReservations->isEmpty())
-                        <div class="py-4 text-center text-secondary">
-                            Tidak ada jadwal berikutnya. Reservasi berikutnya akan muncul di sini.
-                        </div>
-                    @else
-                        <div class="d-flex flex-column gap-3">
-                            @foreach($upcomingReservations as $reservation)
-                                <div class="card border-light shadow-sm p-3">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <div>
-                                            <div class="fw-semibold">{{ optional($reservation->doctor->user)->name ?? '-' }}</div>
-                                            <div class="text-secondary small">{{ $reservation->appointment_date->format('d-m-Y') }} • {{ optional($reservation->doctor->specialization)->name ?? '-' }}</div>
-                                        </div>
-                                        <span class="badge bg-info text-dark">Dijadwalkan</span>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
-                </div>
-            </div>
-        </div>
-
-        <div class="row g-4 mt-4">
-            <div class="col-12">
-                <div class="card clinical-card p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div>
-                            <h5 class="mb-1">Riwayat Pemeriksaan</h5>
-                            <p class="text-secondary mb-0">Catatan medis terbaru Anda.</p>
-                        </div>
-                    </div>
-                    @if(empty($completedAppointments) || $completedAppointments->isEmpty())
-                        <div class="py-5 text-center text-secondary">
-                            Belum ada riwayat pemeriksaan. Riwayat akan muncul di sini setelah reservasi selesai.
-                        </div>
-                    @else
-                        <div class="list-group">
-                            @foreach($completedAppointments as $appointment)
-                                <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-start">
-                                    <div>
-                                        <div class="fw-semibold">{{ optional($appointment->doctor->user)->name ?? 'Dokter tidak ditemukan' }}</div>
-                                        <div class="text-secondary small">{{ optional($appointment->doctor->specialization)->name ?? 'Umum' }} • {{ $appointment->appointment_date->format('d-m-Y') }}</div>
-                                    </div>
-                                    <span class="badge bg-success">Selesai</span>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
-                </div>
-            </div>
-        </div>
-
-        <div class="ps-dashboard-footnote py-3 mt-4">
-            <div class="d-flex flex-column flex-md-row justify-content-between gap-3 text-muted small">
-                <span>Informasi reservasi dan riwayat Anda diperbarui secara real-time.</span>
-                <span>
-                    <a href="#" class="text-decoration-none">Kebijakan Privasi</a>
-                    ·
-                    <a href="#" class="text-decoration-none">Syarat & Ketentuan</a>
-                </span>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Patient Profile Modal -->
-<div class="modal fade" id="patientProfileModal" tabindex="-1" aria-labelledby="patientProfileModalLabel" aria-hidden="true" data-bs-backdrop="false">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content border-0 shadow">
-            <div class="modal-header border-0" style="background: rgba(2,132,196,0.12);">
-                <h5 class="modal-title font-sans fw-bold" id="patientProfileModalLabel">
-                    <i class="bi bi-person-badge me-2"></i> Profil Pasien
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <div class="p-3 rounded-3" style="background: rgba(2,132,196,0.08); border: 1px solid rgba(2,132,196,0.18);">
-                            <div class="d-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle" style="width: 90px; height: 90px; margin: 0 auto;">
-                                <i class="bi bi-person-fill fs-1"></i>
-                            </div>
-                            <div class="text-center mt-3">
-                                <div class="fw-bold">{{ $patient->full_name ?? auth()->user()->name ?? 'Pasien' }}</div>
-                                <div class="text-muted small">ID: {{ $patient->id ?? '-' }}</div>
-                            </div>
+    {{-- Grid utama desktop: 3 kolom seimbang --}}
+    <div class="max-w-7xl mx-auto mt-6">
+        <div class="row g-4 g-lg-6">
+            {{-- Kolom Kiri: Profil Pasien (span 3) --}}
+            <div class="col-12 col-lg-3">
+                <div class="patient-portal-card shadow-sm p-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="ds-avatar" style="width:72px;height:72px;">{{ strtoupper(substr(($patient->full_name ?? auth()->user()->name ?? 'P'),0,1)) }}</div>
+                        <div>
+                            <div class="fw-bold">{{ $patient->full_name ?? auth()->user()->name ?? 'Pasien' }}</div>
+                            <div class="text-muted small">ID Pasien: {{ $patient->id ?? '-' }}</div>
                         </div>
                     </div>
-                    <div class="col-md-8">
-                        <div class="row g-3">
-                            <div class="col-sm-6">
-                                <div class="small text-muted">Gender</div>
-                                <div class="fw-semibold">{{ $patient->gender ?? '-' }}</div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="small text-muted">Tanggal Lahir</div>
-                                <div class="fw-semibold">
-                                    @if(isset($patient->date_of_birth) && $patient->date_of_birth)
-                                        {{ \Carbon\Carbon::parse($patient->date_of_birth)->format('d-m-Y') }}
-                                    @else
-                                        -
-                                    @endif
+
+                    <hr class="my-4" style="border-color: rgba(15,23,42,0.08);">
+
+                    <div class="d-flex flex-column gap-3">
+                        <div class="p-3 rounded-4" style="background: rgba(0,100,224,0.08); border: 1px solid rgba(0,100,224,0.14);">
+                            <div class="text-muted small fw-bold">Reservasi Aktif</div>
+                            <div class="fw-black" style="font-family: var(--font-primary); font-feature-settings:'ss01' 1,'ss02' 1; font-size: 1.9rem;">{{ $activeCount ?? 0 }}</div>
+                            <div class="text-muted small">Sedang berjalan</div>
+                        </div>
+                        <div class="p-3 rounded-4" style="background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.14);">
+                            <div class="text-muted small fw-bold">Reservasi Selesai</div>
+                            <div class="fw-black" style="font-family: var(--font-primary); font-feature-settings:'ss01' 1,'ss02' 1; font-size: 1.9rem;">{{ $completedCount ?? 0 }}</div>
+                            <div class="text-muted small">Sudah tuntas</div>
+                        </div>
+                    </div>
+
+                    <a href="{{ route('pasien.profile.edit') }}" class="inline-flex items-center justify-center gap-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition duration-200 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300 mt-4">
+                        <i class="bi bi-clipboard2-pulse"></i> Atur Profil & BPJS
+                    </a>
+                </div>
+            </div>
+
+            {{-- Kolom Tengah: Reservasi Terbaru (span 6) --}}
+            <div class="col-12 col-lg-6">
+                <div class="patient-portal-card shadow-sm p-4">
+                    <div class="d-flex align-items-start justify-content-between mb-3">
+                        <div>
+                            <div class="fw-bold" style="font-size: 1.1rem;">Reservasi Terbaru</div>
+                            <div class="text-muted small">Daftar janji temu utama Anda.</div>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto rounded-2xl border border-slate-100 bg-white">
+                        <table class="w-full min-w-[750px] text-left border-collapse table table-borderless align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="px-6 py-4 font-mono font-bold text-xs text-slate-500">Tanggal</th>
+                                    <th class="px-6 py-4 font-mono font-bold text-xs text-slate-500">Dokter</th>
+                                    <th class="px-6 py-4 font-mono font-bold text-xs text-slate-500">Spesialisasi</th>
+                                    <th class="px-6 py-4 font-mono font-bold text-xs text-slate-500">Status</th>
+                                    <th class="px-6 py-4 text-end font-mono font-bold text-xs text-slate-500">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($appointments as $appointment)
+                                    @php
+                                        $status = $appointment->status ?? 'pending';
+                                        $isCompleted = $status === 'completed';
+                                    @endphp
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap font-mono">{{ $appointment->appointment_date->format('d-m-Y') }}</td>
+                                        <td class="px-6 py-4">{{ optional($appointment->doctor->user)->name ?? '-' }}</td>
+                                        <td class="px-6 py-4">{{ optional($appointment->doctor->specialization)->name ?? '-' }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            @if($isCompleted)
+                                                <span class="badge bg-green-50 text-green-700 border border-green-100 rounded-full px-3 py-1 font-bold">Completed</span>
+                                            @else
+                                                <span class="badge bg-blue-50 text-blue-700 border border-blue-100 rounded-full px-3 py-1 font-bold">Pending</span>
+                                            @endif
+                                        </td>
+                                        <td class="px-6 py-4 text-end">
+                                            <a href="{{ route('pasien.reservasi.show', $appointment->id) }}" class="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition duration-200 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-200">
+                                                Lihat Detail
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted py-5">Belum ada reservasi.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Kolom Kanan: Reservasi Mendatang (span 3) --}}
+            <div class="col-12 col-lg-3">
+                <div class="patient-portal-slim-card shadow-sm p-4 h-100 d-flex flex-column">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="fw-bold" style="font-size: 1.05rem;">Reservasi Mendatang</div>
+                        <span class="badge" style="background: rgba(0,100,224,0.12); color:#0064e0; border:1px solid rgba(0,100,224,0.16); border-radius: 9999px; font-weight: 900;">
+                            Dijadwalkan
+                        </span>
+                    </div>
+
+                    <div class="d-flex flex-column gap-3">
+                        @forelse($appointments as $appointment)
+                            @if(($appointment->status ?? '') !== 'completed')
+                                <div class="p-3 rounded-4" style="background: rgba(248,250,252,0.9); border: 1px solid rgba(148,163,184,0.25);">
+                                    <div class="text-muted small">{{ $appointment->appointment_date->format('d-m-Y') }}</div>
+                                    <div class="fw-bold" style="line-height:1.2;">{{ optional($appointment->doctor->user)->name ?? '-' }}</div>
+                                    <div class="text-muted small">{{ optional($appointment->doctor->specialization)->name ?? '-' }}</div>
+                                </div>
+                            @endif
+                        @empty
+                            <div class="text-muted py-4 text-center">Tidak ada jadwal mendatang.</div>
+                        @endforelse
+                    </div>
+
+                    <div class="mt-auto pt-4">
+                        <a href="{{ route('pasien.reservasi.create') }}" class="inline-flex items-center justify-center gap-2 w-full rounded-2xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-300">
+                            <i class="bi bi-calendar-plus"></i> Reservasi Baru
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Baris Bawah 1: Riwayat Pemeriksaan --}}
+        <div class="row g-4 g-lg-6 mt-4">
+            <div class="col-12">
+                <div class="patient-portal-card shadow-sm p-4">
+                    <div class="d-flex align-items-start justify-content-between mb-3">
+                        <div>
+                            <div class="fw-bold" style="font-size: 1.1rem;">Riwayat Pemeriksaan</div>
+                            <div class="text-muted small">Rekaman medis yang sudah selesai.</div>
+                        </div>
+                        <a href="{{ route('pasien.reservasi.history') }}" class="text-decoration-none fw-bold" style="color:#0064e0;">Lihat semua</a>
+                    </div>
+
+@if(empty($completedAppointments) || $completedAppointments->isEmpty())
+                        <div class="py-5 text-center text-muted">Belum ada riwayat pemeriksaan.</div>
+                    @else
+                        <div class="list-group" style="border-radius: 1.25rem; overflow:hidden; border:1px solid rgba(148,163,184,0.25);">
+                            @foreach($completedAppointments as $appointment)
+                                <div class="list-group-item d-flex justify-content-between align-items-start" style="background: rgba(248,250,252,0.9); border:0; border-bottom:1px solid rgba(226,232,240,0.6);">
+                                    <div>
+                                        <div class="fw-semibold">{{ optional($appointment->doctor->user)->name ?? 'Dokter tidak ditemukan' }}</div>
+                                        <div class="text-muted small">{{ optional($appointment->doctor->specialization)->name ?? 'Umum' }} • {{ $appointment->appointment_date->format('d-m-Y') }}</div>
+                                    </div>
+                                    <span class="badge patient-portal-badge-success rounded-pill">Selesai</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        {{-- Baris Bawah 2: Banner Konten Kesehatan --}}
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="patient-portal-banner-health">
+                    <div class="p-4 sm:p-6" style="background: linear-gradient(90deg, rgba(10,19,23,1) 0%, rgba(10,19,23,0.96) 55%, rgba(10,19,23,0.88) 100%);">
+                        <div class="row g-4 align-items-center">
+                            <div class="col-12 col-lg-5">
+                                <div class="d-flex flex-column gap-2">
+                                    <div class="badge" style="background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.92); border-radius: 9999px; width: fit-content; font-weight: 900;">
+                                        PANDUAN KESEHATAN
+                                    </div>
+                                    <h2 class="fw-bold mb-0" style="font-size: clamp(1.25rem, 2.2vw, 1.8rem); line-height:1.2;">
+                                        Panduan praktis agar kunjungan Anda lebih nyaman
+                                    </h2>
+                                    <div class="text-white-50" style="line-height:1.6;">Dua langkah sederhana sebelum dan saat konsultasi.</div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="small text-muted">Golongan Darah</div>
-                                <div class="fw-semibold">{{ $patient->blood_type ?? '-' }}</div>
+
+                            <div class="col-12 col-lg-5">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-6">
+                                        <div class="patient-portal-health-check p-4">
+                                            <div class="fw-bold">Sebelum Berangkat</div>
+                                            <div class="text-white-50 small">Checklist dokumen & persiapan.</div>
+                                            <div class="mt-3 d-flex gap-2">
+                                                <span class="badge" style="background: rgba(0,100,224,0.25); color:#cfe6ff;">1</span>
+                                                <span class="badge" style="background: rgba(0,100,224,0.25); color:#cfe6ff;">2</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="patient-portal-health-check p-4">
+                                            <div class="fw-bold">Saat Konsultasi</div>
+                                            <div class="text-white-50 small">Catat keluhan & pertanyaan penting.</div>
+                                            <div class="mt-3 d-flex gap-2">
+                                                <span class="badge" style="background: rgba(0,100,224,0.25); color:#cfe6ff;">A</span>
+                                                <span class="badge" style="background: rgba(0,100,224,0.25); color:#cfe6ff;">B</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="small text-muted">No. Identitas</div>
-                                <div class="fw-semibold">{{ $patient->identity_number ?? '-' }}</div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="small text-muted">No. Telepon</div>
-                                <div class="fw-semibold">{{ $patient->phone ?? '-' }}</div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="small text-muted">Alamat</div>
-                                <div class="fw-semibold">{{ $patient->address ?? '-' }}</div>
+
+                            <div class="col-12 col-lg-2">
+                                <a href="{{ route('pasien.reservasi.create') }}" class="inline-flex items-center justify-center w-full rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-[0_18px_30px_rgba(0,0,0,0.16)] transition duration-200 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-400">
+                                    Mulai Reservasi ->
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer border-0">
-                <a href="{{ route('pasien.profile.edit') }}" class="btn btn-primary">
-                    <i class="bi bi-gear-fill me-2"></i> Edit Profil
-                </a>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-            </div>
+        </div>
+    </div>
+
+    {{-- Footnote --}}
+    <div class="ps-dashboard-footnote py-3">
+        <div class="d-flex flex-column flex-md-row justify-content-between gap-3 text-muted small max-w-7xl mx-auto">
+            <span>Informasi reservasi dan riwayat Anda diperbarui secara real-time.</span>
+            <span>
+                <a href="#" class="text-decoration-none">Kebijakan Privasi</a>
+                ·
+                <a href="#" class="text-decoration-none">Syarat & Ketentuan</a>
+            </span>
         </div>
     </div>
 </div>
 
 @endsection
+
+
+

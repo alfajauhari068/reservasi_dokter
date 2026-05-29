@@ -2,8 +2,11 @@
 
 @section('title', 'Daftar Akun Pasien - Reservasi Dokter')
 
+@section('auth_bg_svg', '1')
+
 @section('content')
     <style>
+
         :root {
             --teal-premium: #0D9488;
             --teal-premium-2: #0F766E;
@@ -126,7 +129,7 @@
         }
     </style>
 
-    <div class="register-page bg-light p-2 p-md-4">
+<div class="register-page bg-light p-2 p-md-4 auth-root-bg">
         <div class="card border-0 shadow-lg register-card overflow-hidden bg-white">
             <div class="row g-0">
                 {{-- Left: Register Form --}}

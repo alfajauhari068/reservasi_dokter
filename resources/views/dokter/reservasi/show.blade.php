@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.doctor')
 
 @section('title', 'Form Pemeriksaan Pasien')
 
@@ -11,10 +11,10 @@
             <p class="text-muted mb-0">Lengkapi diagnosis, resep, dan catatan dokter untuk reservasi ini.</p>
         </div>
         <div class="d-flex flex-wrap gap-2">
-            <a href="{{ route('dokter.reservasi.print-pdf', $appointment) }}" class="btn btn-success" target="_blank">
-                <i class="fas fa-print me-2"></i>Cetak PDF
+            <a href="{{ route('dokter.reservasi.print-pdf', $appointment) }}" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-300" target="_blank">
+                <i class="fas fa-print"></i> Cetak PDF
             </a>
-            <a href="{{ route('dokter.dashboard') }}" class="btn btn-outline-secondary">Kembali ke Dashboard</a>
+            <a href="{{ route('dokter.dashboard') }}" class="inline-flex items-center justify-center rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition duration-200 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300">Kembali ke Dashboard</a>
         </div>
     </div>
 </div>
@@ -93,12 +93,12 @@
     @method('PUT')
 
     <div class="glass-card p-4 shadow-sm">
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <div>
-                <h5 class="mb-1">Hasil Pemeriksaan</h5>
-                <p class="text-muted mb-0">Masukkan diagnosis, resep, dan catatan untuk pasien.</p>
-            </div>
-            <button type="submit" class="btn btn-primary">Simpan Pemeriksaan</button>
+<div class="d-flex align-items-center justify-content-between mb-4 flex-column gap-3 md:flex-row">
+                <div>
+                    <h5 class="mb-1">Hasil Pemeriksaan</h5>
+                    <p class="text-muted mb-0">Masukkan diagnosis, resep, dan catatan untuk pasien.</p>
+                </div>
+                <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-sky-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-300">Simpan Pemeriksaan</button>
         </div>
 
         <div class="row g-4">

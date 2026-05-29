@@ -1,0 +1,92 @@
+/* Pasien Portal - clean patient dashboard layout (3-column + banners)
+   Included from layouts/app.blade.php
+*/
+
+.patient-portal-root{
+  --patient-bg: #F8FAFC;
+  --patient-ink: #0F172A;
+}
+
+.patient-portal-welcome{
+  background: #F8FAFC;
+  border: 1px solid rgba(15,23,42,0.08);
+  border-radius: 2rem;
+}
+
+.patient-portal-card{
+  background: #fff;
+  border: 1px solid rgba(15,23,42,0.08);
+  border-radius: 2rem;
+}
+
+.patient-portal-slim-card{
+  background: #fff;
+  border: 1px solid rgba(15,23,42,0.08);
+  border-radius: 2rem;
+}
+
+.patient-portal-badge-primary{
+  background: rgba(0, 100, 224, 0.12);
+  color: #0064e0;
+  border: 1px solid rgba(0, 100, 224, 0.16);
+  letter-spacing: 0.08em;
+  font-weight: 800;
+  font-size: 0.75rem;
+}
+
+.patient-portal-table{
+  border-radius: 1.25rem;
+  overflow: hidden;
+  border: 1px solid rgba(148,163,184,0.25);
+}
+
+.patient-portal-table thead th{
+  background: rgba(248,250,252,0.9);
+  color: rgba(15,23,42,0.7);
+  font-weight: 800;
+  font-size: 0.85rem;
+  border-bottom: 1px solid rgba(148,163,184,0.25);
+}
+
+.patient-portal-table tbody td{
+  border-bottom: 1px solid rgba(226,232,240,0.6);
+  vertical-align: middle;
+}
+
+.patient-portal-badge-success{
+  background: rgba(49,162,76,0.14);
+  color: #1f7a45;
+  border: 1px solid rgba(49,162,76,0.18);
+  font-weight: 800;
+  border-radius: 9999px;
+}
+
+.patient-portal-badge-pending{
+  background: rgba(14,165,233,0.12);
+  color: #075985;
+  border: 1px solid rgba(14,165,233,0.18);
+  font-weight: 800;
+  border-radius: 9999px;
+}
+
+.patient-portal-banner-health{
+  background: #0a1317;
+  color: #fff;
+  border-radius: 2rem;
+  overflow: hidden;
+}
+
+.patient-portal-health-check{
+  border-radius: 1.5rem;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+}
+
+.patient-portal-outline-white{
+  border: 2px solid rgba(255,255,255,0.85);
+  color: rgba(255,255,255,0.95);
+  background: transparent;
+  border-radius: 9999px;
+  font-weight: 900;
+}
+

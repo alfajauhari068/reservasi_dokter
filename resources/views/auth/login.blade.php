@@ -2,8 +2,11 @@
 
 @section('title', 'Masuk - Reservasi Dokter')
 
+@section('auth_bg_svg', '1')
+
 @section('content')
     <style>
+
         /* Login-only styling (no nested <html>/<body>) */
         .login-page-wrapper {
             min-height: calc(100vh - 120px);
@@ -31,7 +34,7 @@
         }
     </style>
 
-    <div class="login-page-wrapper login-page-bg p-3">
+<div class="login-page-wrapper login-page-bg p-3 auth-root-bg">
         <div class="card border-0 shadow-lg login-card">
             <div class="row g-0">
                 {{-- Left: Login form (5 grid) --}}

@@ -8,12 +8,7 @@
         <h1>Lengkapi Profil Pasien</h1>
         <p class="text-muted">Isi data profil untuk dapat melakukan reservasi.</p>
     </div>
-    <a href="{{ route('pasien.dashboard') }}" class="btn btn-outline-secondary">Kembali ke Dashboard</a>
-</div>
-
-@if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-@endif
+        <a href="{{ route('pasien.dashboard') }}" class="inline-flex items-center justify-center rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition duration-200 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300">Kembali ke Dashboard</a>
 
 @if($errors->any())
     <div class="alert alert-danger">
@@ -135,9 +130,9 @@
             </div>
 
 
-            <div class="col-12 d-flex justify-content-end gap-2">
-                <a href="{{ route('pasien.dashboard') }}" class="btn btn-outline-secondary">Batal</a>
-                <button type="submit" class="btn btn-primary">Simpan Profil</button>
+            <div class="col-12 d-flex flex-col gap-3 justify-content-end sm:flex-row">
+                <a href="{{ route('pasien.dashboard') }}" class="inline-flex items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition duration-200 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300">Batal</a>
+                <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-300">Simpan Profil</button>
             </div>
         </form>
     </div>

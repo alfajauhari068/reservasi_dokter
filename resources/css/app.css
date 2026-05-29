@@ -2,6 +2,10 @@
 @import "./background-effects.css";
 @import "./admin.css";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .ds-main.ds-main-fullwidth {
   padding-left: 0 !important;
   padding-right: 0 !important;

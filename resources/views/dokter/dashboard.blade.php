@@ -1,11 +1,14 @@
-@extends('layouts.app')
+@extends('layouts.doctor')
 
 @section('title', 'Dashboard Dokter')
 @section('fullwidth', true)
 
 @section('content')
-<div class="container-fluid py-4 min-vh-100" >
-    <div class="container-fluid fluid-dashboard-container">
+<div class="w-full py-4 min-vh-100 px-4 sm:px-6 md:px-8 lg:px-10">
+<div class="w-full fluid-dashboard-container px-0">
+
+
+
         <div class="row g-4 mb-4" >
             {{-- Backup hero header lama:
                 <div class="col-lg-7">
@@ -32,12 +35,12 @@
                     <div class="text-uppercase fw-semibold text-black mb-3 hero-label">DASHBOARD DOKTER</div>
                     <h1 class="h2 fw-bold mb-3 font-sans">Halo, {{ auth()->user()->name ?? 'Dokter' }}</h1>
                     <p class="text-white mb-4">Kelola reservasi pasien Anda dengan mudah dan pantau statistik harian secara real-time.</p>
-                    <div class="d-flex flex-wrap gap-2">
-                        <a href="{{ route('dokter.reservasi.history') }}" class="btn btn-light">
-                            <i class="bi bi-journal-bookmark me-1"></i> Lihat Riwayat
+                    <div class="flex flex-wrap gap-3">
+                        <a href="{{ route('dokter.reservasi.history') }}" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-slate-900 shadow-sm transition duration-200 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-300">
+                            <i class="bi bi-journal-bookmark"></i> Lihat Riwayat
                         </a>
-                        <a href="{{ route('dokter.dashboard') }}" class="btn btn-outline-light border-white text-black">
-                            <i class="bi bi-arrow-clockwise me-1"></i> Segarkan Dashboard
+                        <a href="{{ route('dokter.dashboard') }}" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white bg-white/10 px-4 py-3 text-sm font-semibold text-white transition duration-200 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50">
+                            <i class="bi bi-arrow-clockwise"></i> Segarkan Dashboard
                         </a>
                     </div>
                 </div>
@@ -51,8 +54,8 @@
                             <div class="flex-shrink-0">
                                 @if($avatarPath)
                                     <button type="button"
-                                            class="btn btn-link p-0"
-                                            style="border:none; background:transparent;"
+                                            class="inline-flex p-0 rounded-full border-0 bg-transparent"
+                                            style="background:transparent;"
                                             data-bs-toggle="modal"
                                             data-bs-target="#doctorProfileModal"
                                             aria-label="Lihat profil dokter">
@@ -60,8 +63,8 @@
                                     </button>
                                 @else
                                     <button type="button"
-                                            class="btn btn-link p-0"
-                                            style="border:none; background:transparent;"
+                                            class="inline-flex p-0 rounded-full border-0 bg-transparent"
+                                            style="background:transparent;"
                                             data-bs-toggle="modal"
                                             data-bs-target="#doctorProfileModal"
                                             aria-label="Lihat profil dokter">
@@ -186,7 +189,7 @@
                                                     <span class="badge badge-soft-warning">{{ ucfirst($appointment->status) }}</span>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('dokter.reservasi.show', $appointment) }}" class="btn btn-light btn-sm">
+                                                    <a href="{{ route('dokter.reservasi.show', $appointment) }}" class="inline-flex items-center rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition duration-200 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-200">
                                                         Periksa
                                                     </a>
                                                 </td>
@@ -223,7 +226,7 @@
                                     <span class="font-mono fw-semibold">{{ $nextAppointment->queue_number ?? '-' }}</span>
                                 </div>
                             </div>
-                            <a href="{{ route('dokter.reservasi.show', $nextAppointment) }}" class="btn btn-primary w-100">
+                            <a href="{{ route('dokter.reservasi.show', $nextAppointment) }}" class="inline-flex items-center justify-center rounded-2xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-300 w-full">
                                 Buka Detail
                             </a>
                         </div>
@@ -236,7 +239,7 @@
                                 <h3 class="h6 fw-bold">Tidak ada pasien berikutnya saat ini.</h3>
                                 <p class="text-muted mb-4">Silakan periksa kembali setelah ada reservasi baru.</p>
                             </div>
-                            <button type="button" class="btn btn-light w-100 disabled opacity-50" disabled>
+                            <button type="button" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-slate-100 px-5 py-3 text-sm font-semibold text-slate-500 opacity-60 cursor-not-allowed w-full" disabled>
                                 Buka Detail
                             </button>
                         </div>
@@ -309,7 +312,7 @@
             </div>
 
             <div class="modal-footer border-0">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="inline-flex items-center justify-center rounded-2xl bg-sky-600 px-4 py-2 text-sm font-semibold text-white transition duration-200 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-300" data-bs-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>

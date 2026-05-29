@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.patient')
 
 @section('title', 'Reservasi Dokter')
 
@@ -11,8 +11,8 @@
                 <h1 class="h3 mb-1">Buat Janji Konsultasi</h1>
                 <p class="text-muted mb-0">Pilih dokter, tanggal, dan slot jam untuk memesan konsultasi medis.</p>
             </div>
-            <a href="{{ route('pasien.reservasi.history') }}" class="btn btn-outline-primary btn-sm">
-                <i class="bi bi-clock-history me-1"></i>Lihat Riwayat
+            <a href="{{ route('pasien.reservasi.history') }}" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-sky-600 bg-white px-4 py-3 text-sm font-semibold text-sky-700 transition duration-200 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-sky-300">
+                <i class="bi bi-clock-history"></i> Lihat Riwayat
             </a>
         </div>
     </div>
@@ -84,9 +84,11 @@
                         @error('complaint')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
-                    <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex flex-column gap-3 md:flex-row md:items-center md:justify-between">
                         <small class="text-muted">Lengkapi data reservasi sebelum mengirim.</small>
-                        <button type="submit" class="btn btn-primary btn-lg px-4">Simpan Reservasi</button>
+                        <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-sky-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-300">
+                            Simpan Reservasi
+                        </button>
                     </div>
                 </form>
             </div>

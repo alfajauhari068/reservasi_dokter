@@ -4,14 +4,14 @@
 @section('fullwidth', true)
 
 @section('content')
-<div class="ds-landing-bg">
+<div class="ds-landing-bg  auth-root-bg ">
     {{-- HERO (Meta-design faithful) --}}
     <section id="hero" class="ds-landing-section py-5">
         <div class="fluid-dashboard-container">
             <div class="row g-6 align-items-stretch">
                 {{-- Hero Banner Utama --}}
                 <div class="col-lg-8">
-                    <div class="position-relative bg-white overflow-hidden w-100" style="border-radius: 2rem; border: 1px solid rgba(222,227,233,0.92);">
+                    <div class="position-relative bg-white overflow-hidden w-100 p-2" style="border-radius: 2rem; border: 1px solid rgba(222,227,233,0.92);">
                         {{-- Badge (pill) --}}
                         <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill"
                              style="background: rgba(0, 100, 224, 0.10); border: 1px solid rgba(0, 100, 224, 0.20); color: #0064e0; font-weight: 800; letter-spacing: 0.01em;">
@@ -168,7 +168,7 @@
     </section>
 
     {{-- Fasilitas dan Layanan Kesehatan --}}
-    <section id="facilities" class="ds-landing-section py-5 bg-white">
+    <section id="facilities" class="ds-landing-section py-5 px-2 bg-white">
         <div class="fluid-dashboard-container">
             <div class="row align-items-start g-4">
                 {{-- Kolom kiri --}}
@@ -242,7 +242,7 @@
     {{-- existing sections continue --}}
 
         <div class="fluid-dashboard-container">
-            <div class="row align-items-center g-4 g-lg-5">
+            <div class="row align-items-center px-2 g-4 g-lg-5">
                 <div class="col-lg-5">
                     <span class="badge bg-primary-subtle text-primary ds-pill-badge mb-2">Facilities and Services</span>
                     <h2 class="fw-bold mb-3">Fasilitas dan layanan kesehatan terbaik</h2>
@@ -417,7 +417,7 @@
     </section>
 
     {{-- TESTIMONIAL --}}
-    <section id="testimonial" class="ds-landing-section py-5 bg-white">
+    <section id="testimonial" class="ds-landing-section px-2 py-5 bg-white">
         <div class="fluid-dashboard-container">
             <div class="ds-section-heading text-center mb-4 mb-lg-5">
                 <span class="badge bg-primary-subtle text-primary ds-pill-badge mb-2">Patient&apos;s Testimonial</span>
@@ -460,7 +460,7 @@
     </section>
 
     {{-- DIREKTORI DOKTER --}}
-    <section id="doctor-directory" class="ds-landing-section py-5">
+    <section id="doctor-directory" class="ds-landing-section py-5 px-2">
         <div class="fluid-dashboard-container">
             <div class="ds-section-heading text-center mb-4 mb-lg-5">
                 <span class="badge bg-primary-subtle text-primary ds-pill-badge mb-2">Direktori Dokter</span>
@@ -634,7 +634,7 @@
     </style>
 
     {{-- BOOKING (WAJIB: logic @auth & route tidak boleh diubah) --}}
-    <section id="booking" class="ds-landing-section py-5 ds-panel-soft">
+    <section id="booking" class="ds-landing-section py-5 px-2 ds-panel-soft">
 
         <div class="fluid-dashboard-container">
             <div class="row justify-content-center text-center">
@@ -672,7 +672,7 @@
     </section>
 
     {{-- FOOTER SISTEM --}}
-    <footer id="contact" class="pt-5 pb-4" style="background: linear-gradient(180deg, #ffffff 0%, rgba(28,105,212,0.03) 100%); border-top: 1px solid rgba(148,163,184,0.35); position: relative; overflow: visible;">
+    <footer id="contact" class="pt-5 px-2 pb-4" style="background: linear-gradient(180deg, #ffffff 0%, rgba(28,105,212,0.03) 100%); border-top: 1px solid rgba(148,163,184,0.35); position: relative; overflow: visible;">
         <div aria-hidden="true" style="position:absolute; top:-110px; right:-120px; width:520px; height:520px; background: radial-gradient(circle at 30% 30%, rgba(28,105,212,0.18) 0%, rgba(34,197,94,0.10) 45%, rgba(255,255,255,0) 72%); pointer-events:none;"></div>
         <div class="fluid-dashboard-container">
             <div class="row g-4">
