@@ -28,7 +28,8 @@
         @endif
     </button>
 
-    <div class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="notificationDropdown" style="min-width: 380px; max-height: 500px; overflow-y: auto;">
+    <div class="dropdown-menu dropdown-menu-end shadow-lg animate-in fade-in duration-200 fixed top-16 right-4 left-4 w-auto sm:static sm:absolute sm:top-auto sm:right-0 sm:left-auto sm:w-80 fixed-mobile" aria-labelledby="notificationDropdown" style="max-height: 500px; overflow-y: auto;">
+
         <div class="dropdown-header border-bottom d-flex justify-content-between align-items-center">
             <strong class="mb-0">Notifikasi</strong>
             @if($unreadCount > 0)

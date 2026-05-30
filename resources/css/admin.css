@@ -550,7 +550,7 @@ body {
 
   /* Notification dropdown should fit viewport without forcing Popper.
      Use a predictable max width that follows viewport percentage. */
-  .admin-notification-wrapper .dropdown-menu {
+.admin-notification-wrapper .dropdown-menu {
     min-width: unset;
     width: min(340px, 94vw);
     right: 0;
@@ -558,6 +558,18 @@ body {
     border-radius: 18px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.12);
   }
+
+  /* Mobile: avoid dropdown being clipped by viewport width.
+     Make dropdown float and center with safe left/right gutters. */
+  .admin-notification-wrapper .dropdown-menu.fixed-mobile {
+    position: fixed !important;
+    top: 70px;
+    left: 16px;
+    right: 16px;
+    width: auto;
+    z-index: 1050;
+  }
+
 
   /* Keep header controls consistent height for touch targets */
   .admin-topbar-time,
@@ -667,7 +679,7 @@ body {
   border-radius: 28px;
   overflow: hidden;
   border: 1px solid rgba(148, 163, 184, 0.18);
-  box-shadow: 0 28px 90px rgba(2, 6, 23, 0.35);
+  box-shadow: none;
 }
 
 .hero-admin-premium__ambient {
@@ -715,7 +727,7 @@ body {
 }
 
 .hero-admin-premium__title {
-  color: #000000;
+  color: #ffffff;
   font-weight: 900;
   letter-spacing: -0.03em;
 }
@@ -877,6 +889,27 @@ body {
   box-shadow: var(--shadow-1);
   color: var(--ink-deep);
 }
+
+/* Hero admin: remove shadow completely (clean glass card) */
+.hero-admin-premium,
+.hero-admin-premium__inner,
+.hero-admin-premium__ambient,
+.hero-admin-premium__vignette {
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* Extra: matikan pseudo-element/ambient overlay yang bisa memberi kesan depth */
+.hero-admin-premium::before {
+  opacity: 0 !important;
+}
+
+.hero-admin-premium__ambient {
+  display: none !important;
+}
+
+
+
 
 /* Section header cards use a softer tone and the same admin card token family */
 .admin-shell .admin-card--section-header {

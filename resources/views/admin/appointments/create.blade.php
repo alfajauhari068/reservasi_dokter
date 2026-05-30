@@ -4,39 +4,28 @@
 @section('page-subtitle', 'Admin membuat reservasi untuk pasien secara langsung')
 
 @section('content')
-<style>
-    /* Fix overflow/oversize agar tidak melebar ke bawah sidebar */
-    #createAppointmentPage {
-        max-width: 100%;
-        width: 100%;
-        overflow-x: hidden;
-        padding-right: 0;
-        padding-left: 260px;
-    }
-    #createAppointmentPage .card {
-        max-width: 100%;
-        width: 100%;
-    }
-</style>
-<div id="createAppointmentPage" class="card border-0 shadow-sm">
-    <div class="card-header bg-white border-0 py-4">
-        <div class="d-flex align-items-start justify-content-between gap-3">
-            <div>
-                <h4 class="mb-2 fw-bold">Buat Appointment</h4>
-                <p class="text-muted mb-1">Isi data appointment untuk pasien berikut.</p>
-                <p class="text-muted small mb-0">Appointment yang dibuat di sini akan muncul di halaman Riwayat Reservasi / Daftar Appointment admin.</p>
-            </div>
-            <div>
-                <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary">
-                    <i class="fas fa-arrow-left me-2"></i>Kembali
-                </a>
-            </div>
-        </div>
-    </div>
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+            <div id="createAppointmentPage" class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 py-4">
+                    <div class="d-flex align-items-start justify-content-between gap-3">
+                        <div>
+                            <h4 class="mb-2 fw-bold">Buat Appointment</h4>
+                            <p class="text-muted mb-1">Isi data appointment untuk pasien berikut.</p>
+                            <p class="text-muted small mb-0">Appointment yang dibuat di sini akan muncul di halaman Riwayat Reservasi / Daftar Appointment admin.</p>
+                        </div>
+                        <div>
+                            <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Kembali
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="card-body p-4">
-        <form method="POST" action="{{ route('admin.appointments.store') }}" class="row g-3">
-            @csrf
+                <div class="card-body p-4">
+                    <form method="POST" action="{{ route('admin.appointments.store') }}" class="row g-3" style="min-width:0;">
+                        @csrf
 
             <div class="col-12 col-md-6">
                 <label for="patient_id" class="form-label fw-semibold">Pasien</label>
