@@ -74,7 +74,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegisterController::class, 'register'])->name('register.perform');
 });
 
-Route::match(['get', 'post'], '/logout', [LoginController::class, 'logout'])
+Route::post('/logout', [LoginController::class, 'logout'])
     ->name('logout')
     ->middleware('auth');
 
