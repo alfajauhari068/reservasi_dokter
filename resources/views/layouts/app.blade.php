@@ -110,7 +110,7 @@
             </button> -->
 
             <div class="collapse navbar-collapse" id="navbarMenu">
-                <ul class="navbar-nav ms-auto align-items-center">
+                <ul class="navbar-nav ms-auto align-items-center" style="z-index: 1050;">
                     <li class="nav-item">
                         @auth
                             @if (auth()->user()->role === 'admin')
@@ -125,7 +125,7 @@
 
                     {{-- Right-side CTA: Login/Daftar only on Welcome (guest) --}}
                     @guest
-                        @if(request()->path() === '' || request()->is('/'))
+                        @if(request()->is('/') || request()->is('welcome') || request()->routeIs('welcome'))
                             <li class="nav-item ms-lg-3">
                                 <a class="btn btn-outline-primary btn-lg" href="{{ route('login') }}">
                                     Login

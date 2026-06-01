@@ -3,27 +3,29 @@
 @section('title', 'Lengkapi Profil Pasien')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-        <h1>Lengkapi Profil Pasien</h1>
-        <p class="text-muted">Isi data profil untuk dapat melakukan reservasi.</p>
-    </div>
+<div class="ds-pasien-page">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1>Lengkapi Profil Pasien</h1>
+            <p class="text-muted">Isi data profil untuk dapat melakukan reservasi.</p>
+        </div>
         <a href="{{ route('pasien.dashboard') }}" class="inline-flex items-center justify-center rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition duration-200 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300">Kembali ke Dashboard</a>
-
-@if($errors->any())
-    <div class="alert alert-danger">
-        <ul class="mb-0">
-            @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
     </div>
-@endif
 
-<div class="card shadow-sm">
-    <div class="card-body">
-        <form method="POST" action="{{ route('pasien.profile.update') }}" class="row g-3">
-            @csrf
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form method="POST" action="{{ route('pasien.profile.update') }}" class="row g-3">
+                @csrf
 
             <div class="col-12">
                 <label for="full_name" class="form-label fw-semibold">Nama Lengkap</label>
@@ -130,7 +132,7 @@
             </div>
 
 
-            <div class="col-12 d-flex flex-col gap-3 justify-content-end sm:flex-row">
+            <div class="col-12 d-flex flex-column flex-sm-row gap-3 justify-content-start justify-content-sm-end">
                 <a href="{{ route('pasien.dashboard') }}" class="inline-flex items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition duration-200 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300">Batal</a>
                 <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition duration-200 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-300">Simpan Profil</button>
             </div>

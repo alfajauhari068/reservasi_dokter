@@ -58,10 +58,75 @@
             <div class="col-12 col-lg-3">
                 <div class="patient-portal-card shadow-sm p-4">
                     <div class="d-flex align-items-center gap-3">
-                        <div class="ds-avatar" style="width:72px;height:72px;">{{ strtoupper(substr(($patient->full_name ?? auth()->user()->name ?? 'P'),0,1)) }}</div>
+                        <button type="button"
+                                class="ds-avatar border-0 p-0"
+                                style="width:72px;height:72px;cursor:pointer;"
+                                data-bs-toggle="modal"
+                                data-bs-target="#patientProfileModal"
+                                aria-label="Lihat profil pasien">
+                            {{ strtoupper(substr(($patient->full_name ?? auth()->user()->name ?? 'P'),0,1)) }}
+                        </button>
                         <div>
                             <div class="fw-bold">{{ $patient->full_name ?? auth()->user()->name ?? 'Pasien' }}</div>
                             <div class="text-muted small">ID Pasien: {{ $patient->id ?? '-' }}</div>
+                        </div>
+                    </div>
+
+                    {{-- Modal: Tampilkan detail profil pasien saat avatar diklik --}}
+                    <div class="modal fade" id="patientProfileModal" tabindex="-1" aria-labelledby="patientProfileModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content" style="border-radius: 1.25rem;">
+                                <div class="modal-header" style="border-bottom: 1px solid rgba(226,232,240,0.6);">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="ds-avatar" style="width:56px;height:56px;">
+                                            {{ strtoupper(substr(($patient->full_name ?? auth()->user()->name ?? 'P'),0,1)) }}
+                                        </div>
+                                        <div>
+                                            <h5 class="modal-title fw-bold" id="patientProfileModalLabel">Profil Pasien</h5>
+                                            <div class="text-muted small">ID Pasien: {{ $patient->id ?? '-' }}</div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <div class="row g-3">
+                                        <div class="col-12 col-md-6">
+                                            <div class="text-muted small fw-bold mb-1">Nama</div>
+                                            <div class="fw-bold">{{ $patient->full_name ?? auth()->user()->name ?? '-' }}</div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="text-muted small fw-bold mb-1">Gender</div>
+                                            <div class="fw-bold">{{ $patient->gender ?? '-' }}</div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="text-muted small fw-bold mb-1">Tanggal Lahir</div>
+                                            <div class="fw-bold">{{ $patient->date_of_birth ?? '-' }}</div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="text-muted small fw-bold mb-1">Golongan Darah</div>
+                                            <div class="fw-bold">{{ $patient->blood_type ?? '-' }}</div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="text-muted small fw-bold mb-1">Alamat</div>
+                                            <div class="fw-normal" style="white-space: pre-wrap;">{{ $patient->address ?? '-' }}</div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="text-muted small fw-bold mb-1">Nomor Identitas</div>
+                                            <div class="fw-bold">{{ $patient->identity_number ?? '-' }}</div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="text-muted small fw-bold mb-1">Nomor Telepon</div>
+                                            <div class="fw-bold">{{ $patient->phone_number ?? '-' }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer" style="border-top: 1px solid rgba(226,232,240,0.6);">
+                                    <a href="{{ route('pasien.profile.edit') }}" class="btn btn-primary" style="border-radius: 0.75rem;">Edit Profil</a>
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="border-radius: 0.75rem;">Tutup</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -196,7 +261,7 @@
                                         <div class="fw-semibold">{{ optional($appointment->doctor->user)->name ?? 'Dokter tidak ditemukan' }}</div>
                                         <div class="text-muted small">{{ optional($appointment->doctor->specialization)->name ?? 'Umum' }} • {{ $appointment->appointment_date->format('d-m-Y') }}</div>
                                     </div>
-                                    <span class="badge patient-portal-badge-success rounded-pill">Selesai</span>
+                                    <span class="badge patient-portal-badge-success rounded-pill bg-success">Selesai</span>
                                 </div>
                             @endforeach
                         </div>

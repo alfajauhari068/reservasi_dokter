@@ -6,9 +6,9 @@
 @section('content')
 <div class="ds-landing-bg  auth-root-bg ">
     {{-- HERO (Meta-design faithful) --}}
-    <section id="hero" class="ds-landing-section py-5">
+    <section id="hero" class="ds-landing-section py-2">
         <div class="fluid-dashboard-container">
-            <div class="row g-6 align-items-stretch">
+            <div class="row g-4 align-items-stretch">
                 {{-- Hero Banner Utama --}}
                 <div class="col-lg-8">
                     <div class="position-relative bg-white overflow-hidden w-100 p-2" style="border-radius: 2rem; border: 1px solid rgba(222,227,233,0.92);">

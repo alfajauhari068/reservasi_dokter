@@ -4,12 +4,12 @@
 @section('fullwidth', true)
 
 @section('content')
-<div class="w-full py-4 min-vh-100 px-2 sm:px-6 md:px-2 lg:px-10">
+<!-- <div class="w-full py-4 min-vh-100 px-2 sm:px-6 md:px-2 lg:px-10"> -->
 <div class="w-full fluid-dashboard-container px-0">
 
 
 
-        <div class="row g-2 mb-4" >
+        <div class="row g-0 mb-4" >
             {{-- Backup hero header lama:
                 <div class="col-lg-7">
                     <div class="ds-hero-left">

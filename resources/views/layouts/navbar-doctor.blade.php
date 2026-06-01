@@ -30,7 +30,7 @@
         <!-- BAGIAN KANAN: DYNAMIC WIDGETS (NOTIFIKASI + DROP PROFILE) -->
         <div class="flex items-center gap-4">
 
-            <div class="hidden lg:flex items-center gap-2 bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-full text-xs font-medium text-slate-500 font-mono">
+            <div class="hidden lg:flex items-center gap-2 bg-slate-50 border border-slate-100 px-1 py-1.5 rounded-full text-xs font-medium text-slate-500 font-mono">
                 <i class="far fa-clock text-slate-400"></i>
                 <span id="nav-realtime-clock">{{ now()->format('H:i') }} WIB</span>
             </div>
@@ -44,7 +44,7 @@
                     </span>
                 </button>
 
-                <div id="bellDropdown" class="absolute right-0 mt-2 w-80 bg-white border border-slate-100 rounded-2xl shadow-xl p-3 hidden opacity-0 scale-95 transition-all duration-200 ease-in-out origin-top-right z-50" style="display: none;" role="menu" aria-label="Notifikasi">
+                <div id="bellDropdown" class="fixed mt-2 bg-white border border-slate-100 rounded-2xl shadow-xl p-3 hidden opacity-0 scale-95 transition-all duration-200 ease-in-out z-50" style="display: none; top: 64px; right: 16px; width: min(320px, calc(100vw - 32px));" role="menu" aria-label="Notifikasi">
                     <div class="flex items-start justify-between gap-3 mb-3">
                         <div>
                             <h4 class="text-xs font-black text-slate-700 uppercase tracking-wider">Notifikasi Terbaru</h4>
