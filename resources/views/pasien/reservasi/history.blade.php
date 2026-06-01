@@ -49,7 +49,19 @@
                                         <td>{{ optional($appointment->doctor->specialization)->name ?? 'Umum' }}</td>
                                         <td>{{ substr($appointment->schedule->start_time, 0, 5) }} - {{ substr($appointment->schedule->end_time, 0, 5) }}</td>
                                         <td>{{ $appointment->queue_number ?? '-' }}</td>
-                                        <td>{{ ucfirst($appointment->status) }}</td>
+<td>
+                                            @php
+                                                $status = strtolower($appointment->status ?? 'pending');
+                                                $badgeClass = match ($status) {
+                                                    'pending' => 'badge bg-warning text-dark',
+                                                    'in_progress' => 'badge bg-primary',
+                                                    'completed' => 'badge bg-success',
+                                                    'cancelled' => 'badge bg-danger',
+                                                    default => 'badge bg-secondary',
+                                                };
+                                            @endphp
+                                            <span class="{{ $badgeClass }}">{{ ucfirst(str_replace('_', ' ', $appointment->status ?? 'pending')) }}</span>
+                                        </td>
                                         <td><a href="{{ route('pasien.reservasi.show', $appointment) }}" class="btn btn-sm btn-outline-primary">Detail</a></td>
                                     </tr>
                                 @endforeach

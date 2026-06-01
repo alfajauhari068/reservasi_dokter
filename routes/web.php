@@ -212,3 +212,11 @@ Route::middleware('auth')->group(function () {
         ]);
     })->name('notifications.debug-send');
 });
+
+
+Route::get('/cek-session', function () {
+
+    session(['tes' => 'berhasil']);
+
+    return session('tes');
+});

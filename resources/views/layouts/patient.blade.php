@@ -26,7 +26,7 @@
 
         <main class="pt-4">
             {{-- Kontainer sejajar (mengurangi padding horizontal yang berlebih) --}}
-            <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
+<div class="w-full max-w-7xl mx-auto px-0">
                 @if(session('error'))
                     <div class="alert alert-danger mb-4">{{ session('error') }}</div>
                 @endif

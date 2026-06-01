@@ -35,7 +35,7 @@
         <nav class="admin-sidebar" id="adminSidebar">
             <div class="admin-sidebar-inner">
                 <div class="sidebar-header">
-                    <div class="sidebar-brand">
+                    <!-- <div class="sidebar-brand">
                         <span class="admin-brand-icon">
                             <i class="fas fa-hospital-user"></i>
                         </span>
@@ -43,7 +43,7 @@
                             <div class="brand-title">Admin Panel</div>
                             <div class="brand-subtitle">Reservasi Dokter</div>
                         </div>
-                    </div>
+                    </div> -->
                     <button class="sidebar-toggle d-none d-md-inline-flex" id="sidebarToggle" aria-label="Toggle sidebar">
                         <i class="fas fa-bars"></i>
                     </button>
@@ -52,7 +52,7 @@
                     </button>
                 </div>
 
-                <div class="admin-sidebar-profile">
+                <!-- <div class="admin-sidebar-profile">
                     <div class="profile-avatar">
                         <i class="fas fa-user"></i>
                     </div>
@@ -60,7 +60,7 @@
                         <div class="profile-name">{{ auth()->user()->name }}</div>
                         <div class="profile-role">Administrator</div>
                     </div>
-                </div>
+                </div> -->
 
                 <ul class="nav flex-column admin-nav-list">
                     <li class="nav-item">

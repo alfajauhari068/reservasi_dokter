@@ -5,11 +5,11 @@
 
 @section('content')
 <!-- <div class="w-full py-4 min-vh-100 px-2 sm:px-6 md:px-2 lg:px-10"> -->
-<div class="w-full fluid-dashboard-container px-0">
+<div class="w-full fluid-dashboard-container">
 
 
 
-        <div class="row g-0 mb-4" >
+        <div class="row g-0 mb-4">
             {{-- Backup hero header lama:
                 <div class="col-lg-7">
                     <div class="ds-hero-left">
@@ -185,8 +185,18 @@
                                                     {{ $appointment->patient->user->name ?? $appointment->patient->full_name ?? $appointment->patient->identity_number }}
                                                 </td>
                                                 <td><span class="font-mono badge bg-secondary bg-opacity-10 text-secondary py-2 px-3 rounded-pill">{{ $appointment->queue_number ?? '-' }}</span></td>
-                                                <td>
-                                                    <span class="badge badge-soft-warning">{{ ucfirst($appointment->status) }}</span>
+<td>
+                                                    @php
+                                                    $status = strtolower($appointment->status ?? 'pending');
+                                                    $badgeClass = match ($status) {
+'pending' => 'badge bg-warning text-dark',
+                                                        'in_progress' => 'badge bg-primary',
+                                                        'completed' => 'badge bg-success',
+                                                        'cancelled' => 'badge bg-danger',
+                                                        default => 'badge bg-secondary',
+                                                    };
+                                                @endphp
+                                                <span class="{{ $badgeClass }}">{{ ucfirst(str_replace('_', ' ', $appointment->status ?? 'pending')) }}</span>
                                                 </td>
                                                 <td>
                                                     <a href="{{ route('dokter.reservasi.show', $appointment) }}" class="inline-flex items-center rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition duration-200 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-200">
@@ -217,9 +227,19 @@
                                     <span class="text-muted">Tanggal</span>
                                     <span>{{ $nextAppointment->appointment_date->format('d-m-Y') }}</span>
                                 </div>
-                                <div class="d-flex justify-content-between py-2 border-bottom">
+<div class="d-flex justify-content-between py-2 border-bottom">
                                     <span class="text-muted">Status</span>
-                                    <span class="badge badge-soft-warning">{{ ucfirst($nextAppointment->status) }}</span>
+                                    @php
+                                        $nextStatus = strtolower($nextAppointment->status ?? 'pending');
+                                        $nextBadgeClass = match ($nextStatus) {
+'pending' => 'badge bg-warning text-dark',
+                                            'in_progress' => 'badge bg-primary',
+                                            'completed' => 'badge bg-success',
+                                            'cancelled' => 'badge bg-danger',
+                                            default => 'badge bg-secondary',
+                                        };
+                                    @endphp
+                                    <span class="{{ $nextBadgeClass }}">{{ ucfirst(str_replace('_', ' ', $nextAppointment->status ?? 'pending')) }}</span>
                                 </div>
                                 <div class="d-flex justify-content-between py-2">
                                     <span class="text-muted">Nomor Antrian</span>
