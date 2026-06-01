@@ -94,12 +94,12 @@
                         </a>
                     </li>
                     <li class="nav-item mt-3">
-                        <a class="nav-link admin-nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Logout</span>
-                        </a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="m-0">
                             @csrf
+                            <button type="submit" class="nav-link admin-nav-link border-0 bg-transparent w-100 text-start">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </button>
                         </form>
                     </li>
                 </ul>
@@ -142,13 +142,11 @@
                                 <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
-                                    <a class="dropdown-item text-danger"
-                                       href="{{ route('logout') }}"
-                                       onclick="event.preventDefault(); document.getElementById('logout-form-header').submit();">
-                                        <i class="fas fa-sign-out-alt me-2"></i>Logout
-                                    </a>
-                                    <form id="logout-form-header" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    <form id="logout-form-header" action="{{ route('logout') }}" method="POST" class="m-0">
                                         @csrf
+                                        <button type="submit" class="dropdown-item text-danger">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                        </button>
                                     </form>
                                 </li>
                             </ul>
