@@ -5,41 +5,125 @@
 @section('auth_bg_svg', '1')
 
 @section('content')
-    <style>
-
-        /* Login-only styling (no nested <html>/<body>) */
+<style>
+        /* Modern premium login UI (Blade internal CSS) */
         .login-page-wrapper {
             min-height: calc(100vh - 120px);
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+        }
+
+        /* Subtle ambient background + grid */
+        .login-page-bg {
+            background: #F8FAFC;
+            position: relative;
+            overflow: hidden;
+        }
+        .login-page-bg::before {
+            content: "";
+            position: absolute;
+            inset: -60px;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(14,165,233,0.14), transparent 38%),
+                radial-gradient(circle at 85% 30%, rgba(99,102,241,0.12), transparent 42%),
+                linear-gradient(180deg, rgba(255,255,255,0.0), rgba(255,255,255,0.55));
+            pointer-events: none;
+        }
+        .login-page-bg::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(to right, rgba(15,23,42,0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(15,23,42,0.05) 1px, transparent 1px);
+            background-size: 44px 44px;
+            opacity: 0.35;
+            pointer-events: none;
+        }
+        .login-page-wrapper > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 1024px;
+            border-radius: 20px;
+            border: 1px solid rgba(148,163,184,0.20);
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.05);
         }
 
         .bg-gradient-login {
             background: linear-gradient(135deg, #2563EB, #4F46E5);
         }
 
-        .login-card {
-            width: 100%;
-            max-width: 1024px;
-            border-radius: 2rem;
-        }
-
         .btn-back {
-            transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease;
+            transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+        }
+        .btn-back:hover {
+            transform: translateY(-1px);
         }
 
-        .login-page-bg {
-            background: linear-gradient(180deg, #ffffff 0%, #EAF6FF 30%, #D9FCF8 65%, #ffffff 100%);
+        /* Input styling for premium feel */
+        .login-premium-input .input-group-text {
+            background: transparent;
+            border: 1px solid rgba(148,163,184,0.25);
+            border-right: 0;
+            border-radius: 14px 0 0 14px;
+            color: #64748b;
+        }
+        .login-premium-input .form-control {
+            border: 1px solid rgba(148,163,184,0.25);
+            border-left: 0;
+            border-radius: 0 14px 14px 0;
+            padding: 12px 14px;
+            background: rgba(248,250,252,0.75);
+            transition: border-color 160ms ease, box-shadow 160ms ease;
+        }
+        .login-premium-input .form-control:focus {
+            border-color: #0EA5E9;
+            box-shadow: 0 0 0 4px rgba(14,165,233,0.18);
+            background: #ffffff;
+        }
+
+        .login-premium-hint {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        /* Buttons */
+        .login-btn {
+            min-height: 44px;
+            border-radius: 999px !important;
+            font-weight: 800;
+            letter-spacing: 0.01em;
+            transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+            box-shadow: 0 12px 26px rgba(37,99,235,0.20);
+        }
+        .login-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 34px rgba(37,99,235,0.26);
+        }
+
+        @media (max-width: 576px) {
+            .login-card {
+                border-radius: 16px;
+            }
+            .login-card .card-body,
+            .login-card {
+                max-width: 100%;
+            }
         }
     </style>
 
-<div class="login-page-wrapper login-page-bg p-3 auth-root-bg">
+<div class="login-page-wrapper login-page-bg p-2 auth-root-bg">
         <div class="card border-0 shadow-lg login-card">
             <div class="row g-0">
                 {{-- Left: Login form (5 grid) --}}
                 <div class="col-12 col-lg-5 p-4 p-sm-5 bg-white">
-                    <div class="h-100 d-flex flex-column">
+                    <div class="h-500 d-flex flex-column">
                         <div class="d-flex align-items-center justify-content-between mb-4 gap-3 flex-wrap">
                             <a href="{{ url('/') }}" class="btn btn-sm btn-light border btn-back" style="color:#6b7280; border-radius: 999px;">
                                 <i class="fas fa-arrow-left me-2"></i>
@@ -64,10 +148,10 @@
                         <form method="POST" action="{{ route('login') }}" class="mt-1">
                             @csrf
 
-                            <div class="mb-3">
+                            <div class="mb-3 login-premium-input">
                                 <label for="email" class="form-label fw-semibold">Email</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-white">
+                                    <span class="input-group-text">
                                         <i class="fas fa-envelope"></i>
                                     </span>
                                     <input
@@ -86,10 +170,10 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-3">
+                            <div class="mb-3 login-premium-input">
                                 <label for="password" class="form-label fw-semibold">Kata Sandi</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-white">
+                                    <span class="input-group-text">
                                         <i class="fas fa-lock"></i>
                                     </span>
                                     <input
@@ -106,13 +190,13 @@
                                 @enderror
                             </div>
 
-                            <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+                            <div class="d-flex justify-content-between align-items-center mt-3 mb-4 flex-wrap gap-3">
                                 <label class="d-flex align-items-center gap-2" style="cursor:pointer; user-select:none;">
                                     <input type="checkbox" name="remember" id="remember" class="form-check-input" />
-                                    <span class="fw-semibold" style="font-size: .95rem;">Ingat Saya</span>
+                                    <span class="fw-semibold" style="font-size: 0.95rem;">Ingat Saya</span>
                                 </label>
 
-                                <a href="#" class="text-decoration-none fw-semibold" style="color:#2563EB;">
+                                <a href="#" class="text-decoration-none fw-semibold" style="color:#2563EB; font-size: 0.92rem;">
                                     Lupa kata sandi?
                                 </a>
                             </div>

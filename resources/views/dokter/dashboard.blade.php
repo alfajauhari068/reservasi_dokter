@@ -9,7 +9,7 @@
 
 
 
-        <div class="row g-4 mb-4" >
+        <div class="row g-2 mb-4" >
             {{-- Backup hero header lama:
                 <div class="col-lg-7">
                     <div class="ds-hero-left">
@@ -107,7 +107,7 @@
         </div>
 
         @if(isset($doctor))
-            <div class="row g-4 mb-4">
+            <div class="row g-2 mb-4">
                 <div class="col-md-4">
                     <div class="clinical-card p-4 h-100">
                         <div class="d-flex align-items-center gap-3 mb-3">
@@ -149,7 +149,7 @@
                 </div>
             </div>
 
-            <div class="row g-4">
+            <div class="row g-2">
                 <div class="col-lg-8">
                     <div class="clinical-card p-4 h-100">
                         <div class="d-flex justify-content-between align-items-start mb-4">

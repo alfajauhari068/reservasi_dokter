@@ -40,9 +40,7 @@
             background-color: #F8FAFC;
             color: #1E293B;
         }
-        ds-main {
-            padding: 2rem 1rem;
-        }
+        
 
         .font-display {
             font-family: 'Space Grotesk', sans-serif;
@@ -58,6 +56,13 @@
 
         .rounded-4xl {
             border-radius: 2rem !important;
+        }
+
+        .brand-subtitle {
+            display: block;
+            font-size: 0.75rem;
+            color: #64748B;
+            font-weight: 500;
         }
     </style>
 </head>
@@ -118,13 +123,26 @@
                         @endauth
                     </li>
 
-                    {{-- Right-side CTA: show one action for guests, keep existing logout logic for authenticated users --}}
+                    {{-- Right-side CTA: Login/Daftar only on Welcome (guest) --}}
                     @guest
-                        <li class="nav-item ms-lg-3">
-                            <a class="btn btn-primary btn-lg" href="{{ route('login') }}">
-                                Login
-                            </a>
-                        </li>
+                        @if(request()->path() === '' || request()->is('/'))
+                            <li class="nav-item ms-lg-3">
+                                <a class="btn btn-outline-primary btn-lg" href="{{ route('login') }}">
+                                    Login
+                                </a>
+                            </li>
+                            <li class="nav-item ms-3">
+                                <a class="btn btn-primary btn-lg" href="{{ route('register') }}">
+                                    Daftar
+                                </a>
+                            </li>
+                        @else
+                            <li class="nav-item ms-lg-3">
+                                <a class="btn btn-primary btn-lg" href="{{ route('login') }}">
+                                    Login
+                                </a>
+                            </li>
+                        @endif
                     @endguest
 
                    
@@ -191,8 +209,6 @@
         });
     });
 </script>
-</body>
-</html>
 </body>
 </html>
 

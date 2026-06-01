@@ -561,13 +561,22 @@ body {
 
   /* Mobile: avoid dropdown being clipped by viewport width.
      Make dropdown float and center with safe left/right gutters. */
-  .admin-notification-wrapper .dropdown-menu.fixed-mobile {
+  /* Mobile: make dropdown float and center safely */
+  .admin-notification-wrapper .dropdown-menu.admin-notification-dropdown.fixed-mobile {
     position: fixed !important;
-    top: 70px;
+    top: 75px;
     left: 16px;
     right: 16px;
     width: auto;
     z-index: 1050;
+    max-height: 350px;
+    overflow-y: auto;
+    animation: adminNotifFadeIn 180ms ease-out;
+  }
+
+  @keyframes adminNotifFadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
 

@@ -94,11 +94,11 @@
         }
 
         .radio-tile {
-            border-radius: 999px;
+            /* border-radius: 999px;
             padding: 0.55rem 1.1rem;
             border: 1px solid rgba(148, 163, 184, 0.35);
             background: #F9FAFB;
-            transition: all 0.15s ease;
+            transition: all 0.15s ease; */
         }
 
         .radio-tile input {
@@ -106,8 +106,8 @@
         }
 
         .radio-tile:has(input:checked) {
-            border-color: rgba(13, 148, 136, 0.55);
-            background: rgba(13, 148, 136, 0.08);
+            /* border-color: rgba(13, 148, 136, 0.55);
+            background: rgba(13, 148, 136, 0.08); */
         }
 
         /* Bento cards right */
